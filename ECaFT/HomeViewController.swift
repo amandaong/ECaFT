@@ -14,6 +14,11 @@ class HomeViewController: UIViewController {
         super.viewDidLoad()
 
         view.backgroundColor = UIColor.black
+        
+        let backgroundImageView = UIImageView(frame: view.frame)
+        backgroundImageView.image = UIImage(named: "ecaftBackground.png")
+        
+        
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -21,21 +26,5 @@ class HomeViewController: UIViewController {
         
         navigationController?.navigationBar.topItem?.title = "Home"
     }
-
-    override func didReceiveMemoryWarning() {
-        super.didReceiveMemoryWarning()
-        // Dispose of any resources that can be recreated.
-    }
     
-
-    /*
-    // MARK: - Navigation
-
-    // In a storyboard-based application, you will often want to do a little preparation before navigation
-    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        // Get the new view controller using segue.destinationViewController.
-        // Pass the selected object to the new view controller.
-    }
-    */
-
 }
