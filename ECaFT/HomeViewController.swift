@@ -14,9 +14,16 @@ class HomeViewController: UIViewController {
         super.viewDidLoad()
 
         view.backgroundColor = UIColor.black
+    
         
-        let backgroundImageView = UIImageView(frame: view.frame)
+        let navBarHeight = tabBarItem.accessibilityFrame.height
+        let backgroundHeight = view.frame.height - navBarHeight
+        let backgroundImageView = UIImageView(frame: CGRect(origin: CGPoint(x: 0, y: navBarHeight), size: CGSize(width: view.frame.width, height: backgroundHeight)))
+        
         backgroundImageView.image = UIImage(named: "ecaftBackground.png")
+        
+        view.addSubview(backgroundImageView)
+        view.sendSubview(toBack: backgroundImageView)
         
         
     }
