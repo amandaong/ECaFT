@@ -4,4 +4,5 @@ platform :ios, '9.0'
 
 target 'ECaFT' do
 	pod "SlidingTabBar"
+	pod "SwiftyJSON"
 end

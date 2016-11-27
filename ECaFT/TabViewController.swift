@@ -23,19 +23,19 @@ class TabViewController: UITabBarController, SlidingTabBarDataSource, SlidingTab
         delegate = self
         
         let homeVC = HomeViewController()
-        let homeBarItem = UITabBarItem(title: "Home", image: UIImage(named: "favorites.png"), selectedImage: UIImage(named: "favorites.png"))
+        let homeBarItem = UITabBarItem(title: "Home", image: UIImage(named: "home.png"), selectedImage: UIImage(named: "home.png"))
         homeVC.tabBarItem = homeBarItem
         
         let mapVC = MapViewController()
-        let mapBarItem = UITabBarItem(title: "Map", image: UIImage(named: "favorites.png"), selectedImage: UIImage(named: "favorites.png"))
+        let mapBarItem = UITabBarItem(title: "Map", image: UIImage(named: "map"), selectedImage: UIImage(named: "map"))
         mapVC.tabBarItem = mapBarItem
         
         let companyVC = CompanyViewController()
-        let companyBarItem = UITabBarItem(title: "Companies", image: UIImage(named: "favorites.png"), selectedImage: UIImage(named: "favorites.png"))
+        let companyBarItem = UITabBarItem(title: "Companies", image: UIImage(named: "company.png"), selectedImage: UIImage(named: "company.png"))
         companyVC.tabBarItem = companyBarItem
         
         let favoritesVC = FavoritesViewController()
-        let favoritesBarItem = UITabBarItem(title: "Favorites", image: UIImage(named: "favorites.png"), selectedImage: UIImage(named: "favorites.png"))
+        let favoritesBarItem = UITabBarItem(title: "Favorites", image: UIImage(named: "favorites.png"), selectedImage: UIImage(named: "favoritesSelected.png"))
         favoritesVC.tabBarItem = favoritesBarItem
         
         viewControllers = [homeVC, mapVC, companyVC, favoritesVC]

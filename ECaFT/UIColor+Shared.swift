@@ -10,8 +10,8 @@ import UIKit
 
 extension UIColor {
     
-    public static let ecaftRed = UIColor.colorFromCode(code: 0xCE1E1E)
-    public static let ecaftDarkRed = UIColor.colorFromCode(code: 0xA81414)
+    public static let ecaftRed = UIColor.colorFromCode(code: 0xA81414)
+    public static let ecaftDarkRed = UIColor.colorFromCode(code: 0x891010)
     public static let ecaftGold = UIColor.colorFromCode(code: 0xF7D62F)
     
     public static func colorFromCode(code: Int) -> UIColor {
