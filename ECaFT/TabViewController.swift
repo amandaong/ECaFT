@@ -7,51 +7,88 @@
 //
 
 import UIKit
+import SlidingTabBar
 
-class TabViewController: UITabBarController, UITabBarControllerDelegate {
+class TabViewController: UITabBarController, SlidingTabBarDataSource, SlidingTabBarDelegate, UITabBarControllerDelegate {
+    
+    var tabBarView: SlidingTabBar!
+    var fromIndex: Int!
+    var toIndex: Int!
 
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        tabBar.barTintColor = UIColor.ecaftRed
-        tabBar.backgroundColor = UIColor.ecaftRed
-        tabBar.tintColor = UIColor.black
-        tabBar.unselectedItemTintColor = UIColor.white
-
+        tabBar.isHidden = true
+        selectedIndex = 0
         delegate = self
         
         let homeVC = HomeViewController()
-        let homeBarItem = UITabBarItem(title: "Home", image: UIImage(named: "homeUnselected.png"), selectedImage: UIImage(named: "homeSelected.png"))
+        let homeBarItem = UITabBarItem(title: "Home", image: UIImage(named: "home.png"), selectedImage: UIImage(named: "home.png"))
         homeVC.tabBarItem = homeBarItem
         
         let mapVC = MapViewController()
-        let mapBarItem = UITabBarItem(title: "Map", image: UIImage(named: "mapUnselected.png"), selectedImage: UIImage(named: "mapUnselected.png"))
+        let mapBarItem = UITabBarItem(title: "Map", image: UIImage(named: "map"), selectedImage: UIImage(named: "map"))
         mapVC.tabBarItem = mapBarItem
         
         let companyVC = CompanyViewController()
-        let companyBarItem = UITabBarItem(title: "Companies", image: UIImage(named: "companyUnselected.png"), selectedImage: UIImage(named: "companySelected.png"))
+        let companyBarItem = UITabBarItem(title: "Companies", image: UIImage(named: "company.png"), selectedImage: UIImage(named: "company.png"))
         companyVC.tabBarItem = companyBarItem
         
         let favoritesVC = FavoritesViewController()
-        let favoritesBarItem = UITabBarItem(title: "Favorites", image: UIImage(named: "favoritesUnselected.png"), selectedImage: UIImage(named: "favoritesSelected.png"))
+        let favoritesBarItem = UITabBarItem(title: "Favorites", image: UIImage(named: "favorites.png"), selectedImage: UIImage(named: "favoritesSelected.png"))
         favoritesVC.tabBarItem = favoritesBarItem
         
         viewControllers = [homeVC, mapVC, companyVC, favoritesVC]
+        
+        tabBarView = SlidingTabBar(frame: tabBar.frame, initialTabBarItemIndex: selectedIndex)
+        tabBarView.tabBarBackgroundColor = UIColor.ecaftRed
+        tabBarView.tabBarItemTintColor = UIColor.white
+        tabBarView.selectedTabBarItemTintColor = UIColor.white
+        tabBarView.selectedTabBarItemColors = [UIColor.ecaftDarkRed, UIColor.ecaftDarkRed, UIColor.ecaftDarkRed, UIColor.ecaftDarkRed]
+        tabBarView.slideAnimationDuration = 0.3
+        tabBarView.datasource = self
+        tabBarView.delegate = self
+        tabBarView.setup()
+        
+        tabBarView.frame.origin.y = view.frame.height - 113
+        
+        view.addSubview(tabBarView)
+        view.bringSubview(toFront: tabBarView)
         
     }
 
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
+        
+        
     }
 
-    /*
-    // MARK: - Navigation
-
-    // In a storyboard-based application, you will often want to do a little preparation before navigation
-    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        // Get the new view controller using segue.destinationViewController.
-        // Pass the selected object to the new view controller.
+    // MARK: - SlidingTabBarDataSource
+    
+    func tabBarItemsInSlidingTabBar(tabBarView: SlidingTabBar) -> [UITabBarItem] {
+        return tabBar.items!
     }
-    */
+    
+    // MARK: - SlidingTabBarDelegate
+    
+    func didSelectViewController(tabBarView: SlidingTabBar, atIndex index: Int, from: Int) {
+        fromIndex = from
+        toIndex = index
+        selectedIndex = index
+    }
+    
+    // MARK: - UITabBarControllerDelegate
+    
+    func tabBarController(_ tabBarController: UITabBarController, animationControllerForTransitionFrom fromVC: UIViewController, to toVC: UIViewController) -> UIViewControllerAnimatedTransitioning? {
+        
+        // use same duration as for tabBarView.slideAnimationDuration
+        // you can choose direction in which view controllers should be changed:
+        // - .Both(default),
+        // - .Reverse,
+        // - .Left,
+        // - .Right
+        return SlidingTabAnimatedTransitioning(transitionDuration: 0.3, direction: .Both,
+                                               fromIndex: self.fromIndex, toIndex: self.toIndex)
+    }
 
 }

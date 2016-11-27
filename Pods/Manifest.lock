@@ -1,0 +1,15 @@
+PODS:
+  - SlidingTabBar (0.2.1)
+  - SwiftyJSON (3.1.1)
+
+DEPENDENCIES:
+  - SlidingTabBar
+  - SwiftyJSON
+
+SPEC CHECKSUMS:
+  SlidingTabBar: 027224f312efeb1a76de93e1d9a108b8318d6494
+  SwiftyJSON: f0be2e604f83e8405a624e9f891898bf6ed4e019
+
+PODFILE CHECKSUM: e6ee26c3068bebee7a75190a6291e0ddcd06b602
+
+COCOAPODS: 1.1.1

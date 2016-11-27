@@ -14,6 +14,18 @@ class HomeViewController: UIViewController {
         super.viewDidLoad()
 
         view.backgroundColor = UIColor.black
+    
+        
+        let navBarHeight = tabBarItem.accessibilityFrame.height
+        let backgroundHeight = view.frame.height - navBarHeight
+        let backgroundImageView = UIImageView(frame: CGRect(origin: CGPoint(x: 0, y: navBarHeight), size: CGSize(width: view.frame.width, height: backgroundHeight)))
+        
+        backgroundImageView.image = UIImage(named: "ecaftBackground.png")
+        
+        view.addSubview(backgroundImageView)
+        view.sendSubview(toBack: backgroundImageView)
+        
+        
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -21,21 +33,5 @@ class HomeViewController: UIViewController {
         
         navigationController?.navigationBar.topItem?.title = "Home"
     }
-
-    override func didReceiveMemoryWarning() {
-        super.didReceiveMemoryWarning()
-        // Dispose of any resources that can be recreated.
-    }
     
-
-    /*
-    // MARK: - Navigation
-
-    // In a storyboard-based application, you will often want to do a little preparation before navigation
-    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        // Get the new view controller using segue.destinationViewController.
-        // Pass the selected object to the new view controller.
-    }
-    */
-
 }

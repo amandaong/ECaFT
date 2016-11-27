@@ -7,7 +7,7 @@
 //
 
 import UIKit
-//import SwiftyJSON
+import SwiftyJSON
 
 class Company: NSObject {
     var name: String = ""
@@ -19,13 +19,13 @@ class Company: NSObject {
     var isFavorite: Bool = false
     var imageURL: URL!
     
-    override init() {
+    init(json: JSON) {
         super.init()
-//        name = json["name"].stringValue
-//        hq = json["hq"].stringValue
-//        locations = json["locations"].arrayObject as? [String] ?? []
-//        positions = json["positions"].arrayObject as? [String] ?? []
-//        majors = json["majors"].arrayObject as? [String] ?? []
+        name = json["name"].stringValue
+        hq = json["hq"].stringValue
+        locations = json["locations"].arrayObject as? [String] ?? []
+        positions = json["positions"].arrayObject as? [String] ?? []
+        majors = json["majors"].arrayObject as? [String] ?? []
         imageURL = URL(string: "http://google.com/\(name)/picture?type=large")
     }
     
