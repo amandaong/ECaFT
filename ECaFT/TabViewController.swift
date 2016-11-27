@@ -23,21 +23,21 @@ class TabViewController: UITabBarController, SlidingTabBarDataSource, SlidingTab
         delegate = self
         
         let homeVC = HomeViewController()
-        let homeBarItem = UITabBarItem(title: "Home", image: UIImage(named: "home.png"), selectedImage: UIImage(named: "home.png"))
+        let homeBarItem = UITabBarItem(title: "Home", image: UIImage(named: "home.png"), selectedImage: UIImage(named: "homeSelected.png"))
         homeVC.tabBarItem = homeBarItem
         
         let mapVC = MapViewController()
-        let mapBarItem = UITabBarItem(title: "Map", image: UIImage(named: "map"), selectedImage: UIImage(named: "map"))
+        let mapBarItem = UITabBarItem(title: "Map", image: UIImage(named: "map.png"), selectedImage: UIImage(named: "mapSelected.png"))
         mapVC.tabBarItem = mapBarItem
         
         let companyVC = CompanyViewController()
-        let companyBarItem = UITabBarItem(title: "Companies", image: UIImage(named: "company.png"), selectedImage: UIImage(named: "company.png"))
+        let companyBarItem = UITabBarItem(title: "Companies", image: UIImage(named: "company.png"), selectedImage: UIImage(named: "companySelected.png"))
         companyVC.tabBarItem = companyBarItem
         
         let favoritesVC = FavoritesViewController()
         let favoritesBarItem = UITabBarItem(title: "Favorites", image: UIImage(named: "favorites.png"), selectedImage: UIImage(named: "favoritesSelected.png"))
         favoritesVC.tabBarItem = favoritesBarItem
-        
+ 
         viewControllers = [homeVC, mapVC, companyVC, favoritesVC]
         
         tabBarView = SlidingTabBar(frame: tabBar.frame, initialTabBarItemIndex: selectedIndex)
