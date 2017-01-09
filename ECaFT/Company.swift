@@ -11,6 +11,7 @@ import SwiftyJSON
 
 class Company: NSObject {
     var name: String = ""
+    var industry: String = ""
     var hq: String = ""
     var locations: [String] = []
     var positions: [String] = []
@@ -22,6 +23,7 @@ class Company: NSObject {
     init(json: JSON) {
         super.init()
         name = json["name"].stringValue
+        industry = json["industry"].stringValue
         hq = json["hq"].stringValue
         locations = json["locations"].arrayObject as? [String] ?? []
         positions = json["positions"].arrayObject as? [String] ?? []
@@ -30,12 +32,13 @@ class Company: NSObject {
     }
     
     override var description: String {
-        return "Name: \(name) | HQ: \(hq) | Locations: \(locations) | Positions: \(positions) | Majors: \(majors)"
+        return "Name: \(name) | Industry: \(industry) | HQ: \(hq) | Locations: \(locations) | Positions: \(positions) | Majors: \(majors)"
     }
     
     // NSCoding
     required init?(coder aDecoder: NSCoder) {
         name = aDecoder.decodeObject(forKey: "name") as! String
+        industry = aDecoder.decodeObject(forKey: "industry") as! String
         hq = aDecoder.decodeObject(forKey: "hq") as! String
         locations = aDecoder.decodeObject(forKey: "locations") as! [String]
         positions = aDecoder.decodeObject(forKey: "positions") as! [String]
@@ -47,6 +50,7 @@ class Company: NSObject {
     
     func encode(with aCoder: NSCoder) {
         aCoder.encode(name, forKey: "name")
+        aCoder.encode(industry, forKey: "industry")
         aCoder.encode(hq, forKey: "hq")
         aCoder.encode(locations, forKey: "locations")
         aCoder.encode(positions, forKey: "positions")
