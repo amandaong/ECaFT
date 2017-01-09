@@ -25,7 +25,6 @@ class HomeViewController: UIViewController {
         view.addSubview(backgroundImageView)
         view.sendSubview(toBack: backgroundImageView)
         
-        
     }
     
     override func viewWillAppear(_ animated: Bool) {

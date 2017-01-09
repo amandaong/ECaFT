@@ -49,7 +49,6 @@ class TabViewController: UITabBarController, SlidingTabBarDataSource, SlidingTab
         tabBarView.datasource = self
         tabBarView.delegate = self
         tabBarView.setup()
-        
         tabBarView.frame.origin.y = view.frame.height - 113
         
         view.addSubview(tabBarView)

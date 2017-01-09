@@ -8,7 +8,7 @@
 
 import UIKit
 
-class CompanyViewController: UIViewController, UISearchBarDelegate, UIScrollViewDelegate {
+class CompanyViewController: UIViewController, UISearchBarDelegate, UIScrollViewDelegate, UITableViewDelegate, UITableViewDataSource {
     let screenSize : CGRect = UIScreen.main.bounds
     var searchBar : UISearchBar!
     var scrollFilterView : UIScrollView!
@@ -19,16 +19,22 @@ class CompanyViewController: UIViewController, UISearchBarDelegate, UIScrollView
     var arrowIV : UIImageView!
     var checkIV : UIImageView!
     
-    //filter collection view variables
+    //Filter collection view variables
     let leftAndRightPaddings: CGFloat = 80.0
     let numberOfItemsPerRow: CGFloat = 2.0
     private let cellReuseIdentifier = "collectionCell"
+    
+    //Company Table View
+    var companyTableView = UITableView()
+    var numOfSections = 1
+    var sectionTitles = ["All Companies", "Favorites", "Other Companies"]
     
     override func viewDidLoad() {
         super.viewDidLoad()
         view.backgroundColor = UIColor.ecaftGray
         
         makeSearchBar()
+       makeTableView()
         //makeFilterButtons()
         // Uncomment the following line to preserve selection between presentations
         // self.clearsSelectionOnViewWillAppear = false
@@ -42,22 +48,6 @@ class CompanyViewController: UIViewController, UISearchBarDelegate, UIScrollView
         setUpFilter()
         isFilterDropDown = false
         
-        //Temporary button to pull up company's detail page
-        createDetailsButton()
-    }
-    
-    func createDetailsButton () {
-        let button = UIButton();
-        button.setTitle("Company Detail's Page", for: .normal)
-        button.setTitleColor(UIColor.blue, for: .normal)
-        button.frame = CGRect(x: 0.5*screenSize.width, y: 0.5*screenSize.height, width: 100, height: 30)
-        button.addTarget(self, action: #selector(CompanyViewController.detailsButtonTapped(button:)), for: .touchUpInside)
-        self.view.addSubview(button)
-    }
-    
-    func detailsButtonTapped(button: UIButton!) {
-        let companyDetailsViewController = CompanyDetailsViewController()
-        self.navigationController?.pushViewController(companyDetailsViewController, animated: true)
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -140,7 +130,7 @@ class CompanyViewController: UIViewController, UISearchBarDelegate, UIScrollView
         sender.setImage(checkImage, for: .normal)
         sender.tag = sender.tag == 0 ? 1 : 0
     }
-
+    
     func makeSearchBar() {
         //Make UISearchBar instance
         searchBar = UISearchBar()
@@ -182,6 +172,82 @@ class CompanyViewController: UIViewController, UISearchBarDelegate, UIScrollView
         self.view.endEditing(true)
     }
     
+    //Tableview: Make table view
+    func makeTableView() {
+        //Total height of nav bar, status bar, tab bar
+        let barHeights = (self.navigationController?.navigationBar.frame.size.height)!+UIApplication.shared.statusBarFrame.height + 100
+        
+        companyTableView = UITableView(frame: CGRect(x: 0, y: searchBar.frame.maxY, width: screenSize.width, height: screenSize.height - barHeights), style: UITableViewStyle.plain) //sets tableview to size of view below status bar and nav bar
+        companyTableView.delegate = self
+        companyTableView.dataSource = self
+        
+        //Regsiter custom cells and xib files
+        companyTableView.register(CompanyTableViewCell.classForCoder(), forCellReuseIdentifier: "CompanyTableViewCell")
+        companyTableView.register(UINib(nibName: "CompanyTableViewCell", bundle: Bundle.main), forCellReuseIdentifier: "CompanyTableViewCell")
+        self.view.addSubview(self.companyTableView)
+    }
+    
+    //Section: Set number of sections and section headers
+    func numberOfSections(in tableView: UITableView) -> Int {
+        return numOfSections
+    }
+    
+    func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
+        return sectionTitles[section]
+    }
+    
+    //Section: Change font color and background color for section headers
+    func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
+        let headerView = UIView(frame: CGRect(x: 0, y: 0, width: view.frame.size.width, height: 28))
+        headerView.backgroundColor = UIColor.ecaftLightGray
+        
+        let label = UILabel(frame: CGRect(x: 0.05*screenSize.width, y: 0, width: screenSize.width, height: 28))
+        label.center.y = 0.5*headerView.frame.height
+        label.text = self.sectionTitles[section]
+        label.font = UIFont.boldSystemFont(ofSize: 16.0)
+        label.textColor = .ecaftDarkGray
+        headerView.addSubview(label)
+        
+        return headerView
+    }
+
+    //Rows: Set num of rows per section
+    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int
+    {
+        return 3
+    }
+    
+    //Rows: Set height for each row
+    func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat{
+        return 70
+    }
+    
+    //Table: Load in custom cells
+    var names = ["Amazon", "Apple", "Facebook"]
+    var locations = ["Booth A3-A4", "Booth B7", "Booth C9"]
+    var companyImages = [#imageLiteral(resourceName: "amazonTemporary"),#imageLiteral(resourceName: "appleTemporary"), #imageLiteral(resourceName: "facebookTemporary")]
+    
+    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell
+    {
+        let cell = tableView.dequeueReusableCell(withIdentifier: "CompanyTableViewCell", for: indexPath)
+        
+        //Stops cell turning grey when click on it
+        cell.selectionStyle = UITableViewCellSelectionStyle.none
+
+        let customCell = cell as! CompanyTableViewCell
+        customCell.companyImage.image = companyImages[indexPath.row]
+        customCell.name.text = names[indexPath.row]
+        customCell.location.text = locations[indexPath.row]
+        customCell.favoritesButton.setImage(#imageLiteral(resourceName: "favoritesYellowTemporary"), for: .normal)
+        customCell.favoritesButton.setTitle("", for: .normal)
+        return customCell
+    }
+    
+    //Table: Bring up company's detail page when click on cell
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        let companyDetailsViewController = CompanyDetailsViewController()
+        self.navigationController?.pushViewController(companyDetailsViewController, animated: true)
+    }
 //    var filtersCollectionView: UICollectionView!
 //
 //    func makeFilterButtons() {
@@ -242,5 +308,13 @@ class CompanyViewController: UIViewController, UISearchBarDelegate, UIScrollView
         
         view.layer.position = position
         view.layer.anchorPoint = anchorPoint
+    }
+}
+
+extension NSLayoutConstraint {
+    
+    override open var description: String {
+        let id = identifier ?? ""
+        return "id: \(id), constant: \(constant)" //you may print whatever you want here
     }
 }

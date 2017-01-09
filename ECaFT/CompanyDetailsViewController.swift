@@ -10,10 +10,10 @@ import UIKit
 
 class CompanyDetailsViewController: UIViewController, UITableViewDelegate, UITableViewDataSource {
     let screenSize : CGRect = UIScreen.main.bounds //DATA LOADING: change let name, location, button to var
-    var tableView: UITableView  =   UITableView()
+    var tableView = UITableView()
     var headerView = UIView()
     var company: Company!
-    var imageUrl:URL = URL(string: "https://s-media-cache-ak0.pinimg.com/originals/cc/77/ef/cc77efac50fd7637763ba7115bc4f17a.png")! //company image
+    var imageUrl = URL(string: "https://s-media-cache-ak0.pinimg.com/originals/cc/77/ef/cc77efac50fd7637763ba7115bc4f17a.png")! //company image
     var name = UILabel() //company name
     var location = UILabel() //company booth location
     
@@ -48,7 +48,7 @@ class CompanyDetailsViewController: UIViewController, UITableViewDelegate, UITab
     }
     
     override func viewWillAppear(_ animated: Bool) {
-        createHeaderView()
+        createHeaderView() //put method in viewWillAppear so information updated depending on what company is tapped
     }
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
@@ -153,6 +153,8 @@ class CompanyDetailsViewController: UIViewController, UITableViewDelegate, UITab
         favoritesButton.setImage(tintedImageFilled, for: .normal)
     }
     
+    /*****------------------------------TABLE VIEW METHODS------------------------------*****/
+    //Section: Set number of sections and section headers
     func numberOfSections(in tableView: UITableView) -> Int {
         return numOfSections
     }
@@ -161,11 +163,10 @@ class CompanyDetailsViewController: UIViewController, UITableViewDelegate, UITab
         return titles[section]
     }
 
-    
-    //Customize font color and background color for each header
+    //Section: Change font color and background color for section headers
     func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
         let returnedView = UIView(frame: CGRect(x: 0, y: 0, width: view.frame.size.width, height: 25))
-        returnedView.backgroundColor = UIColor(red: 243/255, green: 243/255, blue: 243/255, alpha: 1)
+        returnedView.backgroundColor = UIColor.ecaftLightGray
         
         let label = UILabel(frame: CGRect(x: 0.05*screenSize.width, y: 0, width: screenSize.width, height: 25))
         label.center.y = 0.5*label.frame.height
@@ -177,6 +178,7 @@ class CompanyDetailsViewController: UIViewController, UITableViewDelegate, UITab
         return returnedView
     }
 
+    //Rows: Set num of rows per section
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int
     {
         if(section == 0) {
@@ -192,6 +194,7 @@ class CompanyDetailsViewController: UIViewController, UITableViewDelegate, UITab
         }
     }
     
+    //Rows: Set height for each row
     let positions = ["Full-time", "Internships", "Co-op"]
     let majors = ["Computer Science", "Electrical and Computer Engineering", "Information Science", "Mechanical Engineering", "Operations Research"]
     
@@ -215,6 +218,7 @@ class CompanyDetailsViewController: UIViewController, UITableViewDelegate, UITab
         return height
     }
     
+    //Table: Load in custom cells
     let customCellIdentifier = [0: "CompanyInfoTableViewCell", 1 : "ListTableViewCell", 2 : "ListTableViewCell", 3 : "NotesTableViewCell"]
     
     
@@ -222,9 +226,12 @@ class CompanyDetailsViewController: UIViewController, UITableViewDelegate, UITab
     {
         var identifier = customCellIdentifier[indexPath.section]
         let cell = tableView.dequeueReusableCell(withIdentifier: identifier!, for: indexPath)
+        
         //Remove left indent for text in cell
         cell.separatorInset = UIEdgeInsets.zero
         cell.layoutMargins = UIEdgeInsets.zero
+        
+        //Removes grey highlight over cells
         cell.selectionStyle = UITableViewCellSelectionStyle.none
         
         if identifier == customCellIdentifier[0] {
@@ -254,18 +261,10 @@ class CompanyDetailsViewController: UIViewController, UITableViewDelegate, UITab
         }
     }
     
-    //Stop table cell turning grey when click on cell
+    //Table: Stop table cell turning grey when click on cell
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         tableView.deselectRow(at: indexPath as IndexPath, animated: true)
     }
     
 }
 
-extension UIButton {
-    func centerTextAndImage(spacing: CGFloat) { //adds spacing around button's image & text so they're evenly spaced out
-        let insetAmount = spacing / 2
-        imageEdgeInsets = UIEdgeInsets(top: 0, left: -insetAmount, bottom: 0, right: insetAmount)
-        titleEdgeInsets = UIEdgeInsets(top: 0, left: insetAmount, bottom: 0, right: -insetAmount)
-        contentEdgeInsets = UIEdgeInsets(top: 0, left: insetAmount, bottom: 0, right: insetAmount)
-    }
-}
