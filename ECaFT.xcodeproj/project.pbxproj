@@ -18,6 +18,13 @@
 		02ECF1ED1DE518BF0032EEC2 /* Company.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02ECF1EC1DE518BF0032EEC2 /* Company.swift */; };
 		02ECF1F21DE51CDA0032EEC2 /* CompanyViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02ECF1F11DE51CDA0032EEC2 /* CompanyViewController.swift */; };
 		3733D6851DEBCE7500A86276 /* FilterCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3733D6841DEBCE7500A86276 /* FilterCollectionViewCell.swift */; };
+		37B0BB841E2072F8000D490C /* CompanyDetailsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 37B0BB831E2072F8000D490C /* CompanyDetailsViewController.swift */; };
+		37BFBA321E21D62F00E71040 /* CompanyInfoTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 37BFBA301E21D62F00E71040 /* CompanyInfoTableViewCell.swift */; };
+		37BFBA331E21D62F00E71040 /* CompanyInfoTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 37BFBA311E21D62F00E71040 /* CompanyInfoTableViewCell.xib */; };
+		37BFBA361E21D69300E71040 /* ListTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 37BFBA341E21D69300E71040 /* ListTableViewCell.swift */; };
+		37BFBA371E21D69300E71040 /* ListTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 37BFBA351E21D69300E71040 /* ListTableViewCell.xib */; };
+		37BFBA3A1E21F13000E71040 /* NotesTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 37BFBA381E21F13000E71040 /* NotesTableViewCell.swift */; };
+		37BFBA3B1E21F13000E71040 /* NotesTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 37BFBA391E21F13000E71040 /* NotesTableViewCell.xib */; };
 		52B8CB3D6FBF6B47D6116ED5 /* Pods_ECaFT.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9744EAF4BD284A05D8A29D36 /* Pods_ECaFT.framework */; };
 /* End PBXBuildFile section */
 
@@ -35,6 +42,13 @@
 		02ECF1EC1DE518BF0032EEC2 /* Company.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Company.swift; sourceTree = "<group>"; };
 		02ECF1F11DE51CDA0032EEC2 /* CompanyViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CompanyViewController.swift; sourceTree = "<group>"; };
 		3733D6841DEBCE7500A86276 /* FilterCollectionViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FilterCollectionViewCell.swift; sourceTree = "<group>"; };
+		37B0BB831E2072F8000D490C /* CompanyDetailsViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CompanyDetailsViewController.swift; sourceTree = "<group>"; };
+		37BFBA301E21D62F00E71040 /* CompanyInfoTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CompanyInfoTableViewCell.swift; sourceTree = "<group>"; };
+		37BFBA311E21D62F00E71040 /* CompanyInfoTableViewCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = CompanyInfoTableViewCell.xib; sourceTree = "<group>"; };
+		37BFBA341E21D69300E71040 /* ListTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ListTableViewCell.swift; sourceTree = "<group>"; };
+		37BFBA351E21D69300E71040 /* ListTableViewCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = ListTableViewCell.xib; sourceTree = "<group>"; };
+		37BFBA381E21F13000E71040 /* NotesTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NotesTableViewCell.swift; sourceTree = "<group>"; };
+		37BFBA391E21F13000E71040 /* NotesTableViewCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = NotesTableViewCell.xib; sourceTree = "<group>"; };
 		5AA22436DA24D1F81DA8EA9F /* Pods-ECaFT.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-ECaFT.release.xcconfig"; path = "Pods/Target Support Files/Pods-ECaFT/Pods-ECaFT.release.xcconfig"; sourceTree = "<group>"; };
 		655850E907766C700827834D /* Pods-ECaFT.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-ECaFT.debug.xcconfig"; path = "Pods/Target Support Files/Pods-ECaFT/Pods-ECaFT.debug.xcconfig"; sourceTree = "<group>"; };
 		9744EAF4BD284A05D8A29D36 /* Pods_ECaFT.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_ECaFT.framework; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -92,6 +106,13 @@
 				0274B4691DE9304600133015 /* MapViewController.swift */,
 				02ECF1F11DE51CDA0032EEC2 /* CompanyViewController.swift */,
 				0274B4671DE9303500133015 /* FavoritesViewController.swift */,
+				37B0BB831E2072F8000D490C /* CompanyDetailsViewController.swift */,
+				37BFBA301E21D62F00E71040 /* CompanyInfoTableViewCell.swift */,
+				37BFBA311E21D62F00E71040 /* CompanyInfoTableViewCell.xib */,
+				37BFBA341E21D69300E71040 /* ListTableViewCell.swift */,
+				37BFBA351E21D69300E71040 /* ListTableViewCell.xib */,
+				37BFBA381E21F13000E71040 /* NotesTableViewCell.swift */,
+				37BFBA391E21F13000E71040 /* NotesTableViewCell.xib */,
 			);
 			name = ViewControllers;
 			sourceTree = "<group>";
@@ -201,8 +222,11 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				37BFBA3B1E21F13000E71040 /* NotesTableViewCell.xib in Resources */,
 				02ECF1E01DE518050032EEC2 /* LaunchScreen.storyboard in Resources */,
+				37BFBA371E21D69300E71040 /* ListTableViewCell.xib in Resources */,
 				02ECF1DD1DE518050032EEC2 /* Assets.xcassets in Resources */,
+				37BFBA331E21D62F00E71040 /* CompanyInfoTableViewCell.xib in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -266,6 +290,10 @@
 				02ECF1D61DE518050032EEC2 /* AppDelegate.swift in Sources */,
 				02ECF1F21DE51CDA0032EEC2 /* CompanyViewController.swift in Sources */,
 				0274B4681DE9303500133015 /* FavoritesViewController.swift in Sources */,
+				37BFBA361E21D69300E71040 /* ListTableViewCell.swift in Sources */,
+				37B0BB841E2072F8000D490C /* CompanyDetailsViewController.swift in Sources */,
+				37BFBA3A1E21F13000E71040 /* NotesTableViewCell.swift in Sources */,
+				37BFBA321E21D62F00E71040 /* CompanyInfoTableViewCell.swift in Sources */,
 				0274B46C1DE9305500133015 /* HomeViewController.swift in Sources */,
 				0274B46E1DE931FC00133015 /* TabViewController.swift in Sources */,
 				0274B4701DE9440F00133015 /* UIColor+Shared.swift in Sources */,

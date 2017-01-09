@@ -41,6 +41,23 @@ class CompanyViewController: UIViewController, UISearchBarDelegate, UIScrollView
         tapsOutsideFilterButton = UIButton(frame: view.frame)
         setUpFilter()
         isFilterDropDown = false
+        
+        //Temporary button to pull up company's detail page
+        createDetailsButton()
+    }
+    
+    func createDetailsButton () {
+        let button = UIButton();
+        button.setTitle("Company Detail's Page", for: .normal)
+        button.setTitleColor(UIColor.blue, for: .normal)
+        button.frame = CGRect(x: 0.5*screenSize.width, y: 0.5*screenSize.height, width: 100, height: 30)
+        button.addTarget(self, action: #selector(CompanyViewController.detailsButtonTapped(button:)), for: .touchUpInside)
+        self.view.addSubview(button)
+    }
+    
+    func detailsButtonTapped(button: UIButton!) {
+        let companyDetailsViewController = CompanyDetailsViewController()
+        self.navigationController?.pushViewController(companyDetailsViewController, animated: true)
     }
     
     override func viewWillAppear(_ animated: Bool) {
