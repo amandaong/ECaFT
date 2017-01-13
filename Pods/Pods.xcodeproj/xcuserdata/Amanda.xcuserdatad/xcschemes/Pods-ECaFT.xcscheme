@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <Scheme
-   LastUpgradeVersion = "0810"
+   LastUpgradeVersion = "0700"
    version = "1.3">
    <BuildAction
       parallelizeBuildables = "YES"
@@ -14,7 +14,7 @@
             buildForAnalyzing = "YES">
             <BuildableReference
                BuildableIdentifier = "primary"
-               BlueprintIdentifier = "2D1E3687BB630F62D87737205119673C"
+               BlueprintIdentifier = "996E446464029AA3D5A077D1C861BAE2"
                BuildableName = "Pods_ECaFT.framework"
                BlueprintName = "Pods-ECaFT"
                ReferencedContainer = "container:Pods.xcodeproj">
@@ -45,7 +45,7 @@
       <MacroExpansion>
          <BuildableReference
             BuildableIdentifier = "primary"
-            BlueprintIdentifier = "2D1E3687BB630F62D87737205119673C"
+            BlueprintIdentifier = "996E446464029AA3D5A077D1C861BAE2"
             BuildableName = "Pods_ECaFT.framework"
             BlueprintName = "Pods-ECaFT"
             ReferencedContainer = "container:Pods.xcodeproj">
@@ -60,15 +60,6 @@
       savedToolIdentifier = ""
       useCustomWorkingDirectory = "NO"
       debugDocumentVersioning = "YES">
-      <MacroExpansion>
-         <BuildableReference
-            BuildableIdentifier = "primary"
-            BlueprintIdentifier = "2D1E3687BB630F62D87737205119673C"
-            BuildableName = "Pods_ECaFT.framework"
-            BlueprintName = "Pods-ECaFT"
-            ReferencedContainer = "container:Pods.xcodeproj">
-         </BuildableReference>
-      </MacroExpansion>
    </ProfileAction>
    <AnalyzeAction
       buildConfiguration = "Debug">
