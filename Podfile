@@ -7,6 +7,7 @@ target 'ECaFT' do
 	pod "SwiftyJSON"
 	pod "Firebase/Core"
 	pod "Firebase/Database"
+	pod "Firebase/Storage”
 end
 
 post_install do |installer|

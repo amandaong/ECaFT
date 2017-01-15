@@ -9,7 +9,7 @@
 import UIKit
 
 class CompanyDetailsViewController: UIViewController, UITableViewDelegate, UITableViewDataSource {
-    let screenSize : CGRect = UIScreen.main.bounds //DATA LOADING: change let name, location, button to var
+    let screenSize : CGRect = UIScreen.main.bounds
     var tableView = UITableView()
     var headerView = UIView()
     var company: Company!
@@ -19,7 +19,7 @@ class CompanyDetailsViewController: UIViewController, UITableViewDelegate, UITab
     
     //favorites button
     var favoritesButton = UIButton()
-    let titles : [String] = ["Company Information", "Open Positions", "Majors of Interest", "Notes"]
+    let sectionTitles : [String] = ["Company Information", "Open Positions", "Majors of Interest", "Notes"]
     var numOfSections = 4 //number of sections
     
     
@@ -80,7 +80,7 @@ class CompanyDetailsViewController: UIViewController, UITableViewDelegate, UITab
         name = UILabel(frame: CGRect(x: 0.39*screenSize.width, y: 0, width: screenSize.width*0.6, height: 21)) //same x value as location so name & location label are aligned
         name.center.y = 0.28*(self.tableView.tableHeaderView?.frame.height)!
         name.textAlignment = NSTextAlignment.left
-        name.text = "Amazon Web Services" //DATA LOADING: company.name
+        name.text = company.name
         name.font = UIFont.boldSystemFont(ofSize: 20)
         self.tableView.tableHeaderView?.addSubview(name)
         
@@ -90,15 +90,7 @@ class CompanyDetailsViewController: UIViewController, UITableViewDelegate, UITab
         location.textAlignment = NSTextAlignment.left
         location.font = UIFont.systemFont(ofSize: 18)
         location.textColor = UIColor.ecaftDarkGray
-        location.text = "Booth " + "A3-A4" //DATA LOADING: delete "A3-A4" and then uncomment for loop below
-        /*for i in 0..<company.locations.count {
-            if (i == 0) {
-                location.text = location.text! + company.locations[0]
-            }
-            else {
-                location.text = location.text! + "," + company.locations[i] //QUESTION: Using , or - for booth label?
-            }
-        }*/
+        location.text = company.location
         self.tableView.tableHeaderView?.addSubview(location)
         
         //Create favorites button
@@ -155,7 +147,7 @@ class CompanyDetailsViewController: UIViewController, UITableViewDelegate, UITab
     }
     
     func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
-        return titles[section]
+        return sectionTitles[section]
     }
 
     //Section: Change font color and background color for section headers
@@ -165,7 +157,7 @@ class CompanyDetailsViewController: UIViewController, UITableViewDelegate, UITab
         
         let label = UILabel(frame: CGRect(x: 0.05*screenSize.width, y: 0, width: screenSize.width, height: 25))
         label.center.y = 0.5*label.frame.height
-        label.text = self.titles[section]
+        label.text = self.sectionTitles[section]
         label.font = UIFont.boldSystemFont(ofSize: 16.0)
         label.textColor = .ecaftDarkGray
         returnedView.addSubview(label)
@@ -180,10 +172,10 @@ class CompanyDetailsViewController: UIViewController, UITableViewDelegate, UITab
             return 1
         }
         else if (section == 1) {
-            return 3+2 //DATA LOADING: company.positions.count + 2 (for 2 blank cells)
+            return company.positions.count + 2
         }
         else if (section == 2) {
-            return 5+2 //DATA LOADING: company.majors.count + 2 (for 2 blank cells)
+            return company.majors.count + 2
         } else {
             return 1
         }
@@ -198,15 +190,15 @@ class CompanyDetailsViewController: UIViewController, UITableViewDelegate, UITab
         if(indexPath.section == 0 || indexPath.section == 3) {
             height = 110.0
         } else if(indexPath.section == 1) {
-            if (indexPath.row == 0 || indexPath.row == positions.count+1){
+            if(indexPath.row==0 || indexPath.row==company.positions.count+1) {
                 height = 5.0
-            }else{
+            } else {
                 height = 40.0
             }
         } else if(indexPath.section == 2) {
-            if (indexPath.row == 0 || indexPath.row == majors.count+1){
+            if(indexPath.row==0 || indexPath.row==company.majors.count+1) {
                 height = 5.0
-            }else{
+            } else {
                 height = 40.0
             }
         }
@@ -237,14 +229,13 @@ class CompanyDetailsViewController: UIViewController, UITableViewDelegate, UITab
         } else if identifier == customCellIdentifier[1] {
             let customCell = cell as! ListTableViewCell
             if(indexPath.section == 1) {
-                if(indexPath.row != 0 && indexPath.row != positions.count+1) {
-                    customCell.itemLabel.text = positions[indexPath.row-1] //DATA LOADING: company.positions
-
+                if(indexPath.row > 0 && indexPath.row < company.positions.count+1){
+                    customCell.itemLabel.text = company.positions[indexPath.row-1]
                 }
             }
             if(indexPath.section == 2) {
-                if(indexPath.row != 0 && indexPath.row != majors.count+1) {
-                    customCell.itemLabel.text = majors[indexPath.row-1] //DATA LOADING: company.majors
+                if(indexPath.row > 0 && indexPath.row < company.majors.count+1){
+                    customCell.itemLabel.text = company.majors[indexPath.row-1]
                 }
             }
             return customCell

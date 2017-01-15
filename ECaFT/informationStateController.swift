@@ -12,7 +12,7 @@ import Foundation
 class informationStateController {
     
     
-    
+    private(set) var companies = [Company]()
     //For Company Table View
     let numOfSections = 1
     var sectionTitles = ["All Companies", "Favorites", "Other Companies"]
@@ -32,6 +32,10 @@ class informationStateController {
     
     //Returns company object w/ all details filled out
     func getCompanyDetail() {
+    }
+    
+    func addCompany(company:Company) {
+        companies.append(company)
     }
     
     func saveFavoritedCompany() {

@@ -19,6 +19,7 @@ class Company: NSObject {
     var website: String = ""
     var notes: String = ""
     var isFavorite: Bool = false
+    var image: UIImage!
     var imageURL: URL!
     
     init(json: JSON) {
@@ -77,4 +78,5 @@ enum Property: String {
     case imageURL = "imageURL"
     case openings = "openings"
     case website = "website"
+    case id = "id"
 }

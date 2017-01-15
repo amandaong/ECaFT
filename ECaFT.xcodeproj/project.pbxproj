@@ -229,7 +229,7 @@
 				TargetAttributes = {
 					02ECF1D11DE518050032EEC2 = {
 						CreatedOnToolsVersion = 8.1;
-						DevelopmentTeam = 9VSJZHVUGP;
+						DevelopmentTeam = 9CVHL8W7A5;
 						ProvisioningStyle = Automatic;
 					};
 				};
@@ -399,7 +399,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 10.1;
+				IPHONEOS_DEPLOYMENT_TARGET = 10.2;
 				MTL_ENABLE_DEBUG_INFO = YES;
 				ONLY_ACTIVE_ARCH = YES;
 				SDKROOT = iphoneos;
@@ -442,7 +442,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 10.1;
+				IPHONEOS_DEPLOYMENT_TARGET = 10.2;
 				MTL_ENABLE_DEBUG_INFO = NO;
 				SDKROOT = iphoneos;
 				SWIFT_OPTIMIZATION_LEVEL = "-Owholemodule";
@@ -455,7 +455,7 @@
 			baseConfigurationReference = 655850E907766C700827834D /* Pods-ECaFT.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
-				DEVELOPMENT_TEAM = 9VSJZHVUGP;
+				DEVELOPMENT_TEAM = 9CVHL8W7A5;
 				INFOPLIST_FILE = ECaFT/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = "Allen-Logan.ECaFT";
@@ -469,7 +469,7 @@
 			baseConfigurationReference = 5AA22436DA24D1F81DA8EA9F /* Pods-ECaFT.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
-				DEVELOPMENT_TEAM = 9VSJZHVUGP;
+				DEVELOPMENT_TEAM = 9CVHL8W7A5;
 				INFOPLIST_FILE = ECaFT/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = "Allen-Logan.ECaFT";

@@ -7,6 +7,8 @@
 //
 
 import UIKit
+import Firebase
+import FirebaseStorage
 import FirebaseDatabase
 
 class CompanyViewController: UIViewController, UISearchBarDelegate, UIScrollViewDelegate, UITableViewDelegate, UITableViewDataSource {
@@ -28,12 +30,11 @@ class CompanyViewController: UIViewController, UISearchBarDelegate, UIScrollView
     //Company Table View
     var companyTableView = UITableView()
     
-    
     //Information State Controller
     var informationStateController: informationStateController?
-    var companies = [Company]()
     
-    var ref = FIRDatabase.database().reference()
+    var databaseRef: FIRDatabaseReference?
+    var storageRef: FIRStorageReference?
     var databaseHandle:FIRDatabaseHandle?
     
     override func viewDidLoad() {
@@ -54,8 +55,11 @@ class CompanyViewController: UIViewController, UISearchBarDelegate, UIScrollView
         tapsOutsideFilterButton = UIButton(frame: view.frame)
         setUpFilter()
         isFilterDropDown = false
+        
+        //Load data from firebase
+        databaseRef = FIRDatabase.database().reference()
+        storageRef = FIRStorage.storage().reference(forURL: "gs://ecaft-4a6e7.appspot.com/logos") //reference to logos folder in storage
         loadData()
-        print(companies)
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -70,7 +74,7 @@ class CompanyViewController: UIViewController, UISearchBarDelegate, UIScrollView
     
     func loadData() {
         //Retrive posts and listen for changes
-        databaseHandle = ref.child("companies").observe(.value, with: { (snapshot) in
+        databaseHandle = databaseRef?.child("companies").observe(.value, with: { (snapshot) in
             for item in snapshot.children.allObjects as! [FIRDataSnapshot] {
                 let company = Company()
                 company.name = item.childSnapshot(forPath: Property.name.rawValue).value as! String
@@ -78,16 +82,30 @@ class CompanyViewController: UIViewController, UISearchBarDelegate, UIScrollView
                 company.location = item.childSnapshot(forPath: Property.location.rawValue).value as! String
                 
                 let majors = item.childSnapshot(forPath: Property.majors.rawValue).value as! String
-                company.majors = majors.components(separatedBy: ",")
+                company.majors = majors.components(separatedBy: ", ")
                 
                 let positions = item.childSnapshot(forPath: Property.openings.rawValue).value as! String
-                company.positions = positions.components(separatedBy: ",")
+                company.positions = positions.components(separatedBy: ", ")
                 
                 company.website = item.childSnapshot(forPath: Property.website.rawValue).value as! String
-                self.companies.append(company)
+                
+                //Get image
+                let id = item.childSnapshot(forPath: Property.id.rawValue).value as! String
+                let imageName = id + ".png"
+                let imageRef = self.storageRef?.child(imageName)
+                imageRef?.data(withMaxSize: 1 * 1024 * 1024) { data, error in
+                    if let error = error {
+                        print((error as Error).localizedDescription)
+                    } else if let data = data {
+                        // Data for "images/companyid.png" is returned
+                            company.image = UIImage(data: data) //PROBLEM must be here- somehow not getting onto main thread
+                    }
+                }
+                self.informationStateController?.addCompany(company: company)
+            }
+            DispatchQueue.main.async {
                 self.companyTableView.reloadData()
             }
-            
         })
     }
 
@@ -208,8 +226,9 @@ class CompanyViewController: UIViewController, UISearchBarDelegate, UIScrollView
         companyTableView.delegate = self
         
         //Regsiter custom cells and xib files
-        companyTableView.register(CompanyTableViewCell.classForCoder(), forCellReuseIdentifier: "CompanyTableViewCell")
-        companyTableView.register(UINib(nibName: "CompanyTableViewCell", bundle: Bundle.main), forCellReuseIdentifier: "CompanyTableViewCell")
+        //companyTableView.register(CompanyTableViewCell.self, forCellReuseIdentifier: "CompanyTableViewCell")
+        //companyTableView.register(CompanyTableViewCell.classForCoder(), forCellReuseIdentifier: "CompanyTableViewCell")
+        companyTableView.register(UINib(nibName: "CompanyTableViewCell", bundle: nil), forCellReuseIdentifier: "CompanyTableViewCell")
         self.view.addSubview(self.companyTableView)
     }
     
@@ -244,29 +263,49 @@ class CompanyViewController: UIViewController, UISearchBarDelegate, UIScrollView
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection
         section: Int) -> Int {
-        return companies.count //should be 3
+        return (self.informationStateController?.companies.count)! //should be 3
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell
     {
-        let company = companies[indexPath.row]
-        let cell = tableView.dequeueReusableCell(
-            withIdentifier: CompanyTableViewCell.identifier, for: indexPath)
+        let company = (self.informationStateController?.companies[indexPath.row])!
+        //let cell = tableView.dequeueReusableCell(withIdentifier: CompanyTableViewCell.identifier, for: indexPath)
         
+       
+        /*
+        if let imageUrl = company.imageURL {
+            URLSession.shared.dataTask(with: imageUrl, completionHandler: { (data, response, error) in
+                //Downloading hit an error so return out
+                if (error != nil) {
+                    print(error! as Error)
+                    return
+                }
+                
+                DispatchQueue.main.async {
+                    cell.imageView?.image = UIImage(data: data!)
+                }
+            }).resume()
+        }*/
+        //let customCell = cell as! CompanyTableViewCell
+        let customCell = tableView.dequeueReusableCell(withIdentifier: CompanyTableViewCell.identifier) as! CompanyTableViewCell
         //Stops cell turning grey when click on it
-        cell.selectionStyle = UITableViewCellSelectionStyle.none
-        
-        let customCell = cell as! CompanyTableViewCell
+        customCell.selectionStyle = UITableViewCellSelectionStyle.none
         customCell.name = company.name
         customCell.location = company.location
-        
+        print("This is the company image: \(company.image)")
+        if(company.image != nil) {
+            customCell.companyImage.image = company.image
+        } else {
+            customCell.companyImage.image = #imageLiteral(resourceName: "placeholder")
+        }
+        //customCell.setUpImage(image: company.image)
         return customCell
     }
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         tableView.deselectRow(at: indexPath as IndexPath, animated: false)
         let companyDetailsVC = CompanyDetailsViewController()
-        companyDetailsVC.company = companies[indexPath.row]
+        companyDetailsVC.company = self.informationStateController?.companies[indexPath.row]
         self.show(companyDetailsVC, sender: nil)
     }
     
