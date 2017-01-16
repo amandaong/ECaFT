@@ -32,16 +32,11 @@ class CompanyDetailsViewController: UIViewController, UITableViewDelegate, UITab
         tableView.separatorStyle = UITableViewCellSeparatorStyle.none //removes cell lines
         
         //Regsiter custom cells and xib files
-        tableView.register(CompanyInfoTableViewCell.classForCoder(), forCellReuseIdentifier: "CompanyInfoTableViewCell")
-        tableView.register(ListTableViewCell.classForCoder(), forCellReuseIdentifier: "ListTableViewCell")
-        tableView.register(NotesTableViewCell.classForCoder(), forCellReuseIdentifier: "NotesTableViewCell")
+        tableView.register(CompanyInfoTableViewCell.self, forCellReuseIdentifier: "CompanyInfoTableViewCell")
+        //tableView.register(ListTableViewCell.self, forCellReuseIdentifier: "ListTableViewCell")
+        //tableView.register(NotesTableViewCell.self, forCellReuseIdentifier: "NotesTableViewCell")
         tableView.register(UINib(nibName: "ListTableViewCell", bundle: Bundle.main), forCellReuseIdentifier: "ListTableViewCell")
         tableView.register(UINib(nibName: "NotesTableViewCell", bundle: Bundle.main), forCellReuseIdentifier: "NotesTableViewCell")
-
-       /* tableView.estimatedRowHeight = 80
-        tableView.rowHeight = UITableViewAutomaticDimension
-       self.tableView.setNeedsLayout()
-        self.tableView.layoutIfNeeded()*/
         self.view.addSubview(self.tableView)
     }
     
@@ -181,14 +176,11 @@ class CompanyDetailsViewController: UIViewController, UITableViewDelegate, UITab
         }
     }
     
-    //Rows: Set height for each row
-    let positions = ["Full-time", "Internships", "Co-op"]
-    let majors = ["Computer Science", "Electrical and Computer Engineering", "Information Science", "Mechanical Engineering", "Operations Research"]
-    
+    //Rows: Set height for each row    
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat{
         var height:CGFloat = 120.0
-        if(indexPath.section == 0 || indexPath.section == 3) {
-            height = 110.0
+        if(indexPath.section == 0) {
+            height = 200.0
         } else if(indexPath.section == 1) {
             if(indexPath.row==0 || indexPath.row==company.positions.count+1) {
                 height = 5.0
@@ -201,13 +193,14 @@ class CompanyDetailsViewController: UIViewController, UITableViewDelegate, UITab
             } else {
                 height = 40.0
             }
+        } else {
+            height = 110.0
         }
         return height
     }
     
     //Table: Load in custom cells
     let customCellIdentifier = [0: "CompanyInfoTableViewCell", 1 : "ListTableViewCell", 2 : "ListTableViewCell", 3 : "NotesTableViewCell"]
-    
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell
     {
@@ -223,8 +216,7 @@ class CompanyDetailsViewController: UIViewController, UITableViewDelegate, UITab
         
         if identifier == customCellIdentifier[0] {
             let customCell = cell as! CompanyInfoTableViewCell
-            customCell.loadInfo(industry: "Technology", hq: "Seattle, WA")
-            //DATA LOADING: company.industry and company.hq
+            customCell.information = company.information
             return customCell
         } else if identifier == customCellIdentifier[1] {
             let customCell = cell as! ListTableViewCell

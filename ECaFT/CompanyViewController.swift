@@ -89,6 +89,8 @@ class CompanyViewController: UIViewController, UISearchBarDelegate, UIScrollView
                 
                 company.website = item.childSnapshot(forPath: Property.website.rawValue).value as! String
                 
+                print(company)
+                print("******************")
                 //Get image
                 let id = item.childSnapshot(forPath: Property.id.rawValue).value as! String
                 let imageName = id + ".png"
@@ -103,6 +105,7 @@ class CompanyViewController: UIViewController, UISearchBarDelegate, UIScrollView
                 }
                 self.informationStateController?.addCompany(company: company)
             }
+            print("************************************")
             DispatchQueue.main.async {
                 self.companyTableView.reloadData()
             }
@@ -226,8 +229,6 @@ class CompanyViewController: UIViewController, UISearchBarDelegate, UIScrollView
         companyTableView.delegate = self
         
         //Regsiter custom cells and xib files
-        //companyTableView.register(CompanyTableViewCell.self, forCellReuseIdentifier: "CompanyTableViewCell")
-        //companyTableView.register(CompanyTableViewCell.classForCoder(), forCellReuseIdentifier: "CompanyTableViewCell")
         companyTableView.register(UINib(nibName: "CompanyTableViewCell", bundle: nil), forCellReuseIdentifier: "CompanyTableViewCell")
         self.view.addSubview(self.companyTableView)
     }
@@ -269,24 +270,6 @@ class CompanyViewController: UIViewController, UISearchBarDelegate, UIScrollView
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell
     {
         let company = (self.informationStateController?.companies[indexPath.row])!
-        //let cell = tableView.dequeueReusableCell(withIdentifier: CompanyTableViewCell.identifier, for: indexPath)
-        
-       
-        /*
-        if let imageUrl = company.imageURL {
-            URLSession.shared.dataTask(with: imageUrl, completionHandler: { (data, response, error) in
-                //Downloading hit an error so return out
-                if (error != nil) {
-                    print(error! as Error)
-                    return
-                }
-                
-                DispatchQueue.main.async {
-                    cell.imageView?.image = UIImage(data: data!)
-                }
-            }).resume()
-        }*/
-        //let customCell = cell as! CompanyTableViewCell
         let customCell = tableView.dequeueReusableCell(withIdentifier: CompanyTableViewCell.identifier) as! CompanyTableViewCell
         //Stops cell turning grey when click on it
         customCell.selectionStyle = UITableViewCellSelectionStyle.none
