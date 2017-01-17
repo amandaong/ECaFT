@@ -13,6 +13,9 @@ import FirebaseDatabase
 
 class CompanyViewController: UIViewController, UISearchBarDelegate, UIScrollViewDelegate, UITableViewDelegate, UITableViewDataSource {
     let screenSize : CGRect = UIScreen.main.bounds
+    
+    var allCompanies : [Company] = []
+    var filterCount : Int = 0
     var searchBar : UISearchBar!
     var scrollFilterView : UIScrollView!
     var filterTitle : UILabel!
@@ -106,6 +109,7 @@ class CompanyViewController: UIViewController, UISearchBarDelegate, UIScrollView
                         }
                     }
                 }
+                self.allCompanies.append(company)
                 self.informationStateController?.addCompany(company: company)
             }
             print("************************************")
@@ -178,9 +182,51 @@ class CompanyViewController: UIViewController, UISearchBarDelegate, UIScrollView
     }
     
     func filterOptionTapped(_ sender: UIButton) {
-        let checkImage = sender.tag != 0 ? #imageLiteral(resourceName: "check_transparent") : #imageLiteral(resourceName: "check")
-        sender.setImage(checkImage, for: .normal)
-        sender.tag = sender.tag == 0 ? 1 : 0
+        if (filterCount == 0) { // clears table for when first ever filter is applied
+            informationStateController?.clearCompanies()
+        }
+        
+        filterCount = sender.tag == 0 ? filterCount + 1 : filterCount - 1
+
+        if (sender.tag == 0) { // user just checked it
+            sender.setImage(#imageLiteral(resourceName: "check"), for: .normal)
+            sender.tag = 1
+            
+            for company in allCompanies {
+                let filterBy = sender.titleLabel?.text
+                if (company.majors.contains(filterBy!)) {
+                    informationStateController?.addCompany(company: company)
+                }
+            }
+        } else if (sender.tag == 1 && filterCount > 0) { // user just unchecked it
+            sender.setImage(#imageLiteral(resourceName: "check_transparent"), for: .normal)
+            sender.tag = 1
+            
+            var index = 0
+            for company in (informationStateController?.companies)! {
+                index += 1
+                let removeBy = sender.titleLabel?.text
+                if (company.majors.contains(removeBy!)) {
+                    informationStateController?.removeCompany(index: index)
+                }
+            }
+        } else { // only checked filter is just unchecked
+            sender.setImage(#imageLiteral(resourceName: "check_transparent"), for: .normal)
+            sender.tag = 1
+            informationStateController?.clearCompanies()
+            informationStateController?.setAllCompaniesList(companies: allCompanies)
+        }
+        
+        informationStateController?.sortByCompanyName()
+        DispatchQueue.main.async {
+            self.companyTableView.reloadData()
+        }
+        
+    }
+    
+    func scrollViewDidScroll(_ scrollView: UIScrollView) {
+        // disable top bounce on filterView
+        scrollView.bounces = scrollView.contentOffset.y > 0
     }
     
     func makeSearchBar() {

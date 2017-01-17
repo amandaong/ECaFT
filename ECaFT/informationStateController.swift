@@ -20,6 +20,22 @@ class informationStateController {
         companies.append(company)
     }
     
+    func removeCompany(index: Int) {
+        companies.remove(at: index)
+    }
+    
+    func setAllCompaniesList(companies: [Company]) {
+        self.companies = companies
+    }
+    
+    func clearCompanies() {
+        companies = []
+    }
+    
+    func sortByCompanyName() {
+        companies.sort { $0.name < $1.name }
+    }
+    
     func saveFavoritedCompany() {
         //call core data controller to add company w/ boolean isFavorite true
     }
@@ -33,6 +49,5 @@ class informationStateController {
         saveFavoritedCompany()
         saveNotes()
     }
-    
 }
 
