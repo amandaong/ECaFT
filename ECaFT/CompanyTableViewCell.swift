@@ -40,11 +40,6 @@ class CompanyTableViewCell: UITableViewCell {
         favoritesButton.setTitle("", for: .normal)
     }
 
-    func setUpImage(image: UIImage?) {
-        //Set company image
-        self.companyImage.image = image
-    }
-    
     override func setSelected(_ selected: Bool, animated: Bool) {
         super.setSelected(selected, animated: animated)
 

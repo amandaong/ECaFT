@@ -13,11 +13,10 @@ class CompanyDetailsViewController: UIViewController, UITableViewDelegate, UITab
     var tableView = UITableView()
     var headerView = UIView()
     var company: Company!
-    var imageUrl = URL(string: "https://s-media-cache-ak0.pinimg.com/originals/cc/77/ef/cc77efac50fd7637763ba7115bc4f17a.png")! //company image
+    
+    //Table view properties
     var name = UILabel() //company name
     var location = UILabel() //company booth location
-    
-    //favorites button
     var favoritesButton = UIButton()
     let sectionTitles : [String] = ["Company Information", "Open Positions", "Majors of Interest", "Notes"]
     var numOfSections = 4 //number of sections
@@ -53,39 +52,45 @@ class CompanyDetailsViewController: UIViewController, UITableViewDelegate, UITab
         headerView.backgroundColor = UIColor.white
         tableView.tableHeaderView = headerView
         
-        //Create image view
-        // Start background thread so that image loading does not make app unresponsive
-        DispatchQueue.global(qos: .userInitiated).async {
-            
-            let imageData:NSData = NSData(contentsOf: self.imageUrl)!
-            let imageView = UIImageView(frame: CGRect(x:0, y:0, width:125, height:125))
-            imageView.center.y = 0.5*(self.tableView.tableHeaderView?.frame.height)!
-            imageView.center.x = 0.2*self.screenSize.width
-            
-            // When from background thread, UI needs to be updated on main_queue
-            DispatchQueue.main.async {
-                let image = UIImage(data: imageData as Data)
-                imageView.image = image
-                imageView.contentMode = UIViewContentMode.scaleAspectFit
-                self.tableView.tableHeaderView?.addSubview(imageView)
-            }
-        }
+        //Add image view
+        let imageView = UIImageView(frame: CGRect(x:0, y:0, width:125, height:125))
+        imageView.center.y = 0.5*(self.tableView.tableHeaderView?.frame.height)!
+        imageView.center.x = 0.2*self.screenSize.width
+        imageView.image = company.image
+        imageView.contentMode = UIViewContentMode.scaleAspectFit
+        self.tableView.tableHeaderView?.addSubview(imageView)
         
         //Create name label
-        name = UILabel(frame: CGRect(x: 0.39*screenSize.width, y: 0, width: screenSize.width*0.6, height: 21)) //same x value as location so name & location label are aligned
-        name.center.y = 0.28*(self.tableView.tableHeaderView?.frame.height)!
+        name = UILabel(frame: CGRect(x: 0.43*screenSize.width, y: 0, width: screenSize.width*0.5, height: 21)) //same x value as location so name & location label are aligned
+        name.center.y = 0.18*(self.tableView.tableHeaderView?.frame.height)!
         name.textAlignment = NSTextAlignment.left
         name.text = company.name
         name.font = UIFont.boldSystemFont(ofSize: 20)
+        
+        //Make name into go into another line if necessary
+        name.numberOfLines = 0 //set num of lines to infinity
+        name.lineBreakMode = .byWordWrapping
+        name.sizeToFit()
         self.tableView.tableHeaderView?.addSubview(name)
         
         //Create booth location label
-        location = UILabel(frame: CGRect(x: 0.39*screenSize.width, y: 0, width: screenSize.width*0.75, height: 21))
-        location.center.y = 0.48*(self.tableView.tableHeaderView?.frame.height)!
+        location = UILabel(frame: CGRect(x: 0.43*screenSize.width, y: 0, width: screenSize.width*0.75, height: 21))
         location.textAlignment = NSTextAlignment.left
         location.font = UIFont.systemFont(ofSize: 18)
         location.textColor = UIColor.ecaftDarkGray
         location.text = company.location
+        
+        //Calculate num of lines for company name label & adjust booth location label accordingly
+        print("Height of label's frame: \(name.frame.size.height)")
+        print("Line height of label's font: \(name.font.leading)")
+        let numLines = Int(name.frame.size.height/name.font.ascender) //Divide height of multiline label by line height of UILabel's font (from text to top of label's frame)
+        print("Num of lines is: \(numLines)")
+        if (numLines < 2) {
+            location.center.y = 0.38*(self.tableView.tableHeaderView?.frame.height)!
+        } else {
+            location.center.y = 0.53*(self.tableView.tableHeaderView?.frame.height)!
+            
+        }
         self.tableView.tableHeaderView?.addSubview(location)
         
         //Create favorites button

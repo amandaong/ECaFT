@@ -31,7 +31,7 @@ class CompanyViewController: UIViewController, UISearchBarDelegate, UIScrollView
     var companyTableView = UITableView()
     
     //Information State Controller
-    var informationStateController: informationStateController?
+    weak var informationStateController: informationStateController?
     
     var databaseRef: FIRDatabaseReference?
     var storageRef: FIRStorageReference?
@@ -84,7 +84,7 @@ class CompanyViewController: UIViewController, UISearchBarDelegate, UIScrollView
                 let majors = item.childSnapshot(forPath: Property.majors.rawValue).value as! String
                 company.majors = majors.components(separatedBy: ", ")
                 
-                let positions = item.childSnapshot(forPath: Property.openings.rawValue).value as! String
+                let positions = item.childSnapshot(forPath: Property.jobtypes.rawValue).value as! String
                 company.positions = positions.components(separatedBy: ", ")
                 
                 company.website = item.childSnapshot(forPath: Property.website.rawValue).value as! String
@@ -100,7 +100,7 @@ class CompanyViewController: UIViewController, UISearchBarDelegate, UIScrollView
                         print((error as Error).localizedDescription)
                     } else if let data = data {
                         // Data for "images/companyid.png" is returned
-                            company.image = UIImage(data: data) //PROBLEM must be here- somehow not getting onto main thread
+                        company.image = UIImage(data: data)
                     }
                 }
                 self.informationStateController?.addCompany(company: company)
@@ -281,7 +281,6 @@ class CompanyViewController: UIViewController, UISearchBarDelegate, UIScrollView
         } else {
             customCell.companyImage.image = #imageLiteral(resourceName: "placeholder")
         }
-        //customCell.setUpImage(image: company.image)
         return customCell
     }
     

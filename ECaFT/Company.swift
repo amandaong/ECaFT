@@ -76,7 +76,7 @@ enum Property: String {
     case notes = "notes"
     case isFavorite = "isFavorite"
     case imageURL = "imageURL"
-    case openings = "openings"
+    case jobtypes = "jobtypes"
     case website = "website"
     case id = "id"
 }
