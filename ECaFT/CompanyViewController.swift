@@ -12,6 +12,7 @@ import FirebaseStorage
 import FirebaseDatabase
 
 class CompanyViewController: UIViewController, UISearchBarDelegate, UIScrollViewDelegate, UITableViewDelegate, UITableViewDataSource {
+    
     let screenSize : CGRect = UIScreen.main.bounds
     var searchBar : UISearchBar!
     var scrollFilterView : UIScrollView!
@@ -35,7 +36,7 @@ class CompanyViewController: UIViewController, UISearchBarDelegate, UIScrollView
     
     var databaseRef: FIRDatabaseReference?
     var storageRef: FIRStorageReference?
-    var databaseHandle:FIRDatabaseHandle?
+    var databaseHandle: FIRDatabaseHandle?
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -106,7 +107,7 @@ class CompanyViewController: UIViewController, UISearchBarDelegate, UIScrollView
                         }
                     }
                 }
-                self.informationStateController?.addCompany(company: company)
+                self.informationStateController?.addCompany(company)
             }
             print("************************************")
         })
@@ -199,23 +200,41 @@ class CompanyViewController: UIViewController, UISearchBarDelegate, UIScrollView
         searchBar.showsBookmarkButton = false
         searchBar.showsSearchResultsButton = false
         
-        self.view.addSubview(searchBar)
+        view.addSubview(searchBar)
     }
 
     //Search bar functions
     // called whenever text is changed.
     func searchBar(_ searchBar: UISearchBar, textDidChange searchText: String) {
+        print("Did change text")
+        let text = searchText.lowercased()
+        if let state = informationStateController {
+            state.clearFilter()
+            for company in state.companies {
+                if company.description.lowercased().range(of: text) != nil {
+                    state.addFilteredCompany(company)
+                }
+            }
+        }
+        companyTableView.reloadData()
     }
     
     // called when cancel button is clicked
     func searchBarCancelButtonClicked(_ searchBar: UISearchBar) {
         searchBar.text = ""
+        if let state = informationStateController {
+            state.clearFilter()
+        }
     }
     
     // called when search button is clicked
     func searchBarSearchButtonClicked(_ searchBar: UISearchBar) {
-        searchBar.text = ""
-        self.view.endEditing(true)
+        view.endEditing(true)
+    }
+    
+    // called when keyboard return is pressed
+    func searchBarTextDidEndEditing(_ searchBar: UISearchBar) {
+        view.endEditing(true)
     }
     
     //Tableview: Make table view
@@ -264,12 +283,16 @@ class CompanyViewController: UIViewController, UISearchBarDelegate, UIScrollView
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection
         section: Int) -> Int {
-        return (self.informationStateController?.companies.count)! //should be 3
+        var count: Int = 0
+        if let state = informationStateController {
+            count = searchBar.text == "" ? state.companies.count : state.filteredCompanies.count
+        }
+        return count
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell
     {
-        let company = (self.informationStateController?.companies[indexPath.row])!
+        let company: Company = searchBar.text == "" ? informationStateController!.companies[indexPath.row] : informationStateController!.filteredCompanies[indexPath.row]
         let customCell = tableView.dequeueReusableCell(withIdentifier: CompanyTableViewCell.identifier) as! CompanyTableViewCell
         //Stops cell turning grey when click on it
         customCell.selectionStyle = UITableViewCellSelectionStyle.none
@@ -287,7 +310,7 @@ class CompanyViewController: UIViewController, UISearchBarDelegate, UIScrollView
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         tableView.deselectRow(at: indexPath as IndexPath, animated: false)
         let companyDetailsVC = CompanyDetailsViewController()
-        companyDetailsVC.company = self.informationStateController?.companies[indexPath.row]
+        companyDetailsVC.company = searchBar.text == "" ? informationStateController?.companies[indexPath.row] : informationStateController?.filteredCompanies[indexPath.row]
         self.show(companyDetailsVC, sender: nil)
     }
     
