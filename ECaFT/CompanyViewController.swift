@@ -100,15 +100,15 @@ class CompanyViewController: UIViewController, UISearchBarDelegate, UIScrollView
                         print((error as Error).localizedDescription)
                     } else if let data = data {
                         // Data for "images/companyid.png" is returned
-                        company.image = UIImage(data: data)
+                        DispatchQueue.main.async {
+                            company.image = UIImage(data: data)
+                            self.companyTableView.reloadData() //reload data here b/c this is when you know table view cell will have an image
+                        }
                     }
                 }
                 self.informationStateController?.addCompany(company: company)
             }
             print("************************************")
-            DispatchQueue.main.async {
-                self.companyTableView.reloadData()
-            }
         })
     }
 
