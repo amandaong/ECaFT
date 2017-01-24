@@ -203,10 +203,9 @@ class CompanyViewController: UIViewController, UISearchBarDelegate, UIScrollView
         view.addSubview(searchBar)
     }
 
-    //Search bar functions
+    // MARK - Search bar functions
     // called whenever text is changed.
     func searchBar(_ searchBar: UISearchBar, textDidChange searchText: String) {
-        print("Did change text")
         let text = searchText.lowercased()
         if let state = informationStateController {
             state.clearFilter()
@@ -295,7 +294,7 @@ class CompanyViewController: UIViewController, UISearchBarDelegate, UIScrollView
         let company: Company = searchBar.text == "" ? informationStateController!.companies[indexPath.row] : informationStateController!.filteredCompanies[indexPath.row]
         let customCell = tableView.dequeueReusableCell(withIdentifier: CompanyTableViewCell.identifier) as! CompanyTableViewCell
         //Stops cell turning grey when click on it
-        customCell.selectionStyle = UITableViewCellSelectionStyle.none
+        customCell.selectionStyle = .none
         customCell.name = company.name
         customCell.location = company.location
         print("This is the company image: \(company.image)")
