@@ -49,7 +49,7 @@ class Company: NSObject {
         positions = aDecoder.decodeObject(forKey: Property.positions.rawValue) as! [String]
         majors = aDecoder.decodeObject(forKey: Property.majors.rawValue) as! [String]
         website = aDecoder.decodeObject(forKey: Property.website.rawValue) as! String
-        isFavorite = aDecoder.decodeObject(forKey: Property.isFavorite.rawValue) as! Bool
+        isFavorite = aDecoder.decodeBool(forKey: Property.isFavorite.rawValue)
         imageURL = aDecoder.decodeObject(forKey: Property.imageURL.rawValue) as! URL
     }
     
@@ -63,17 +63,18 @@ class Company: NSObject {
         aCoder.encode(isFavorite, forKey: Property.isFavorite.rawValue)
         aCoder.encode(imageURL, forKey: Property.imageURL.rawValue)
     }
-    
 }
 
 //Put names of propertiesin enum to avoid typos
 enum Property: String {
+    case filteredCompanies = "filteredCompanies"
     case name = "name"
     case information = "information"
     case location = "location"
     case positions = "positions"
     case majors = "majors"
     case notes = "notes"
+    case appliedFilters = "appliedFilters"
     case isFavorite = "isFavorite"
     case imageURL = "imageURL"
     case jobtypes = "jobtypes"
