@@ -14,6 +14,9 @@ import FirebaseDatabase
 class CompanyViewController: UIViewController, UISearchBarDelegate, UIScrollViewDelegate, UITableViewDelegate, UITableViewDataSource {
     let screenSize : CGRect = UIScreen.main.bounds
     var searchBar : UISearchBar!
+    var firstLoad : Bool! = true
+    var appliedFilters : [String] = []
+    var allCompanies : [Company]! = []
     var scrollFilterView : UIScrollView!
     var filterTitle : UILabel!
     var isFilterDropDown : Bool!
@@ -48,18 +51,22 @@ class CompanyViewController: UIViewController, UISearchBarDelegate, UIScrollView
         // self.clearsSelectionOnViewWillAppear = false
 
         // Uncomment the following line to display an Edit button in the navigation bar for this view controller.
-        // self.navigationItem.rightBarButtonItem = self.editButtonItem()
-
-        let filterButton = UIBarButtonItem(image: #imageLiteral(resourceName: "filter"), style: .plain, target: self, action: #selector(filterButtonTapped))
-        navigationController?.navigationBar.topItem?.rightBarButtonItem = filterButton
-        tapsOutsideFilterButton = UIButton(frame: view.frame)
-        setUpFilter()
-        isFilterDropDown = false
+        // self.navigationItem.rightBarButtonItem = self.editButtonItem(
         
         //Load data from firebase
         databaseRef = FIRDatabase.database().reference()
         storageRef = FIRStorage.storage().reference(forURL: "gs://ecaft-4a6e7.appspot.com/logos") //reference to logos folder in storage
         loadData()
+        
+        if let filters = UserDefaults.standard.object(forKey: Property.filtersApplied.rawValue) as? Data {
+            appliedFilters = NSKeyedUnarchiver.unarchiveObject(with: filters) as! [String]
+        }
+        
+        let filterButton = UIBarButtonItem(image: #imageLiteral(resourceName: "filter"), style: .plain, target: self, action: #selector(filterButtonTapped))
+        navigationController?.navigationBar.topItem?.rightBarButtonItem = filterButton
+        tapsOutsideFilterButton = UIButton(frame: view.frame)
+        setUpFilter()
+        isFilterDropDown = false
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -89,8 +96,8 @@ class CompanyViewController: UIViewController, UISearchBarDelegate, UIScrollView
                 
                 company.website = item.childSnapshot(forPath: Property.website.rawValue).value as! String
                 
-                print(company)
-                print("******************")
+                //print(company)
+                //print("******************")
                 //Get image
                 let id = item.childSnapshot(forPath: Property.id.rawValue).value as! String
                 let imageName = id + ".png"
@@ -102,13 +109,15 @@ class CompanyViewController: UIViewController, UISearchBarDelegate, UIScrollView
                         // Data for "images/companyid.png" is returned
                         DispatchQueue.main.async {
                             company.image = UIImage(data: data)
+                            self.applyFilters()
                             self.companyTableView.reloadData() //reload data here b/c this is when you know table view cell will have an image
                         }
                     }
                 }
+                self.allCompanies.append(company)
                 self.informationStateController?.addCompany(company: company)
             }
-            print("************************************")
+            //print("************************************")
         })
     }
 
@@ -124,7 +133,7 @@ class CompanyViewController: UIViewController, UISearchBarDelegate, UIScrollView
     }
     
     func setUpFilter() {
-        let filterOptions = ["Biological Engineering", "Chemical Engineering", "Civil Engineering", "Computer Science",
+        let filterOptions = ["Aerospace Engineering", "Atmospheric Science", "Biological Engineering", "Chemical Engineering", "Civil Engineering", "Computer Science",
             "Electrical and Computer Engineering", "Engineering Physics", "Environmental Engineering",
             "Information Science, Systems and Technology", "Materials Science and Engineering", "Mechanical Engineering",
             "Operations Research and Engineering", "Science of Earth System"]
@@ -142,6 +151,7 @@ class CompanyViewController: UIViewController, UISearchBarDelegate, UIScrollView
         
         //closes filter when user taps anywhere on screen
         tapsOutsideFilterButton.backgroundColor = .clear
+        tapsOutsideFilterButton.isHidden = true
         tapsOutsideFilterButton.addTarget(self, action: #selector(filterButtonTapped), for: .touchUpInside)
         view.addSubview(tapsOutsideFilterButton)
         
@@ -157,8 +167,13 @@ class CompanyViewController: UIViewController, UISearchBarDelegate, UIScrollView
             button.frame = CGRect(x: 0, y: buttonHeight * CGFloat(index), width: contentWidth, height: buttonHeight)
             button.layer.borderWidth = 0.5
             button.layer.borderColor = UIColor(red: 203/255.0, green: 208/255.0, blue: 216/255.0, alpha: 1.0).cgColor
-            button.setImage(#imageLiteral(resourceName: "check_transparent"), for: .normal)
-            button.tag = 0
+            if (appliedFilters.contains(title)) {
+                button.tag = 1
+                button.setImage(#imageLiteral(resourceName: "check"), for: .normal)
+            } else {
+                button.tag = 0
+                button.setImage(#imageLiteral(resourceName: "check_transparent"), for: .normal)
+            }
             button.imageEdgeInsets = UIEdgeInsets(top: 15, left: contentWidth - contentWidth / 7, bottom: 15, right: contentWidth / 20)
             button.setTitleColor(.ecaftRed, for: .normal)
             button.setTitle(title, for: .normal)
@@ -178,9 +193,48 @@ class CompanyViewController: UIViewController, UISearchBarDelegate, UIScrollView
     }
     
     func filterOptionTapped(_ sender: UIButton) {
-        let checkImage = sender.tag != 0 ? #imageLiteral(resourceName: "check_transparent") : #imageLiteral(resourceName: "check")
-        sender.setImage(checkImage, for: .normal)
-        sender.tag = sender.tag == 0 ? 1 : 0
+        let filterBy = (sender.titleLabel?.text)!
+        if (sender.tag == 0) { //user is checking
+            appliedFilters.append(filterBy)
+            sender.tag = 1
+            sender.setImage(#imageLiteral(resourceName: "check"), for: .normal)
+        } else {
+            if let index = appliedFilters.index(of: filterBy) {
+                appliedFilters.remove(at: index)
+            }
+            sender.tag = 0
+            sender.setImage(#imageLiteral(resourceName: "check_transparent"), for: .normal)
+        }
+        applyFilters()
+    }
+    
+    func applyFilters() {
+        informationStateController?.clearCompanies()
+        for filterBy in appliedFilters {
+            for company in allCompanies {
+                let notIn = !((informationStateController?.companies.contains(company))!)
+                /* print(company)
+                print("not in: \(notIn)")
+                print("contains filterBy: \(company.majors.contains(filterBy))")
+                print("contains empty: \(company.majors.contains(""))") */
+                if (notIn && (company.majors.contains(filterBy) || company.majors.contains(""))) {
+                    informationStateController?.addCompany(company: company)
+                }
+            }
+        }
+        
+        if (appliedFilters.count == 0) {
+            informationStateController?.setCompanies(companies: allCompanies)
+        }
+        
+        informationStateController?.sortCompaniesAlphabetically()
+        
+        DispatchQueue.main.async {
+            self.companyTableView.reloadData()
+            UserDefaults.standard.removeObject(forKey: Property.filtersApplied.rawValue)
+            let savedData = NSKeyedArchiver.archivedData(withRootObject: self.appliedFilters)
+            UserDefaults.standard.set(savedData, forKey: Property.filtersApplied.rawValue)
+        }
     }
     
     func makeSearchBar() {
@@ -275,7 +329,7 @@ class CompanyViewController: UIViewController, UISearchBarDelegate, UIScrollView
         customCell.selectionStyle = UITableViewCellSelectionStyle.none
         customCell.name = company.name
         customCell.location = company.location
-        print("This is the company image: \(company.image)")
+        //print("This is the company image: \(company.image)")
         if(company.image != nil) {
             customCell.companyImage.image = company.image
         } else {
@@ -290,50 +344,6 @@ class CompanyViewController: UIViewController, UISearchBarDelegate, UIScrollView
         companyDetailsVC.company = self.informationStateController?.companies[indexPath.row]
         self.show(companyDetailsVC, sender: nil)
     }
-    
-//    var filtersCollectionView: UICollectionView!
-//
-//    func makeFilterButtons() {
-//        //Filter title
-//        filterTitle = UILabel()
-//        filterTitle.frame = CGRect(x: 8, y: 40, width: screenSize.width, height: 30)
-//        filterTitle.backgroundColor = UIColor.clear
-//        filterTitle.font = UIFont(name: "Avenir-Book", size: filterTitle.font.pointSize) //sets label to the font size it already has
-//        filterTitle.textColor = UIColor.black
-//        filterTitle.textAlignment = NSTextAlignment.left
-//        filterTitle.text = "Filters"
-//        self.view.addSubview(filterTitle)
-//        
-//        //Make collection view of filter buttons
-//        let flowLayout = UICollectionViewFlowLayout()
-//        flowLayout.scrollDirection = .horizontal
-//        let filtersCollectionView = UICollectionView(frame: CGRect(x: 0, y: 70, width: screenSize.width, height: 60), collectionViewLayout: flowLayout) //height of collectionView=height of collectionCell
-//        filtersCollectionView.backgroundColor = UIColor.clear
-//        filtersCollectionView.showsHorizontalScrollIndicator = false //hides horizontal scroll bar
-//        filtersCollectionView.register(FilterCollectionViewCell.self, forCellWithReuseIdentifier: cellReuseIdentifier)
-//        filtersCollectionView.delegate = self
-//        filtersCollectionView.dataSource = self
-//        self.view.addSubview(filtersCollectionView)
-//        
-//    }
-//    
-//    func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-//        return 3
-//    }
-//    
-//    func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-//        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: cellReuseIdentifier, for: indexPath as IndexPath) as! FilterCollectionViewCell
-//        return cell
-//    }
-//    
-//    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
-//        let width = (screenSize.width-leftAndRightPaddings)/numberOfItemsPerRow
-//        return CGSize(width: width, height: collectionView.frame.height)
-//    }
-//    
-//    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, insetForSectionAt section: Int) -> UIEdgeInsets {
-//        return UIEdgeInsets(top: 0, left: 8, bottom: 0, right: 8)
-//    }
     
     func setAnchorPoint(_ anchorPoint: CGPoint, forView view: UIView) {
         var newPoint = CGPoint(x: view.bounds.size.width * anchorPoint.x, y: view.bounds.size.height * anchorPoint.y)
