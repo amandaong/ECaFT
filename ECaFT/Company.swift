@@ -70,6 +70,7 @@ class Company: NSObject {
 enum Property: String {
     case name = "name"
     case filtersApplied = "filtersApplied"
+    case favorites = "favorites"
     case information = "information"
     case location = "location"
     case positions = "positions"

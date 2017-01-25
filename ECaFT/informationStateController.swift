@@ -12,8 +12,10 @@ import Foundation
 class informationStateController {
     
     private(set) var companies = [Company]()
+    var favoriteCompanies: [Company] = []
+    
     //For Company Table View
-    let numOfSections = 1
+    var numOfSections = 1
     var sectionTitles = ["All Companies", "Favorites", "Other Companies"]
     
     func addCompany(company:Company) {

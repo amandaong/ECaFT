@@ -318,12 +318,25 @@ class CompanyViewController: UIViewController, UISearchBarDelegate, UIScrollView
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection
         section: Int) -> Int {
-        return (self.informationStateController?.companies.count)! //should be 3
+        if (section == 0) {
+            
+            return (informationStateController?.companies.count)!
+        } else {
+            print(informationStateController?.favoriteCompanies.count)
+            return (informationStateController?.favoriteCompanies.count)!
+        }
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell
     {
-        let company = (self.informationStateController?.companies[indexPath.row])!
+        //print("row: \(indexPath.row)  section: \(indexPath.section)")
+        var company: Company!
+        if (indexPath.section == 0) {
+            company = (self.informationStateController?.companies[indexPath.row])!
+        } else {
+            company = self.informationStateController?.favoriteCompanies[indexPath.row]
+        }
+        
         let customCell = tableView.dequeueReusableCell(withIdentifier: CompanyTableViewCell.identifier) as! CompanyTableViewCell
         //Stops cell turning grey when click on it
         customCell.selectionStyle = UITableViewCellSelectionStyle.none
@@ -335,7 +348,28 @@ class CompanyViewController: UIViewController, UISearchBarDelegate, UIScrollView
         } else {
             customCell.companyImage.image = #imageLiteral(resourceName: "placeholder")
         }
+        
+        customCell.favoritesButton.tag = indexPath.row
+        //customCell.favoritesButton.addTarget(self, action: #selector(addFavorite(sender:)), for: .touchUpInside)
+        
         return customCell
+    }
+    
+    func addFavorite(sender: UIButton) {
+        if (informationStateController?.numOfSections == 1) {
+            informationStateController?.numOfSections += 1
+        }
+        
+        let touchPoint = sender.convert(CGPoint(x: 0, y: 0), to: companyTableView)
+        let indexPath = companyTableView.indexPathForRow(at: touchPoint)
+        
+        let company = informationStateController?.companies[(indexPath?.row)!]
+        
+        companyTableView.beginUpdates()
+        informationStateController?.favoriteCompanies.append(company!)
+        companyTableView.insertSections([1], with: .automatic)
+        companyTableView.insertRows(at: [IndexPath(row: (informationStateController?.favoriteCompanies.count)! - 1, section: 1)], with: .automatic)
+        companyTableView.endUpdates()
     }
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
