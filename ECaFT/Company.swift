@@ -38,7 +38,7 @@ class Company: NSObject {
     }
 
     override var description: String {
-        return "Name: \(name) | \(information) | Locations: \(location) | Positions: \(positions) | Majors: \(majors)"
+        return "Name: \(name) | Locations: \(location) | Positions: \(positions) | Majors: \(majors)"
     }
     
     // NSCoding
