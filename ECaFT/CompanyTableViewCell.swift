@@ -46,7 +46,7 @@ class CompanyTableViewCell: UITableViewCell {
         // Configure the view for the selected state
     }
     
-    @IBAction func favoritesButtonPressed(_ sender: Any) {
+    @IBAction func favoritesButtonPressed(_ sender: UIButton) {
         if (!btnIsFilled) {
             favoritesButton.setImage(#imageLiteral(resourceName: "favoritesFilled"), for: .normal)
             btnIsFilled = !btnIsFilled
@@ -55,7 +55,6 @@ class CompanyTableViewCell: UITableViewCell {
             btnIsFilled = !btnIsFilled
         }
     }
-    
 }
 
 

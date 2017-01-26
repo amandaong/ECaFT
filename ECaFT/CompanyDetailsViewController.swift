@@ -8,7 +8,13 @@
 
 import UIKit
 
+protocol FavoritesProtocol {
+    func changeFavorites(status: Int, name: String)
+}
+
 class CompanyDetailsViewController: UIViewController, UITableViewDelegate, UITableViewDataSource {
+    var delegate:FavoritesProtocol!
+    
     let screenSize : CGRect = UIScreen.main.bounds
     var tableView = UITableView()
     var headerView = UIView()
@@ -16,6 +22,7 @@ class CompanyDetailsViewController: UIViewController, UITableViewDelegate, UITab
     
     //Table view properties
     var name = UILabel() //company name
+    var isFavorite : Bool = false
     var location = UILabel() //company booth location
     var favoritesButton = UIButton()
     let sectionTitles : [String] = ["Company Information", "Open Positions", "Majors of Interest", "Notes"]
@@ -36,15 +43,12 @@ class CompanyDetailsViewController: UIViewController, UITableViewDelegate, UITab
         //tableView.register(NotesTableViewCell.self, forCellReuseIdentifier: "NotesTableViewCell")
         tableView.register(UINib(nibName: "ListTableViewCell", bundle: Bundle.main), forCellReuseIdentifier: "ListTableViewCell")
         tableView.register(UINib(nibName: "NotesTableViewCell", bundle: Bundle.main), forCellReuseIdentifier: "NotesTableViewCell")
+        delegate.changeFavorites(status: 0, name: "")
         self.view.addSubview(self.tableView)
     }
     
     override func viewWillAppear(_ animated: Bool) {
         createHeaderView() //put method in viewWillAppear so information updated depending on what company is tapped
-    }
-    override func didReceiveMemoryWarning() {
-        super.didReceiveMemoryWarning()
-        // Dispose of any resources that can be recreated.
     }
   
     func createHeaderView() {
@@ -94,12 +98,10 @@ class CompanyDetailsViewController: UIViewController, UITableViewDelegate, UITab
         self.tableView.tableHeaderView?.addSubview(location)
         
         //Create favorites button
-        favoritesButton.setTitle("Add to favorites", for: .normal)
         favoritesButton.setTitleColor(UIColor.ecaftGold, for: .normal)
         favoritesButton.frame = CGRect(x: 0.47*screenSize.width, y: 0, width: 0.5*screenSize.width, height: 50)
         favoritesButton.center.y = 0.75*(self.tableView.tableHeaderView?.frame.height)!
         favoritesButton.addTarget(self, action: #selector(CompanyDetailsViewController.favoritesButtonPressed(button:)), for: .touchUpInside)
-        favoritesButton.setImage(#imageLiteral(resourceName: "favorites"), for: .normal)
         
         //Move text to left of button image
         favoritesButton.transform = CGAffineTransform(scaleX: -1.0, y: 1.0)
@@ -107,29 +109,35 @@ class CompanyDetailsViewController: UIViewController, UITableViewDelegate, UITab
         favoritesButton.imageView?.transform = CGAffineTransform(scaleX: -1.0, y: 1.0)
         favoritesButton.centerTextAndImage(spacing: 10)
         
+        if (isFavorite) { setUpFavorite() }
+        else { setUpNotFavorite() }
+        
         self.tableView.tableHeaderView?.addSubview(favoritesButton)
     }
     
     func favoritesButtonPressed(button: UIButton!) {
         print("favorites Btn pressed")
         //Add to favorites data list and change uibutton image to filled in star
-        /** i.e.
-         //wants to add comapny
-         if favoritesButton.imageView?.image == favorites
-         {
-           setFilledImage()
-           saveCompanies.append(company)
+         if (!isFavorite) { //wants to add company
+            setUpFavorite()
+            delegate.changeFavorites(status: 1, name: name.text!)
+            isFavorite = true
          }
-         else //wants to remove company
-         {
-            setUnfilledImage()
-         
-         if isCompanySaved(company) {
-            removeCompany(company)
+         else { //wants to remove company
+            setUpNotFavorite()
+            delegate.changeFavorites(status: 2, name: name.text!)
+            isFavorite = false
          }
-         }
-         save()
-         **/
+    }
+    
+    func setUpFavorite() {
+        setFilledImage()
+        favoritesButton.setTitle("Remove favorites", for: .normal)
+    }
+    
+    func setUpNotFavorite() {
+        setUnfilledImage()
+        favoritesButton.setTitle("Add to favorites", for: .normal)
     }
     
     func setFilledImage() {
