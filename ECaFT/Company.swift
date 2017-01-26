@@ -69,6 +69,7 @@ class Company: NSObject {
 enum Property: String {
     case filteredCompanies = "filteredCompanies"
     case name = "name"
+    case filtersApplied = "filtersApplied"
     case information = "information"
     case location = "location"
     case positions = "positions"

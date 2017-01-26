@@ -25,10 +25,6 @@ class informationStateController {
         companies.remove(at: index)
     }
     
-    func setAllCompaniesList(companies: [Company]) {
-        self.companies = companies
-    }
-    
     func clearCompanies() {
         companies = []
     }
@@ -44,6 +40,16 @@ class informationStateController {
     func clearFilter() {
         print("Clearing filter")
         filteredCompanies = []
+    }
+    
+    func setCompanies(companies: [Company]) {
+        self.companies = companies
+    }
+    
+    func sortCompaniesAlphabetically() {
+        companies.sort {
+            return $0.name < $1.name
+        }
     }
     
     func saveFavoritedCompany() {
