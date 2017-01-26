@@ -114,7 +114,6 @@ class CompanyViewController: UIViewController, UISearchBarDelegate, UIScrollView
                 }
                 self.allCompanies.append(company)
                 self.informationStateController?.addCompany(company)
-
             }
             //print("************************************")
         })
@@ -210,7 +209,6 @@ class CompanyViewController: UIViewController, UISearchBarDelegate, UIScrollView
         }
         applyFilters()
     }
-
 
     func applyFilters() {
         informationStateController?.clearCompanies()

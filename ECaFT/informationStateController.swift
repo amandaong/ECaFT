@@ -28,7 +28,7 @@ class informationStateController {
     func clearCompanies() {
         companies = []
     }
-    
+
     func sortByCompanyName() {
         companies.sort { $0.name < $1.name }
     }
@@ -41,7 +41,7 @@ class informationStateController {
         print("Clearing filter")
         filteredCompanies = []
     }
-    
+
     func setCompanies(companies: [Company]) {
         self.companies = companies
     }
