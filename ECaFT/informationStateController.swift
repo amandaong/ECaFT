@@ -40,7 +40,6 @@ class informationStateController {
     }
     
     func clearFilter() {
-        print("Clearing filter")
         filteredCompanies = []
     }
 

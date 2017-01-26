@@ -418,10 +418,12 @@ class CompanyViewController: UIViewController, UISearchBarDelegate, UIScrollView
         } else {
             customCell.companyImage.image = #imageLiteral(resourceName: "placeholder")
         }
-        
-        /*if (indexPath.section == favoriteSectionNum) {
-            customCell.favoritesButton.sendActions(for: .touchUpInside)
-        }*/
+
+        if (favorites.contains(company.name)) {
+            customCell.favoritesButton.setImage(#imageLiteral(resourceName: "favoritesFilled"), for: .normal)
+        } else {
+            customCell.favoritesButton.setImage(#imageLiteral(resourceName: "favorites"), for: .normal)
+        }
         customCell.favoritesButton.tag = indexPath.row
         customCell.favoritesButton.addTarget(self, action: #selector(toggleFavorite(sender:)), for: .touchUpInside)
         
@@ -441,10 +443,12 @@ class CompanyViewController: UIViewController, UISearchBarDelegate, UIScrollView
         if (!( favorites.contains((company?.name)!))) { //not in favorites
             favorites.append((company?.name)!)
             addFavorite(company: company!)
+            sender.setImage(#imageLiteral(resourceName: "favoritesFilled"), for: .normal)
             favorites.sort()
         } else {
             if let index = favorites.index(of: (company?.name)!) { //get index of the company in favorites
                 favorites.remove(at: index) //remove it
+                sender.setImage(#imageLiteral(resourceName: "favorites"), for: .normal)
                 removeFavorite(company: company!)
             }
         }
