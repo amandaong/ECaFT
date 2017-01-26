@@ -19,6 +19,7 @@ class CompanyViewController: UIViewController, UISearchBarDelegate, UIScrollView
     var appliedFilters : [String] = []
     var isFilterOn : Bool = false
     var searchBar : UISearchBar!
+    var firstLoad : Bool! = true
     var scrollFilterView : UIScrollView!
     var filterTitle : UILabel!
     var isFilterDropDown : Bool!
@@ -54,10 +55,11 @@ class CompanyViewController: UIViewController, UISearchBarDelegate, UIScrollView
         storageRef = FIRStorage.storage().reference(forURL: "gs://ecaft-4a6e7.appspot.com/logos") //reference to logos folder in storage
         
         loadData()
-        applyFilter()
-        //reset()
         
-        //set up filter drop-down
+        if let filters = UserDefaults.standard.object(forKey: Property.filtersApplied.rawValue) as? Data {
+            appliedFilters = NSKeyedUnarchiver.unarchiveObject(with: filters) as! [String]
+        }
+        
         let filterButton = UIBarButtonItem(image: #imageLiteral(resourceName: "filter"), style: .plain, target: self, action: #selector(filterButtonTapped))
         navigationController?.navigationBar.topItem?.rightBarButtonItem = filterButton
         tapsOutsideFilterButton = UIButton(frame: view.frame)
@@ -92,8 +94,8 @@ class CompanyViewController: UIViewController, UISearchBarDelegate, UIScrollView
                 
                 company.website = item.childSnapshot(forPath: Property.website.rawValue).value as! String
                 
-                print(company)
-                print("******************")
+                //print(company)
+                //print("******************")
                 //Get image
                 let id = item.childSnapshot(forPath: Property.id.rawValue).value as! String
                 let imageName = id + ".png"
@@ -105,29 +107,17 @@ class CompanyViewController: UIViewController, UISearchBarDelegate, UIScrollView
                         // Data for "images/companyid.png" is returned
                         DispatchQueue.main.async {
                             company.image = UIImage(data: data)
+                            self.applyFilters()
                             self.companyTableView.reloadData() //reload data here b/c this is when you know table view cell will have an image
                         }
                     }
                 }
                 self.allCompanies.append(company)
                 self.informationStateController?.addCompany(company)
+
             }
-            print("************************************")
+            //print("************************************")
         })
-    }
-    
-    func applyFilter() {
-        if let filters = UserDefaults.standard.object(forKey: Property.appliedFilters.rawValue) as? Data{
-            appliedFilters = NSKeyedUnarchiver.unarchiveObject(with: filters) as! [String]
-            print("filters: ", terminator: "")
-            var index = 0
-            for filter in appliedFilters {
-                print(" \(filter), ", terminator: "")
-                appliedFilters.remove(at: index)
-                filteringLogic(isChecking: true, filterBy: filter)
-                index += 1
-            }
-        }
     }
 
     func filterButtonTapped() {
@@ -157,6 +147,7 @@ class CompanyViewController: UIViewController, UISearchBarDelegate, UIScrollView
         
         //closes filter when user taps anywhere on screen
         tapsOutsideFilterButton.backgroundColor = .clear
+        tapsOutsideFilterButton.isHidden = true
         tapsOutsideFilterButton.addTarget(self, action: #selector(filterButtonTapped), for: .touchUpInside)
         view.addSubview(tapsOutsideFilterButton)
         
@@ -172,11 +163,15 @@ class CompanyViewController: UIViewController, UISearchBarDelegate, UIScrollView
             button.frame = CGRect(x: 0, y: buttonHeight * CGFloat(index), width: contentWidth, height: buttonHeight)
             button.layer.borderWidth = 0.5
             button.layer.borderColor = UIColor(red: 203/255.0, green: 208/255.0, blue: 216/255.0, alpha: 1.0).cgColor
-            if (appliedFilters.contains(title)) { print("here")
-                button.setImage(#imageLiteral(resourceName: "check"), for: .normal) }
-            else { button.setImage(#imageLiteral(resourceName: "check_transparent"), for: .normal) }
-            button.tag = 0
-            button.imageEdgeInsets = UIEdgeInsets(top: 15, left: contentWidth - contentWidth / 7, bottom: 15, right: contentWidth / 15)
+            
+            if (appliedFilters.contains(title)) {
+                button.tag = 1
+                button.setImage(#imageLiteral(resourceName: "check"), for: .normal)
+            } else {
+                button.tag = 0
+                button.setImage(#imageLiteral(resourceName: "check_transparent"), for: .normal)
+            }
+            button.imageEdgeInsets = UIEdgeInsets(top: 15, left: contentWidth - contentWidth / 7, bottom: 15, right: contentWidth / 20)
             button.setTitleColor(.ecaftRed, for: .normal)
             button.setTitle(title, for: .normal)
             button.titleLabel?.font = UIFont(name: "Helvetica", size: UIScreen.main.bounds.height > 568 ? 14.0 : 12.0)
@@ -194,82 +189,52 @@ class CompanyViewController: UIViewController, UISearchBarDelegate, UIScrollView
         view.addSubview(scrollFilterView)
     }
     
-    func filterOptionTapped(_ sender: UIButton) {
-        let filterBy = sender.titleLabel?.text
-        let isChecking = sender.tag == 0 ? true : false
-        filteringLogic(isChecking: isChecking, filterBy: filterBy!)
-        if (isChecking) {
-            sender.tag = 1
-            sender.setImage(#imageLiteral(resourceName: "check"), for: .normal)
-        } else {
-            sender.tag = 0
-            sender.setImage(#imageLiteral(resourceName: "check_transparent"), for: .normal)
-        }
-        filterButtonTapped()
-    }
-    
-    func filteringLogic(isChecking: Bool, filterBy: String) {
-        if (appliedFilters.count == 0) { // clears table for when first ever filter is applied
-            informationStateController?.clearCompanies()
-        }
-        
-        if (isChecking) { // user just checked it
-            appliedFilters.append(filterBy)
-            var index = 0
-            
-            for company in allCompanies {
-                if (company.majors.contains(filterBy) && !(informationStateController?.companies.contains(company))!) {
-                    informationStateController?.addCompany(company)
-                } else if (appliedFilters.count == 1 && company.majors.contains("")) {
-                    informationStateController?.addCompany(company)
-                }
-                index += 1
-            }
-        } else if (!isChecking && appliedFilters.count > 0) { // user just unchecked it
-            if let i = appliedFilters.index(of: filterBy) {
-                appliedFilters.remove(at: i)
-            }
-            
-            var index = 0
-            for company in (informationStateController?.companies)! {
-                if (company.majors.contains(filterBy)) {
-                    informationStateController?.removeCompany(index: index)
-                }
-                index += 1
-            }
-        } else { // only checked filter is just unchecked
-            appliedFilters.removeAll()
-            informationStateController?.clearCompanies()
-            informationStateController?.setAllCompaniesList(companies: allCompanies)
-        }
-        
-        informationStateController?.sortByCompanyName()
-        DispatchQueue.main.async {
-            self.companyTableView.reloadData()
-            self.save()
-        }
-    }
-    
-    func scrollViewDidScroll(_ scrollView: UIScrollView) {
-        // disable top bounce on filterView
-        scrollView.bounces = scrollView.contentOffset.y > 0
-    }
-    
     func save() {
-        print("saving filters: ", terminator: "")
-        for filter in appliedFilters {
-            print(filter, terminator: "")
-        }
-        print()
         UserDefaults.standard.removeObject(forKey: Property.appliedFilters.rawValue)
         let savedData = NSKeyedArchiver.archivedData(withRootObject: appliedFilters)
         UserDefaults.standard.set(savedData, forKey: Property.appliedFilters.rawValue)
     }
-    
-    func reset() {
-        UserDefaults.standard.removeObject(forKey: Property.appliedFilters.rawValue)
-        let savedData = NSKeyedArchiver.archivedData(withRootObject: [])
-        UserDefaults.standard.set(savedData, forKey: Property.appliedFilters.rawValue)
+
+    func filterOptionTapped(_ sender: UIButton) {
+        let filterBy = (sender.titleLabel?.text)!
+        if (sender.tag == 0) { //user is checking
+            appliedFilters.append(filterBy)
+            sender.tag = 1
+            sender.setImage(#imageLiteral(resourceName: "check"), for: .normal)
+        } else {
+            if let index = appliedFilters.index(of: filterBy) {
+                appliedFilters.remove(at: index)
+            }
+            sender.tag = 0
+            sender.setImage(#imageLiteral(resourceName: "check_transparent"), for: .normal)
+        }
+        applyFilters()
+    }
+
+
+    func applyFilters() {
+        informationStateController?.clearCompanies()
+        for filterBy in appliedFilters {
+            for company in allCompanies {
+                let notIn = !((informationStateController?.companies.contains(company))!)
+                if (notIn && (company.majors.contains(filterBy) || company.majors.contains(""))) {
+                    informationStateController?.addCompany(company)
+                }
+            }
+        }
+        
+        if (appliedFilters.count == 0) {
+            informationStateController?.setCompanies(companies: allCompanies)
+        }
+        
+        informationStateController?.sortCompaniesAlphabetically()
+        
+        DispatchQueue.main.async {
+            self.companyTableView.reloadData()
+            UserDefaults.standard.removeObject(forKey: Property.filtersApplied.rawValue)
+            let savedData = NSKeyedArchiver.archivedData(withRootObject: self.appliedFilters)
+            UserDefaults.standard.set(savedData, forKey: Property.filtersApplied.rawValue)
+        }
     }
     
     func makeSearchBar() {
@@ -289,6 +254,11 @@ class CompanyViewController: UIViewController, UISearchBarDelegate, UIScrollView
         searchBar.showsSearchResultsButton = false
         
         view.addSubview(searchBar)
+    }
+    
+    func scrollViewDidScroll(_ scrollView: UIScrollView) {
+        // disable top bounce on filterView
+        scrollView.bounces = scrollView.contentOffset.y > 0
     }
 
     // MARK - Search bar functions
@@ -385,7 +355,7 @@ class CompanyViewController: UIViewController, UISearchBarDelegate, UIScrollView
         customCell.selectionStyle = .none
         customCell.name = company.name
         customCell.location = company.location
-        print("This is the company image: \(company.image)")
+        //print("This is the company image: \(company.image)")
         if(company.image != nil) {
             customCell.companyImage.image = company.image
         } else {
