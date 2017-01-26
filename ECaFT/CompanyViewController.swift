@@ -11,7 +11,9 @@ import Firebase
 import FirebaseStorage
 import FirebaseDatabase
 
-class CompanyViewController: UIViewController, UISearchBarDelegate, UIScrollViewDelegate, UITableViewDelegate, UITableViewDataSource {
+class CompanyViewController: UIViewController, UISearchBarDelegate, UIScrollViewDelegate, UITableViewDelegate, UITableViewDataSource, FavoritesProtocol {
+    let allCompaniesSectionNum = 0
+    let favoriteSectionNum = 1
     
     let screenSize : CGRect = UIScreen.main.bounds
     var allCompanies : [Company] = []
@@ -27,6 +29,11 @@ class CompanyViewController: UIViewController, UISearchBarDelegate, UIScrollView
     var scrollView : UIScrollView!
     var arrowIV : UIImageView!
     var checkIV : UIImageView!
+    
+    //favorites
+    var favorites : [String] = []
+    var favoriteUpdateStatus : (Int, String) = (0, "")
+    var hideFavorites : Bool = false
     
     //Filter collection view variables
     let leftAndRightPaddings: CGFloat = 80.0
@@ -46,6 +53,10 @@ class CompanyViewController: UIViewController, UISearchBarDelegate, UIScrollView
     override func viewDidLoad() {
         super.viewDidLoad()
         view.backgroundColor = UIColor.ecaftGray
+        
+        if let favs = UserDefaults.standard.object(forKey: Property.favorites.rawValue) as? Data {
+            favorites = NSKeyedUnarchiver.unarchiveObject(with: favs) as! [String]
+        }
         
         makeSearchBar()
         makeTableView()
@@ -75,6 +86,24 @@ class CompanyViewController: UIViewController, UISearchBarDelegate, UIScrollView
             self.scrollFilterView.transform = CGAffineTransform(scaleX: 0.001, y: 0.001)
             self.arrowIV.transform = CGAffineTransform(scaleX: 0.001, y: 0.001)
         })
+        
+        let status = favoriteUpdateStatus.0
+        let name = favoriteUpdateStatus.1
+        if (status == 1) {
+            favorites.append(name)
+            favorites.sort()
+            applyFavorites()
+        } else if (status == 2) {
+            if let index = favorites.index(of: name) {
+                print("favorites: ", terminator: "")
+                for company in (informationStateController?.favoriteCompanies)! {
+                    print("\(company.name), ", terminator: "")
+                }
+                print("index: \(index)\n")
+                favorites.remove(at: index)
+                removeFavorite(company: (informationStateController?.favoriteCompanies[index])!)
+            }
+        }
     }
     
     func loadData() {
@@ -109,6 +138,7 @@ class CompanyViewController: UIViewController, UISearchBarDelegate, UIScrollView
                             company.image = UIImage(data: data)
                             self.applyFilters()
                             self.companyTableView.reloadData() //reload data here b/c this is when you know table view cell will have an image
+                            self.applyFavorites()
                         }
                     }
                 }
@@ -162,7 +192,7 @@ class CompanyViewController: UIViewController, UISearchBarDelegate, UIScrollView
             button.frame = CGRect(x: 0, y: buttonHeight * CGFloat(index), width: contentWidth, height: buttonHeight)
             button.layer.borderWidth = 0.5
             button.layer.borderColor = UIColor(red: 203/255.0, green: 208/255.0, blue: 216/255.0, alpha: 1.0).cgColor
-            
+
             if (appliedFilters.contains(title)) {
                 button.tag = 1
                 button.setImage(#imageLiteral(resourceName: "check"), for: .normal)
@@ -271,12 +301,14 @@ class CompanyViewController: UIViewController, UISearchBarDelegate, UIScrollView
                 }
             }
         }
+        hideFavorites = text == "" ? false : true
         companyTableView.reloadData()
     }
     
     // called when cancel button is clicked
     func searchBarCancelButtonClicked(_ searchBar: UISearchBar) {
         searchBar.text = ""
+        hideFavorites = false
         if let state = informationStateController {
             state.clearFilter()
         }
@@ -336,18 +368,45 @@ class CompanyViewController: UIViewController, UISearchBarDelegate, UIScrollView
         return 70
     }
     
+    func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
+        if (section == favoriteSectionNum && hideFavorites) {
+            return 0
+        }
+        return UITableViewAutomaticDimension
+    }
+    
     func tableView(_ tableView: UITableView, numberOfRowsInSection
         section: Int) -> Int {
-        var count: Int = 0
+
         if let state = informationStateController {
-            count = searchBar.text == "" ? state.companies.count : state.filteredCompanies.count
+            if (searchBar.text != "") {
+                if (section == favoriteSectionNum && hideFavorites) {
+                    return 0
+                }
+                return state.filteredCompanies.count
+            } else if (section == allCompaniesSectionNum) {
+                return (informationStateController?.companies.count)!
+            } else {
+                return (informationStateController?.favoriteCompanies.count)!
+            }
         }
-        return count
+        return 1
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell
     {
-        let company: Company = searchBar.text == "" ? informationStateController!.companies[indexPath.row] : informationStateController!.filteredCompanies[indexPath.row]
+
+        //print("row: \(indexPath.row)  section: \(indexPath.section)")
+        var company: Company!
+        if (searchBar.text != "") {
+            company = informationStateController!.filteredCompanies[indexPath.row]
+            hideFavorites = true
+        } else if (indexPath.section == allCompaniesSectionNum) {
+            company = (informationStateController?.companies[indexPath.row])!
+        } else {
+            company = informationStateController?.favoriteCompanies[indexPath.row]
+        }
+        
         let customCell = tableView.dequeueReusableCell(withIdentifier: CompanyTableViewCell.identifier) as! CompanyTableViewCell
         //Stops cell turning grey when click on it
         customCell.selectionStyle = .none
@@ -359,16 +418,109 @@ class CompanyViewController: UIViewController, UISearchBarDelegate, UIScrollView
         } else {
             customCell.companyImage.image = #imageLiteral(resourceName: "placeholder")
         }
+        
+        /*if (indexPath.section == favoriteSectionNum) {
+            customCell.favoritesButton.sendActions(for: .touchUpInside)
+        }*/
+        customCell.favoritesButton.tag = indexPath.row
+        customCell.favoritesButton.addTarget(self, action: #selector(toggleFavorite(sender:)), for: .touchUpInside)
+        
         return customCell
     }
     
+    func toggleFavorite(sender: UIButton) {
+        let touchPoint = sender.convert(CGPoint(x: 0, y: 0), to: companyTableView)
+        let indexPath = companyTableView.indexPathForRow(at: touchPoint)
+        var company: Company!
+        if (indexPath?.section == allCompaniesSectionNum) {
+            company = informationStateController?.companies[(indexPath?.row)!]
+        } else {
+            company = informationStateController?.favoriteCompanies[(indexPath?.row)!]
+        }
+        
+        if (!( favorites.contains((company?.name)!))) { //not in favorites
+            favorites.append((company?.name)!)
+            addFavorite(company: company!)
+            favorites.sort()
+        } else {
+            if let index = favorites.index(of: (company?.name)!) { //get index of the company in favorites
+                favorites.remove(at: index) //remove it
+                removeFavorite(company: company!)
+            }
+        }
+        
+        DispatchQueue.main.async {
+            UserDefaults.standard.removeObject(forKey: Property.favorites.rawValue)
+            let savedData = NSKeyedArchiver.archivedData(withRootObject: self.favorites)
+            UserDefaults.standard.set(savedData, forKey: Property.favorites.rawValue)
+        }
+    }
+    
+    func addFavorite(company: Company) {
+        if ( !(informationStateController?.favoriteCompanies.contains(company))!) { //if company is not in favoritesCompany
+            informationStateController?.favoriteCompanies.append(company)
+            informationStateController?.sortFavoritesAlphabetically()
+            let index = informationStateController?.favoriteCompanies.index(of: company)
+            
+            companyTableView.beginUpdates()
+            if (informationStateController?.numOfSections == 1) {
+                informationStateController?.numOfSections += 1
+                companyTableView.insertSections([favoriteSectionNum], with: .automatic)
+            }
+            companyTableView.insertRows(at: [IndexPath(row: index!, section: favoriteSectionNum)], with: .automatic)
+            companyTableView.endUpdates()
+        }
+    }
+    
+    func removeFavorite(company: Company) {
+        if (informationStateController?.favoriteCompanies.count == 1) {
+            informationStateController?.numOfSections -= 1
+            companyTableView.deleteSections([favoriteSectionNum], with: .automatic)
+        }
+        
+        if let index = informationStateController?.favoriteCompanies.index(of: company) {
+            informationStateController?.favoriteCompanies.remove(at: index)
+            
+            if (informationStateController?.numOfSections != 1) {
+                companyTableView.deleteRows(at: [IndexPath(row: index, section: favoriteSectionNum)], with: .automatic)
+            }
+        }
+    }
+    
+    func applyFavorites() {
+        for company in allCompanies {
+            if (favorites.contains(company.name)) {
+                addFavorite(company: company)
+            }
+        }
+    }
+
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         tableView.deselectRow(at: indexPath as IndexPath, animated: false)
         let companyDetailsVC = CompanyDetailsViewController()
-        companyDetailsVC.company = searchBar.text == "" ? informationStateController?.companies[indexPath.row] : informationStateController?.filteredCompanies[indexPath.row]
+
+        if (searchBar.text != "") {
+            companyDetailsVC.company = informationStateController?.filteredCompanies[indexPath.row]
+        } else if (indexPath.section == allCompaniesSectionNum) {
+            companyDetailsVC.company = informationStateController?.companies[indexPath.row]
+        } else {
+            companyDetailsVC.company = informationStateController?.favoriteCompanies[indexPath.row]
+        }
+        
+        if (informationStateController?.favoriteCompanies.contains(companyDetailsVC.company))! {
+            companyDetailsVC.isFavorite = true
+        } else {
+            companyDetailsVC.isFavorite = false
+        }
+        
+        companyDetailsVC.delegate = self
         self.show(companyDetailsVC, sender: nil)
     }
     
+    func changeFavorites(status: Int, name: String) {
+        favoriteUpdateStatus = (status, name)
+    }
+
     func setAnchorPoint(_ anchorPoint: CGPoint, forView view: UIView) {
         var newPoint = CGPoint(x: view.bounds.size.width * anchorPoint.x, y: view.bounds.size.height * anchorPoint.y)
         var oldPoint = CGPoint(x: view.bounds.size.width * view.layer.anchorPoint.x, y: view.bounds.size.height * view.layer.anchorPoint.y)
