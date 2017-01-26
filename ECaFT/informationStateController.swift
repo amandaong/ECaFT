@@ -12,11 +12,12 @@ import Foundation
 class informationStateController {
     
     private(set) var companies = [Company]()
+    private(set) var filteredCompanies = [Company]()
     //For Company Table View
     let numOfSections = 1
     var sectionTitles = ["All Companies", "Favorites", "Other Companies"]
     
-    func addCompany(company:Company) {
+    func addCompany(_ company: Company) {
         companies.append(company)
     }
     
@@ -34,6 +35,15 @@ class informationStateController {
     
     func sortByCompanyName() {
         companies.sort { $0.name < $1.name }
+    }
+  
+    func addFilteredCompany(_ company: Company) {
+        filteredCompanies.append(company)
+    }
+    
+    func clearFilter() {
+        print("Clearing filter")
+        filteredCompanies = []
     }
     
     func saveFavoritedCompany() {
