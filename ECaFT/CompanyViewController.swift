@@ -110,7 +110,7 @@ class CompanyViewController: UIViewController, UISearchBarDelegate, UIScrollView
                     }
                 }
                 self.allCompanies.append(company)
-                self.informationStateController?.addCompany(company: company)
+                self.informationStateController?.addCompany(company)
             }
             print("************************************")
         })
@@ -219,9 +219,9 @@ class CompanyViewController: UIViewController, UISearchBarDelegate, UIScrollView
             
             for company in allCompanies {
                 if (company.majors.contains(filterBy) && !(informationStateController?.companies.contains(company))!) {
-                    informationStateController?.addCompany(company: company)
+                    informationStateController?.addCompany(company)
                 } else if (appliedFilters.count == 1 && company.majors.contains("")) {
-                    informationStateController?.addCompany(company: company)
+                    informationStateController?.addCompany(company)
                 }
                 index += 1
             }
