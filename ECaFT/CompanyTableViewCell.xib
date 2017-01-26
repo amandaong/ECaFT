@@ -60,9 +60,6 @@
                             <constraint firstAttribute="height" constant="29" identifier="id4" id="wgb-MC-dml"/>
                         </constraints>
                         <state key="normal" image="favorites"/>
-                        <connections>
-                            <action selector="favoritesButtonPressed:" destination="KGk-i7-Jjw" eventType="touchUpInside" id="vU5-8U-sXr"/>
-                        </connections>
                     </button>
                 </subviews>
                 <constraints>
