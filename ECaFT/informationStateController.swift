@@ -40,6 +40,12 @@ class informationStateController {
         }
     }
     
+    func sortFavoritesAlphabetically() {
+        favoriteCompanies.sort {
+            return $0.name < $1.name
+        }
+    }
+    
     func saveFavoritedCompany() {
         //call core data controller to add company w/ boolean isFavorite true
     }
