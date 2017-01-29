@@ -82,7 +82,7 @@ class CompanyDetailsViewController: UIViewController, UITableViewDelegate, UITab
         location.textAlignment = NSTextAlignment.left
         location.font = UIFont.systemFont(ofSize: 18)
         location.textColor = UIColor.ecaftDarkGray
-        location.text = company.location
+        location.text = "Booth " + company.location
         
         //Calculate num of lines for company name label & adjust booth location label accordingly
         print("Height of label's frame: \(name.frame.size.height)")
@@ -230,6 +230,7 @@ class CompanyDetailsViewController: UIViewController, UITableViewDelegate, UITab
         if identifier == customCellIdentifier[0] {
             let customCell = cell as! CompanyInfoTableViewCell
             customCell.information = company.information
+            customCell.websiteLink = company.website
             return customCell
         } else if identifier == customCellIdentifier[1] {
             let customCell = cell as! ListTableViewCell

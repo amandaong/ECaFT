@@ -12,14 +12,13 @@ class CompanyInfoTableViewCell: UITableViewCell {
     let screenSize : CGRect = UIScreen.main.bounds
     var informationTextView: UITextView!
     var websiteButton = UIButton()
-    var notesButton = UIButton()
-    var website: URL!
     
     var information: String? {
         didSet {
             informationTextView.text = information //Sets text of name label to cell's name property
         }
     }
+    var websiteLink: String?
     
     override init(style: UITableViewCellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
@@ -56,30 +55,12 @@ class CompanyInfoTableViewCell: UITableViewCell {
         websiteButton.setImage(#imageLiteral(resourceName: "website").withRenderingMode(UIImageRenderingMode.alwaysTemplate), for: .normal)
         websiteButton.centerTextAndImage(spacing: 10)
         contentView.addSubview(websiteButton)
-        
-        //Create notes button
-        notesButton.setTitle("Add notes", for: .normal)
-        notesButton.titleLabel?.textAlignment = .left
-        notesButton.setTitleColor(UIColor.ecaftRed, for: .normal)
-        notesButton.frame = CGRect(x: 0.6*screenSize.width, y: 0, width: 0.35*screenSize.width, height: 30)
-        notesButton.center.y = 175
-        notesButton.addTarget(self, action: #selector(CompanyInfoTableViewCell.notesButtonPressed(button:)), for: .touchUpInside)
-        
-        //Tint image red
-        notesButton.tintColor = UIColor.ecaftRed
-        notesButton.setImage(#imageLiteral(resourceName: "notes").withRenderingMode(UIImageRenderingMode.alwaysTemplate), for: .normal)
-        
-        //Move image to right of text
-        notesButton.transform = CGAffineTransform(scaleX: -1.0, y: 1.0)
-        notesButton.titleLabel?.transform = CGAffineTransform(scaleX: -1.0, y: 1.0)
-        notesButton.imageView?.transform = CGAffineTransform(scaleX: -1.0, y: 1.0)
-        notesButton.centerTextAndImage(spacing: 10)
-        contentView.addSubview(notesButton)
     }
     
     func websiteButtonPressed(button: UIButton!) {
-        print("website btn pressed")
-        //open company's website
+        if let url = NSURL(string: websiteLink!){
+            UIApplication.shared.open(url as URL, options: [:], completionHandler: nil)
+        }
     }
     
     func notesButtonPressed(button: UIButton!) {

@@ -26,7 +26,7 @@ class CompanyTableViewCell: UITableViewCell {
     
     var location: String? {
         didSet {
-            locationLabel.text = location
+            locationLabel.text = "Booth " + location!
         }
     }
     
