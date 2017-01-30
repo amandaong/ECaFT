@@ -14,8 +14,6 @@ class CompanyTableViewCell: UITableViewCell {
     @IBOutlet weak var nameLabel: UILabel!
     @IBOutlet weak var locationLabel: UILabel!
     @IBOutlet weak var favoritesButton: UIButton!
-    var btnIsFilled = false
-    
     static let identifier = "CompanyTableViewCell"
 
     var name: String? {

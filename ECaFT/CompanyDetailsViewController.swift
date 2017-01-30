@@ -116,7 +116,6 @@ class CompanyDetailsViewController: UIViewController, UITableViewDelegate, UITab
     }
     
     func favoritesButtonPressed(button: UIButton!) {
-        print("favorites Btn pressed")
         //Add to favorites data list and change uibutton image to filled in star
          if (!isFavorite) { //wants to add company
             setUpFavorite()
@@ -133,23 +132,16 @@ class CompanyDetailsViewController: UIViewController, UITableViewDelegate, UITab
     }
     
     func setUpFavorite() {
-        setFilledImage()
+        favoritesButton.setImage(#imageLiteral(resourceName: "favoritesFilled"), for: .normal)
         favoritesButton.setTitle("Remove favorites", for: .normal)
     }
     
     func setUpNotFavorite() {
-        setUnfilledImage()
+        favoritesButton.setImage(#imageLiteral(resourceName: "favorites"), for: .normal)
         favoritesButton.setTitle("Add to favorites", for: .normal)
     }
     
-    func setFilledImage() {
-        favoritesButton.setImage(#imageLiteral(resourceName: "favoritesFilled"), for: .normal)
-    }
-    
-    func setUnfilledImage() {
-        favoritesButton.setImage(#imageLiteral(resourceName: "favorites"), for: .normal)
-    }
-    
+        
     /*****------------------------------TABLE VIEW METHODS------------------------------*****/
     //Section: Set number of sections and section headers
     func numberOfSections(in tableView: UITableView) -> Int {
