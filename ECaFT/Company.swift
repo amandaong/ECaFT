@@ -65,7 +65,7 @@ class Company: NSObject {
     }
 }
 
-//Put names of propertiesin enum to avoid typos
+//Put names of properties in enum to avoid typos
 enum Property: String {
     case filteredCompanies = "filteredCompanies"
     case name = "name"

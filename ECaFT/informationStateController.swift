@@ -58,19 +58,6 @@ class informationStateController {
             return $0.name < $1.name
         }
     }
-    
-    func saveFavoritedCompany() {
-        //call core data controller to add company w/ boolean isFavorite true
-    }
-    
-    func saveNotes() {
-        //call core data controller to add company w/ note set to note
-    }
-    
-    //Saves data about favorited company and notes to app
-    func save() {
-        saveFavoritedCompany()
-        saveNotes()
-    }
+
 }
 

@@ -44,7 +44,7 @@ class CompanyViewController: UIViewController, UISearchBarDelegate, UIScrollView
     var companyTableView = UITableView()
     
     //Information State Controller
-    weak var informationStateController: informationStateController?
+    var informationStateController: informationStateController?
     
     var databaseRef: FIRDatabaseReference?
     var storageRef: FIRStorageReference?
@@ -89,11 +89,11 @@ class CompanyViewController: UIViewController, UISearchBarDelegate, UIScrollView
         
         let status = favoriteUpdateStatus.0
         let name = favoriteUpdateStatus.1
-        if (status == 1) {
+        if (status == 1) { //Favorited company on table view cell
             favorites.append(name)
             favorites.sort()
             applyFavorites()
-        } else if (status == 2) {
+        } else if (status == 2) { //Unfavorited company on table view cell
             if let index = favorites.index(of: name) {
                 print("favorites: ", terminator: "")
                 for company in (informationStateController?.favoriteCompanies)! {
@@ -122,9 +122,7 @@ class CompanyViewController: UIViewController, UISearchBarDelegate, UIScrollView
                 company.positions = positions.components(separatedBy: ", ")
                 
                 company.website = item.childSnapshot(forPath: Property.website.rawValue).value as! String
-                
-                //print(company)
-                //print("******************")
+
                 //Get image
                 let id = item.childSnapshot(forPath: Property.id.rawValue).value as! String
                 let imageName = id + ".png"
@@ -145,7 +143,6 @@ class CompanyViewController: UIViewController, UISearchBarDelegate, UIScrollView
                 self.allCompanies.append(company)
                 self.informationStateController?.addCompany(company)
             }
-            //print("************************************")
         })
     }
 
@@ -384,9 +381,9 @@ class CompanyViewController: UIViewController, UISearchBarDelegate, UIScrollView
                     return 0
                 }
                 return state.filteredCompanies.count
-            } else if (section == allCompaniesSectionNum) {
+            } else if (section == allCompaniesSectionNum) { //in all companies section
                 return (informationStateController?.companies.count)!
-            } else {
+            } else { //in favorites section
                 return (informationStateController?.favoriteCompanies.count)!
             }
         }
@@ -396,7 +393,6 @@ class CompanyViewController: UIViewController, UISearchBarDelegate, UIScrollView
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell
     {
 
-        //print("row: \(indexPath.row)  section: \(indexPath.section)")
         var company: Company!
         if (searchBar.text != "") {
             company = informationStateController!.filteredCompanies[indexPath.row]
@@ -408,11 +404,12 @@ class CompanyViewController: UIViewController, UISearchBarDelegate, UIScrollView
         }
         
         let customCell = tableView.dequeueReusableCell(withIdentifier: CompanyTableViewCell.identifier) as! CompanyTableViewCell
+        
         //Stops cell turning grey when click on it
         customCell.selectionStyle = .none
         customCell.name = company.name
         customCell.location = company.location
-        //print("This is the company image: \(company.image)")
+
         if(company.image != nil) {
             customCell.companyImage.image = company.image
         } else {
@@ -420,8 +417,10 @@ class CompanyViewController: UIViewController, UISearchBarDelegate, UIScrollView
         }
 
         if (favorites.contains(company.name)) {
+            company.isFavorite = true
             customCell.favoritesButton.setImage(#imageLiteral(resourceName: "favoritesFilled"), for: .normal)
         } else {
+            company.isFavorite = false
             customCell.favoritesButton.setImage(#imageLiteral(resourceName: "favorites"), for: .normal)
         }
         customCell.favoritesButton.tag = indexPath.row
@@ -441,12 +440,14 @@ class CompanyViewController: UIViewController, UISearchBarDelegate, UIScrollView
         }
         
         if (!( favorites.contains((company?.name)!))) { //not in favorites
+            company.isFavorite = true
             favorites.append((company?.name)!)
             addFavorite(company: company!)
             sender.setImage(#imageLiteral(resourceName: "favoritesFilled"), for: .normal)
             favorites.sort()
         } else {
             if let index = favorites.index(of: (company?.name)!) { //get index of the company in favorites
+                company.isFavorite = false
                 favorites.remove(at: index) //remove it
                 sender.setImage(#imageLiteral(resourceName: "favorites"), for: .normal)
                 removeFavorite(company: company!)
@@ -460,6 +461,7 @@ class CompanyViewController: UIViewController, UISearchBarDelegate, UIScrollView
         }
     }
     
+    //Add favorites to information state controller and to company table view fav section
     func addFavorite(company: Company) {
         if ( !(informationStateController?.favoriteCompanies.contains(company))!) { //if company is not in favoritesCompany
             informationStateController?.favoriteCompanies.append(company)
@@ -494,6 +496,7 @@ class CompanyViewController: UIViewController, UISearchBarDelegate, UIScrollView
     func applyFavorites() {
         for company in allCompanies {
             if (favorites.contains(company.name)) {
+                company.isFavorite = true
                 addFavorite(company: company)
             }
         }

@@ -27,6 +27,8 @@
 		3775F3291E231EF40072A9DC /* CompanyTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 3775F3271E231EF40072A9DC /* CompanyTableViewCell.xib */; };
 		378A44071E241B3200A1373A /* ButtonSpacing.swift in Sources */ = {isa = PBXBuildFile; fileRef = 378A44061E241B3200A1373A /* ButtonSpacing.swift */; };
 		378A44091E2434AA00A1373A /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 378A44081E2434AA00A1373A /* GoogleService-Info.plist */; };
+		378C6B5C1E3E92130013315F /* FavoritesTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 378C6B5A1E3E92130013315F /* FavoritesTableViewCell.swift */; };
+		378C6B5D1E3E92130013315F /* FavoritesTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 378C6B5B1E3E92130013315F /* FavoritesTableViewCell.xib */; };
 		37B0BB841E2072F8000D490C /* CompanyDetailsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 37B0BB831E2072F8000D490C /* CompanyDetailsViewController.swift */; };
 		37BFBA321E21D62F00E71040 /* CompanyInfoTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 37BFBA301E21D62F00E71040 /* CompanyInfoTableViewCell.swift */; };
 		37BFBA331E21D62F00E71040 /* CompanyInfoTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 37BFBA311E21D62F00E71040 /* CompanyInfoTableViewCell.xib */; };
@@ -60,6 +62,8 @@
 		3775F3271E231EF40072A9DC /* CompanyTableViewCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = CompanyTableViewCell.xib; sourceTree = "<group>"; };
 		378A44061E241B3200A1373A /* ButtonSpacing.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ButtonSpacing.swift; sourceTree = "<group>"; };
 		378A44081E2434AA00A1373A /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
+		378C6B5A1E3E92130013315F /* FavoritesTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FavoritesTableViewCell.swift; sourceTree = "<group>"; };
+		378C6B5B1E3E92130013315F /* FavoritesTableViewCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = FavoritesTableViewCell.xib; sourceTree = "<group>"; };
 		37B0BB831E2072F8000D490C /* CompanyDetailsViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CompanyDetailsViewController.swift; sourceTree = "<group>"; };
 		37BFBA301E21D62F00E71040 /* CompanyInfoTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CompanyInfoTableViewCell.swift; sourceTree = "<group>"; };
 		37BFBA311E21D62F00E71040 /* CompanyInfoTableViewCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = CompanyInfoTableViewCell.xib; sourceTree = "<group>"; };
@@ -125,6 +129,8 @@
 				0274B46B1DE9305500133015 /* HomeViewController.swift */,
 				0274B4691DE9304600133015 /* MapViewController.swift */,
 				0274B4671DE9303500133015 /* FavoritesViewController.swift */,
+				378C6B5A1E3E92130013315F /* FavoritesTableViewCell.swift */,
+				378C6B5B1E3E92130013315F /* FavoritesTableViewCell.xib */,
 				02ECF1F11DE51CDA0032EEC2 /* CompanyViewController.swift */,
 				3775F3261E231EF40072A9DC /* CompanyTableViewCell.swift */,
 				3775F3271E231EF40072A9DC /* CompanyTableViewCell.xib */,
@@ -258,6 +264,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				37BFBA3B1E21F13000E71040 /* NotesTableViewCell.xib in Resources */,
+				378C6B5D1E3E92130013315F /* FavoritesTableViewCell.xib in Resources */,
 				02ECF1E01DE518050032EEC2 /* LaunchScreen.storyboard in Resources */,
 				37BFBA371E21D69300E71040 /* ListTableViewCell.xib in Resources */,
 				3775F3291E231EF40072A9DC /* CompanyTableViewCell.xib in Resources */,
@@ -335,6 +342,7 @@
 				37B0BB841E2072F8000D490C /* CompanyDetailsViewController.swift in Sources */,
 				373A686E1E26B18B00393338 /* CompanyDataController.swift in Sources */,
 				378A44071E241B3200A1373A /* ButtonSpacing.swift in Sources */,
+				378C6B5C1E3E92130013315F /* FavoritesTableViewCell.swift in Sources */,
 				373A68681E26A67200393338 /* ecaftDataModel.xcdatamodeld in Sources */,
 				37BFBA3A1E21F13000E71040 /* NotesTableViewCell.swift in Sources */,
 				37BFBA321E21D62F00E71040 /* CompanyInfoTableViewCell.swift in Sources */,

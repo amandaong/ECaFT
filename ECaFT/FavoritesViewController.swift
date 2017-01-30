@@ -8,47 +8,93 @@
 
 import UIKit
 
-class FavoritesViewController: UITableViewController {
+class FavoritesViewController: UIViewController, UIScrollViewDelegate, UITableViewDelegate, UITableViewDataSource {
+    let screenSize : CGRect = UIScreen.main.bounds
 
+    //Information State Controller
+    var informationStateController: informationStateController?
+    var companyViewController: CompanyViewController?
+    var favoritesTableView = UITableView()
+    
+    var favorites : [String] = []
+    
     override func viewDidLoad() {
         super.viewDidLoad()
-
-        view.backgroundColor = UIColor.yellow
+        self.view.backgroundColor = .blue
         
-        // Uncomment the following line to preserve selection between presentations
-        // self.clearsSelectionOnViewWillAppear = false
+        if let favs = UserDefaults.standard.object(forKey: Property.favorites.rawValue) as? Data {
+            favorites = NSKeyedUnarchiver.unarchiveObject(with: favs) as! [String]
+        }
+        
+        makeTableView()
+        
 
-        // Uncomment the following line to display an Edit button in the navigation bar for this view controller.
-        // self.navigationItem.rightBarButtonItem = self.editButtonItem()
     }
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         
         navigationController?.navigationBar.topItem?.title = "Favorites"
+        favoritesTableView.reloadData()
+        print("num of favorite companies: \((informationStateController?.favoriteCompanies.count)!)")
+
     }
-    // MARK: - Table view data source
+    
+    func makeTableView() {
+        //Total height of nav bar, status bar, tab bar (guesstimated pixel height)
+        let barHeights = (self.navigationController?.navigationBar.frame.size.height)!+UIApplication.shared.statusBarFrame.height + 49
 
-    override func numberOfSections(in tableView: UITableView) -> Int {
-        // #warning Incomplete implementation, return the number of sections
-        return 0
+        favoritesTableView = UITableView(frame: CGRect(x: 0, y: 0, width: screenSize.width, height: screenSize.height - barHeights), style: UITableViewStyle.plain) //sets tableview to size of view below status bar and nav bar
+        
+        favoritesTableView.dataSource = self
+        favoritesTableView.delegate = self
+        
+        //Regsiter custom cells and xib files
+        favoritesTableView.register(FavoritesTableViewCell.classForCoder(), forCellReuseIdentifier: "FavoritesTableViewCell")
+        self.view.addSubview(self.favoritesTableView)
+    }
+    
+   
+    
+    func numberOfSections(in tableView: UITableView) -> Int {
+        return 1
     }
 
-    override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        // #warning Incomplete implementation, return the number of rows
-        return 0
+    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        return (informationStateController?.favoriteCompanies.count)!
     }
 
-    /*
-    override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCell(withIdentifier: "reuseIdentifier", for: indexPath)
-
-        // Configure the cell...
-
-        return cell
+    func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat{
+        return 70
     }
-    */
-
+    
+    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        let company:Company! = informationStateController?.favoriteCompanies[indexPath.row]
+        
+        let customCell = tableView.dequeueReusableCell(withIdentifier: "FavoritesTableViewCell") as! FavoritesTableViewCell
+        
+        //Stops cell turning grey when click on it
+        customCell.selectionStyle = .none
+        customCell.name = company.name
+        customCell.location = company.location
+        
+        if(company.image != nil) {
+            customCell.companyImageView.image = company.image
+        } else {
+            customCell.companyImageView.image = #imageLiteral(resourceName: "placeholder")
+        }
+        print(company.isFavorite)
+        if (company.isFavorite) {
+            customCell.favoritesButton.setImage(#imageLiteral(resourceName: "favoritesFilled"), for: .normal)
+        } else {
+            customCell.favoritesButton.setImage(#imageLiteral(resourceName: "favorites"), for: .normal)
+        }
+        customCell.favoritesButton.tag = indexPath.row
+        customCell.favoritesButton.addTarget(self, action: #selector(companyViewController?.toggleFavorite(sender:)), for: .touchUpInside)
+ 
+        return customCell
+    }
+    
     /*
     // Override to support conditional editing of the table view.
     override func tableView(_ tableView: UITableView, canEditRowAt indexPath: IndexPath) -> Bool {
