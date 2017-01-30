@@ -133,13 +133,8 @@
 				0274B46B1DE9305500133015 /* HomeViewController.swift */,
 				0274B4691DE9304600133015 /* MapViewController.swift */,
 				0274B4671DE9303500133015 /* FavoritesViewController.swift */,
-<<<<<<< HEAD
-				378C6B5A1E3E92130013315F /* FavoritesTableViewCell.swift */,
-				378C6B5B1E3E92130013315F /* FavoritesTableViewCell.xib */,
-=======
 				985346FA1E3EF2A600D9851A /* FavoritesTableViewCell.swift */,
 				985346FB1E3EF2A600D9851A /* FavoritesTableViewCell.xib */,
->>>>>>> a06838e0610b48ce435d154b3d68d0bbbe7acf01
 				02ECF1F11DE51CDA0032EEC2 /* CompanyViewController.swift */,
 				3775F3261E231EF40072A9DC /* CompanyTableViewCell.swift */,
 				3775F3271E231EF40072A9DC /* CompanyTableViewCell.xib */,
@@ -273,11 +268,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				37BFBA3B1E21F13000E71040 /* NotesTableViewCell.xib in Resources */,
-<<<<<<< HEAD
-				378C6B5D1E3E92130013315F /* FavoritesTableViewCell.xib in Resources */,
-=======
 				985346FD1E3EF2A600D9851A /* FavoritesTableViewCell.xib in Resources */,
->>>>>>> a06838e0610b48ce435d154b3d68d0bbbe7acf01
 				02ECF1E01DE518050032EEC2 /* LaunchScreen.storyboard in Resources */,
 				37BFBA371E21D69300E71040 /* ListTableViewCell.xib in Resources */,
 				3775F3291E231EF40072A9DC /* CompanyTableViewCell.xib in Resources */,
@@ -355,11 +346,7 @@
 				37B0BB841E2072F8000D490C /* CompanyDetailsViewController.swift in Sources */,
 				373A686E1E26B18B00393338 /* CompanyDataController.swift in Sources */,
 				378A44071E241B3200A1373A /* ButtonSpacing.swift in Sources */,
-<<<<<<< HEAD
-				378C6B5C1E3E92130013315F /* FavoritesTableViewCell.swift in Sources */,
-=======
 				985346FC1E3EF2A600D9851A /* FavoritesTableViewCell.swift in Sources */,
->>>>>>> a06838e0610b48ce435d154b3d68d0bbbe7acf01
 				373A68681E26A67200393338 /* ecaftDataModel.xcdatamodeld in Sources */,
 				37BFBA3A1E21F13000E71040 /* NotesTableViewCell.swift in Sources */,
 				37BFBA321E21D62F00E71040 /* CompanyInfoTableViewCell.swift in Sources */,

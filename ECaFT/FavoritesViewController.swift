@@ -18,15 +18,9 @@ class FavoritesViewController: UITableViewController, FavoritesProtocol {
     var checks: [Bool]!
     var companies: [Company] = []
 
-    //Information State Controller
-    var informationStateController: informationStateController?
-    var companyViewController: CompanyViewController?
-    var favoritesTableView = UITableView()
-    
-    var favorites : [String] = []
-    
     override func viewDidLoad() {
-        super.viewDidLoad()        
+        super.viewDidLoad()
+        
         tableView.dataSource = self
         tableView.register(UINib(nibName: "FavoritesTableViewCell", bundle: nil), forCellReuseIdentifier: "FavoritesCell")
         
@@ -42,7 +36,6 @@ class FavoritesViewController: UITableViewController, FavoritesProtocol {
         super.viewWillAppear(animated)
         
         navigationController?.navigationBar.topItem?.title = "Favorites"
-
         
         if let check = UserDefaults.standard.object(forKey: Property.isChecked.rawValue) as? Data {
             checks = NSKeyedUnarchiver.unarchiveObject(with: check) as! [Bool]
@@ -160,10 +153,6 @@ class FavoritesViewController: UITableViewController, FavoritesProtocol {
     override func numberOfSections(in tableView: UITableView) -> Int {
         return 1
     }
-    
-    func makeTableView() {
-        //Total height of nav bar, status bar, tab bar (guesstimated pixel height)
-        let barHeights = (self.navigationController?.navigationBar.frame.size.height)!+UIApplication.shared.statusBarFrame.height + 49
 
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return favorites.count
@@ -199,7 +188,6 @@ class FavoritesViewController: UITableViewController, FavoritesProtocol {
             self.tableView.reloadData()
             self.saveChecks()
         }
-
     }
     
     func saveChecks() {
