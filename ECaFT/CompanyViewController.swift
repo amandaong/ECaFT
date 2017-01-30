@@ -60,6 +60,7 @@ class CompanyViewController: UIViewController, UISearchBarDelegate, UIScrollView
         
         let filterButton = UIBarButtonItem(image: #imageLiteral(resourceName: "filter"), style: .plain, target: self, action: #selector(filterButtonTapped))
         navigationController?.navigationBar.topItem?.rightBarButtonItem = filterButton
+        
         tapsOutsideFilterButton = UIButton(frame: view.frame)
         setUpFilter()
         isFilterDropDown = false
@@ -67,6 +68,11 @@ class CompanyViewController: UIViewController, UISearchBarDelegate, UIScrollView
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
+        
+        if (isViewLoaded) {
+            let filterButton = UIBarButtonItem(image: #imageLiteral(resourceName: "filter"), style: .plain, target: self, action: #selector(filterButtonTapped))
+            navigationController?.navigationBar.topItem?.rightBarButtonItem = filterButton
+        }
         
         navigationController?.navigationBar.topItem?.title = "Companies"
         UIView.animate(withDuration: 0.0, animations: {
@@ -130,6 +136,10 @@ class CompanyViewController: UIViewController, UISearchBarDelegate, UIScrollView
             }
             //print("************************************")
         })
+    }
+    
+    override func viewWillDisappear(_ animated: Bool) {
+        navigationController?.navigationBar.topItem?.rightBarButtonItem = nil
     }
 
     func filterButtonTapped() {

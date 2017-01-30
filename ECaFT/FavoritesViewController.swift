@@ -81,19 +81,16 @@ class FavoritesViewController: UITableViewController, FavoritesProtocol {
             }
             
             else { //no changes
-                print("no changes")
                 return
             }
             
             DispatchQueue.main.async {
                 self.loadCompanyObjects()
                 self.infoSC.sortByCompanyName()
-                print("saving checks in viewDidAppear")
                 self.saveChecks()
             }
             tableView.reloadData()
         } else {
-            print("in the else")
             checks = [Bool](repeatElement(false, count: infoSC.favoritesString.count))
         }
     }
