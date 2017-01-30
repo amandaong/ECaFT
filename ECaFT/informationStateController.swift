@@ -14,6 +14,7 @@ class informationStateController {
     private(set) var companies = [Company]()
     private(set) var filteredCompanies = [Company]()
     var favoriteCompanies: [Company] = []
+    var favoritesString: [String] = []
 
     //For Company Table View
     var numOfSections = 1

@@ -12,9 +12,6 @@ import FirebaseStorage
 import FirebaseDatabase
 
 class CompanyViewController: UIViewController, UISearchBarDelegate, UIScrollViewDelegate, UITableViewDelegate, UITableViewDataSource, FavoritesProtocol {
-    let allCompaniesSectionNum = 0
-    let favoriteSectionNum = 1
-    
     let screenSize : CGRect = UIScreen.main.bounds
     var allCompanies : [Company] = []
     var filteredCompanies : [Company] = []
@@ -33,7 +30,6 @@ class CompanyViewController: UIViewController, UISearchBarDelegate, UIScrollView
     //favorites
     var favorites : [String] = []
     var favoriteUpdateStatus : (Int, String) = (0, "")
-    var hideFavorites : Bool = false
     
     //Company Table View
     var companyTableView = UITableView()
@@ -87,16 +83,9 @@ class CompanyViewController: UIViewController, UISearchBarDelegate, UIScrollView
         if (status == 1) {
             favorites.append(name)
             favorites.sort()
-            applyFavorites()
         } else if (status == 2) {
             if let index = favorites.index(of: name) {
-                print("favorites: ", terminator: "")
-                for company in (informationStateController?.favoriteCompanies)! {
-                    print("\(company.name), ", terminator: "")
-                }
-                print("index: \(index)\n")
                 favorites.remove(at: index)
-                removeFavorite(company: (informationStateController?.favoriteCompanies[index])!)
             }
         }
     }
@@ -133,7 +122,6 @@ class CompanyViewController: UIViewController, UISearchBarDelegate, UIScrollView
                             company.image = UIImage(data: data)
                             self.applyFilters()
                             self.companyTableView.reloadData() //reload data here b/c this is when you know table view cell will have an image
-                            self.applyFavorites()
                         }
                     }
                 }
@@ -296,14 +284,12 @@ class CompanyViewController: UIViewController, UISearchBarDelegate, UIScrollView
                 }
             }
         }
-        hideFavorites = text == "" ? false : true
         companyTableView.reloadData()
     }
     
     // called when cancel button is clicked
     func searchBarCancelButtonClicked(_ searchBar: UISearchBar) {
         searchBar.text = ""
-        hideFavorites = false
         if let state = informationStateController {
             state.clearFilter()
         }
@@ -335,14 +321,13 @@ class CompanyViewController: UIViewController, UISearchBarDelegate, UIScrollView
     }
     
     func numberOfSections(in tableView: UITableView) -> Int {
-        return informationStateController!.numOfSections
+        return 1
     }
     
     func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
         return informationStateController!.sectionTitles[section]
     }
    
-    
     //Section: Change font color and background color for section headers
     func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
         let screenSize : CGRect = UIScreen.main.bounds
@@ -363,43 +348,26 @@ class CompanyViewController: UIViewController, UISearchBarDelegate, UIScrollView
         return 70
     }
     
-    func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
-        if (section == favoriteSectionNum && hideFavorites) {
-            return 0
-        }
-        return UITableViewAutomaticDimension
-    }
-    
     func tableView(_ tableView: UITableView, numberOfRowsInSection
         section: Int) -> Int {
 
         if let state = informationStateController {
             if (searchBar.text != "") {
-                if (section == favoriteSectionNum && hideFavorites) {
-                    return 0
-                }
                 return state.filteredCompanies.count
-            } else if (section == allCompaniesSectionNum) {
-                return (informationStateController?.companies.count)!
             } else {
-                return (informationStateController?.favoriteCompanies.count)!
+                return (informationStateController?.companies.count)!
             }
         }
-        return 1
+        return 0
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell
     {
-
-        //print("row: \(indexPath.row)  section: \(indexPath.section)")
         var company: Company!
         if (searchBar.text != "") {
             company = informationStateController!.filteredCompanies[indexPath.row]
-            hideFavorites = true
-        } else if (indexPath.section == allCompaniesSectionNum) {
-            company = (informationStateController?.companies[indexPath.row])!
         } else {
-            company = informationStateController?.favoriteCompanies[indexPath.row]
+            company = (informationStateController?.companies[indexPath.row])!
         }
         
         let customCell = tableView.dequeueReusableCell(withIdentifier: CompanyTableViewCell.identifier) as! CompanyTableViewCell
@@ -429,22 +397,16 @@ class CompanyViewController: UIViewController, UISearchBarDelegate, UIScrollView
         let touchPoint = sender.convert(CGPoint(x: 0, y: 0), to: companyTableView)
         let indexPath = companyTableView.indexPathForRow(at: touchPoint)
         var company: Company!
-        if (indexPath?.section == allCompaniesSectionNum) {
-            company = informationStateController?.companies[(indexPath?.row)!]
-        } else {
-            company = informationStateController?.favoriteCompanies[(indexPath?.row)!]
-        }
+        company = informationStateController?.companies[(indexPath?.row)!]
         
         if (!( favorites.contains((company?.name)!))) { //not in favorites
             favorites.append((company?.name)!)
-            addFavorite(company: company!)
             sender.setImage(#imageLiteral(resourceName: "favoritesFilled"), for: .normal)
             favorites.sort()
         } else {
             if let index = favorites.index(of: (company?.name)!) { //get index of the company in favorites
                 favorites.remove(at: index) //remove it
                 sender.setImage(#imageLiteral(resourceName: "favorites"), for: .normal)
-                removeFavorite(company: company!)
             }
         }
         
@@ -454,45 +416,6 @@ class CompanyViewController: UIViewController, UISearchBarDelegate, UIScrollView
             UserDefaults.standard.set(savedData, forKey: Property.favorites.rawValue)
         }
     }
-    
-    func addFavorite(company: Company) {
-        if ( !(informationStateController?.favoriteCompanies.contains(company))!) { //if company is not in favoritesCompany
-            informationStateController?.favoriteCompanies.append(company)
-            informationStateController?.sortFavoritesAlphabetically()
-            let index = informationStateController?.favoriteCompanies.index(of: company)
-            
-            companyTableView.beginUpdates()
-            if (informationStateController?.numOfSections == 1) {
-                informationStateController?.numOfSections += 1
-                companyTableView.insertSections([favoriteSectionNum], with: .automatic)
-            }
-            companyTableView.insertRows(at: [IndexPath(row: index!, section: favoriteSectionNum)], with: .automatic)
-            companyTableView.endUpdates()
-        }
-    }
-    
-    func removeFavorite(company: Company) {
-        if (informationStateController?.favoriteCompanies.count == 1) {
-            informationStateController?.numOfSections -= 1
-            companyTableView.deleteSections([favoriteSectionNum], with: .automatic)
-        }
-        
-        if let index = informationStateController?.favoriteCompanies.index(of: company) {
-            informationStateController?.favoriteCompanies.remove(at: index)
-            
-            if (informationStateController?.numOfSections != 1) {
-                companyTableView.deleteRows(at: [IndexPath(row: index, section: favoriteSectionNum)], with: .automatic)
-            }
-        }
-    }
-    
-    func applyFavorites() {
-        for company in allCompanies {
-            if (favorites.contains(company.name)) {
-                addFavorite(company: company)
-            }
-        }
-    }
 
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         tableView.deselectRow(at: indexPath as IndexPath, animated: false)
@@ -500,10 +423,8 @@ class CompanyViewController: UIViewController, UISearchBarDelegate, UIScrollView
 
         if (searchBar.text != "") {
             companyDetailsVC.company = informationStateController?.filteredCompanies[indexPath.row]
-        } else if (indexPath.section == allCompaniesSectionNum) {
-            companyDetailsVC.company = informationStateController?.companies[indexPath.row]
         } else {
-            companyDetailsVC.company = informationStateController?.favoriteCompanies[indexPath.row]
+            companyDetailsVC.company = informationStateController?.companies[indexPath.row]
         }
         
         if (informationStateController?.favoriteCompanies.contains(companyDetailsVC.company))! {

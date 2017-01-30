@@ -14,9 +14,8 @@ class FavoritesViewController: UITableViewController, FavoritesProtocol {
     var storageRef: FIRStorageReference?
     var databaseHandle: FIRDatabaseHandle?
     
-    var favorites: [String] = []
+    var infoSC: informationStateController = informationStateController()
     var checks: [Bool]!
-    var companies: [Company] = []
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -28,7 +27,7 @@ class FavoritesViewController: UITableViewController, FavoritesProtocol {
         storageRef = FIRStorage.storage().reference(forURL: "gs://ecaft-4a6e7.appspot.com/logos")
         DispatchQueue.main.async {
             self.loadCompanyObjects()
-            self.companies.sort { $0.name < $1.name }
+            self.infoSC.sortByCompanyName()
         }
     }
     
@@ -41,71 +40,73 @@ class FavoritesViewController: UITableViewController, FavoritesProtocol {
             checks = NSKeyedUnarchiver.unarchiveObject(with: check) as! [Bool]
             print("finished fetching saved data")
         } else {
-            checks = [Bool](repeating: false, count: favorites.count)
+            checks = [Bool](repeating: false, count: infoSC.favoritesString.count)
             print("error fetching, all false insetead")
         }
         
         if let temp = UserDefaults.standard.object(forKey: Property.favorites.rawValue) as? Data {
             let newOnes = NSKeyedUnarchiver.unarchiveObject(with: temp) as! [String]
             
-            if (favorites.count == 0) { //favorites tabbed has not been access yet
-                favorites = newOnes
-                checks = [Bool](repeatElement(false, count: favorites.count))
+            if (infoSC.favoritesString.count == 0) { //favorites tabbed has not been access yet
+                infoSC.favoritesString = newOnes
             }
             
-            else if (newOnes.count > favorites.count) { //added a favorite on the main page
+            else if (newOnes.count > infoSC.favoritesString.count) { //added a favorite on the main page
                 for i in 0..<newOnes.count {
-                    if (i >= favorites.count) {
-                        favorites.append(newOnes[i])
+                    if (i >= infoSC.favoritesString.count) {
+                        infoSC.favoritesString.append(newOnes[i])
                         checks.append(false)
                     }
-                    else if (favorites[i] != newOnes[i]) {
-                        favorites.insert(newOnes[i], at: i)
+                    else if (infoSC.favoritesString[i] != newOnes[i]) {
+                        infoSC.favoritesString.insert(newOnes[i], at: i)
                         checks.insert(false, at: i)
                     }
                 }
             }
             
-            else if (newOnes.count < favorites.count) { //removing a favorite on the main page
+            else if (newOnes.count < infoSC.favoritesString.count) { //removing a favorite on the main page
                 var i = 0
-                while (i < favorites.count) {
+                while (i < infoSC.favoritesString.count) {
                     if (i >= newOnes.count) {
-                        favorites.remove(at: i)
+                        infoSC.favoritesString.remove(at: i)
                         checks.remove(at: i)
                     }
-                    else if (newOnes[i] == favorites[i]) {
+                    else if (newOnes[i] == infoSC.favoritesString[i]) {
                         i += 1
                     } else {
-                        favorites.remove(at: i)
+                        infoSC.favoritesString.remove(at: i)
                         checks.remove(at: i)
                     }
                 }
             }
             
             else { //no changes
+                print("no changes")
                 return
             }
             
             DispatchQueue.main.async {
                 self.loadCompanyObjects()
-                self.companies.sort { $0.name < $1.name }
+                self.infoSC.sortByCompanyName()
+                print("saving checks in viewDidAppear")
                 self.saveChecks()
             }
             tableView.reloadData()
         } else {
-            checks = [Bool](repeatElement(false, count: favorites.count))
+            print("in the else")
+            checks = [Bool](repeatElement(false, count: infoSC.favoritesString.count))
         }
     }
     
     func changeFavorites(status: Int, name: String) {
         if (status == 2) {
-            if let index = favorites.index(of: name) {
-                favorites.remove(at: index)
-                companies.remove(at: index)
+            if let index = infoSC.favoritesString.index(of: name) {
+                infoSC.favoritesString.remove(at: index)
+                self.infoSC.removeCompany(index: index)
                 checks.remove(at: index)
                 tableView.deleteRows(at: [IndexPath(row: index, section: 0)], with: .none)
                 UserDefaults.standard.removeObject(forKey: Property.favorites.rawValue)
-                let savedData = NSKeyedArchiver.archivedData(withRootObject: favorites)
+                let savedData = NSKeyedArchiver.archivedData(withRootObject: infoSC.favoritesString)
                 UserDefaults.standard.set(savedData, forKey: Property.favorites.rawValue)
             }
         }
@@ -117,7 +118,7 @@ class FavoritesViewController: UITableViewController, FavoritesProtocol {
             for item in snapshot.children.allObjects as! [FIRDataSnapshot] {
                 let company = Company()
                 company.name = item.childSnapshot(forPath: Property.name.rawValue).value as! String
-                if (!(self.favorites.contains(company.name))) {
+                if (!(self.infoSC.favoritesString.contains(company.name))) {
                     continue
                 }
                 company.information = item.childSnapshot(forPath: Property.information.rawValue).value as! String
@@ -143,7 +144,7 @@ class FavoritesViewController: UITableViewController, FavoritesProtocol {
                         
                     }
                 }
-                self.companies.append(company)
+                self.infoSC.addCompany(company)
             }
         })
     }
@@ -155,12 +156,12 @@ class FavoritesViewController: UITableViewController, FavoritesProtocol {
     }
 
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return favorites.count
+        return infoSC.favoritesString.count
     }
 
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "FavoritesCell") as! FavoritesTableViewCell
-        cell.companyLabel.text = favorites[indexPath.row]
+        cell.companyLabel.text = infoSC.favoritesString[indexPath.row]
         cell.checkButton.tag = indexPath.row
         cell.checkButton.addTarget(self, action: #selector(toggleCheck(sender:)), for: .touchUpInside)
         if (checks[indexPath.row]) {
@@ -198,10 +199,9 @@ class FavoritesViewController: UITableViewController, FavoritesProtocol {
     
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         let detailVC = CompanyDetailsViewController()
-        detailVC.company = companies[indexPath.row]
+        detailVC.company = infoSC.companies[indexPath.row]
         detailVC.isFavorite = true
         detailVC.delegate = self
         show(detailVC, sender: nil)
-        
     }
 }
