@@ -45,7 +45,12 @@ class CompanyViewController: UIViewController, UISearchBarDelegate, UIScrollView
         super.viewDidLoad()
         view.backgroundColor = UIColor.ecaftGray
         
+        //searching
         makeSearchBar()
+        let tapGesture = UITapGestureRecognizer(target: self, action: #selector(tapOutsideSearch(gesture:)))
+        view.addGestureRecognizer(tapGesture)
+        
+        //tableview
         makeTableView()
         
         //Load data from firebase
@@ -54,6 +59,7 @@ class CompanyViewController: UIViewController, UISearchBarDelegate, UIScrollView
         
         loadData()
         
+        //filtering
         if let filters = UserDefaults.standard.object(forKey: Property.filtersApplied.rawValue) as? Data {
             appliedFilters = NSKeyedUnarchiver.unarchiveObject(with: filters) as! [String]
         }
@@ -64,6 +70,7 @@ class CompanyViewController: UIViewController, UISearchBarDelegate, UIScrollView
         tapsOutsideFilterButton = UIButton(frame: view.frame)
         setUpFilter()
         isFilterDropDown = false
+        
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -140,6 +147,7 @@ class CompanyViewController: UIViewController, UISearchBarDelegate, UIScrollView
     
     override func viewWillDisappear(_ animated: Bool) {
         navigationController?.navigationBar.topItem?.rightBarButtonItem = nil
+        view.endEditing(true)
     }
 
     func filterButtonTapped() {
@@ -269,6 +277,8 @@ class CompanyViewController: UIViewController, UISearchBarDelegate, UIScrollView
         searchBar.tintColor = UIColor.ecaftRed
         
         //Buttons & text
+        searchBar.returnKeyType = .done
+        searchBar.enablesReturnKeyAutomatically = false
         searchBar.placeholder = "Search"
         searchBar.showsCancelButton = false
         searchBar.showsBookmarkButton = false
@@ -289,7 +299,7 @@ class CompanyViewController: UIViewController, UISearchBarDelegate, UIScrollView
         if let state = informationStateController {
             state.clearFilter()
             for company in state.companies {
-                if company.description.lowercased().range(of: text) != nil {
+                if company.name.lowercased().range(of: text) != nil {
                     state.addFilteredCompany(company)
                 }
             }
@@ -312,6 +322,11 @@ class CompanyViewController: UIViewController, UISearchBarDelegate, UIScrollView
     
     // called when keyboard return is pressed
     func searchBarTextDidEndEditing(_ searchBar: UISearchBar) {
+        view.endEditing(true)
+    }
+    
+    // called when user taps outside keyboard
+    func tapOutsideSearch(gesture: UITapGestureRecognizer) {
         view.endEditing(true)
     }
     
