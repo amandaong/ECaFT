@@ -2,7 +2,7 @@
 //  FavoritesTableViewCell.swift
 //  ECaFT
 //
-//  Created by Amanda Ong on 1/29/17.
+//  Created by Emily Lien on 1/28/17.
 //  Copyright © 2017 loganallen. All rights reserved.
 //
 
@@ -15,7 +15,9 @@ class FavoritesTableViewCell: UITableViewCell {
     var companyImageView: UIImageView!
     var nameLabel: UILabel!
     var locationLabel: UILabel!
-    
+    // @IBOutlet weak var checkButton: UIButton!
+   // @IBOutlet weak var companyLabel: UILabel!
+
     var name: String? {
         didSet {
             nameLabel.text = name //Sets text of name label to cell's name property
@@ -83,4 +85,5 @@ class FavoritesTableViewCell: UITableViewCell {
         
         // Configure the view for the selected state
     }
+
 }

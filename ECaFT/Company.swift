@@ -70,6 +70,7 @@ enum Property: String {
     case filteredCompanies = "filteredCompanies"
     case name = "name"
     case filtersApplied = "filtersApplied"
+    case isChecked = "isChecked"
     case favorites = "favorites"
     case information = "information"
     case location = "location"

@@ -35,11 +35,6 @@ class CompanyViewController: UIViewController, UISearchBarDelegate, UIScrollView
     var favoriteUpdateStatus : (Int, String) = (0, "")
     var hideFavorites : Bool = false
     
-    //Filter collection view variables
-    let leftAndRightPaddings: CGFloat = 80.0
-    let numberOfItemsPerRow: CGFloat = 2.0
-    private let cellReuseIdentifier = "collectionCell"
-    
     //Company Table View
     var companyTableView = UITableView()
     
@@ -53,10 +48,6 @@ class CompanyViewController: UIViewController, UISearchBarDelegate, UIScrollView
     override func viewDidLoad() {
         super.viewDidLoad()
         view.backgroundColor = UIColor.ecaftGray
-        
-        if let favs = UserDefaults.standard.object(forKey: Property.favorites.rawValue) as? Data {
-            favorites = NSKeyedUnarchiver.unarchiveObject(with: favs) as! [String]
-        }
         
         makeSearchBar()
         makeTableView()
@@ -86,6 +77,10 @@ class CompanyViewController: UIViewController, UISearchBarDelegate, UIScrollView
             self.scrollFilterView.transform = CGAffineTransform(scaleX: 0.001, y: 0.001)
             self.arrowIV.transform = CGAffineTransform(scaleX: 0.001, y: 0.001)
         })
+        
+        if let favs = UserDefaults.standard.object(forKey: Property.favorites.rawValue) as? Data {
+            favorites = NSKeyedUnarchiver.unarchiveObject(with: favs) as! [String]
+        }
         
         let status = favoriteUpdateStatus.0
         let name = favoriteUpdateStatus.1
