@@ -128,6 +128,8 @@ class CompanyDetailsViewController: UIViewController, UITableViewDelegate, UITab
             delegate.changeFavorites(status: 2, name: name.text!)
             isFavorite = false
          }
+        
+        
     }
     
     func setUpFavorite() {
