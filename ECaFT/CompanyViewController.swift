@@ -11,7 +11,7 @@ import Firebase
 import FirebaseStorage
 import FirebaseDatabase
 
-class CompanyViewController: UIViewController, UISearchBarDelegate, UIScrollViewDelegate, UITableViewDelegate, UITableViewDataSource, FavoritesProtocol {
+class CompanyViewController: UIViewController, UIGestureRecognizerDelegate, UISearchBarDelegate, UIScrollViewDelegate, UITableViewDelegate, UITableViewDataSource, FavoritesProtocol {
     let screenSize : CGRect = UIScreen.main.bounds
     var allCompanies : [Company] = []
     var filteredCompanies : [Company] = []
@@ -48,6 +48,7 @@ class CompanyViewController: UIViewController, UISearchBarDelegate, UIScrollView
         //searching
         makeSearchBar()
         let tapGesture = UITapGestureRecognizer(target: self, action: #selector(tapOutsideSearch(gesture:)))
+        tapGesture.delegate = self
         view.addGestureRecognizer(tapGesture)
         
         //tableview
@@ -326,8 +327,17 @@ class CompanyViewController: UIViewController, UISearchBarDelegate, UIScrollView
     }
     
     // called when user taps outside keyboard
+    func gestureRecognizer(_ gestureRecognizer: UIGestureRecognizer, shouldReceive touch: UITouch) -> Bool {
+        if (searchBar.isFirstResponder) {
+            return true
+        }
+        return false
+    }
+    
     func tapOutsideSearch(gesture: UITapGestureRecognizer) {
-        view.endEditing(true)
+        if (searchBar.isFirstResponder) {
+            view.endEditing(true)
+        }
     }
     
     //Tableview: Make table view
