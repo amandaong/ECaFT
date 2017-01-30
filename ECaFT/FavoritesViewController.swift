@@ -167,7 +167,7 @@ class FavoritesViewController: UITableViewController, FavoritesProtocol {
         if (checks[indexPath.row]) {
             cell.checkButton.setImage(#imageLiteral(resourceName: "check_favorites"), for: .normal)
         } else {
-            cell.checkButton.setImage(#imageLiteral(resourceName: "uncheck"), for: .normal)
+            cell.checkButton.setImage(#imageLiteral(resourceName: "uncheck_favorites"), for: .normal)
         }
         
         return cell
@@ -179,7 +179,7 @@ class FavoritesViewController: UITableViewController, FavoritesProtocol {
 
         if (checks[indexPath.row]) {
             checks[indexPath.row] = false
-            sender.setImage(#imageLiteral(resourceName: "uncheck"), for: .normal)
+            sender.setImage(#imageLiteral(resourceName: "uncheck_favorites"), for: .normal)
         } else {
             checks[indexPath.row] = true
             sender.setImage(#imageLiteral(resourceName: "check_favorites"), for: .normal)
