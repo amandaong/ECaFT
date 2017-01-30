@@ -49,6 +49,9 @@ class FavoritesViewController: UITableViewController, FavoritesProtocol {
             
             if (infoSC.favoritesString.count == 0) { //favorites tabbed has not been access yet
                 infoSC.favoritesString = newOnes
+                if (!(checks.contains(true))) {
+                    checks = [Bool](repeating: false, count: infoSC.favoritesString.count)
+                }
             }
             
             else if (newOnes.count > infoSC.favoritesString.count) { //added a favorite on the main page
@@ -89,6 +92,7 @@ class FavoritesViewController: UITableViewController, FavoritesProtocol {
                 self.infoSC.sortByCompanyName()
                 self.saveChecks()
             }
+            dump(checks)
             tableView.reloadData()
         } else {
             checks = [Bool](repeatElement(false, count: infoSC.favoritesString.count))
