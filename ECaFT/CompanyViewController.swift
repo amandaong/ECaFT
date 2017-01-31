@@ -186,12 +186,12 @@ class CompanyViewController: UIViewController, UISearchBarDelegate, UIScrollView
 
             if (appliedFilters.contains(title)) {
                 button.tag = 1
-                button.setImage(#imageLiteral(resourceName: "check_filter"), for: .normal)
+                button.setImage(#imageLiteral(resourceName: "check_filter2"), for: .normal)
             } else {
                 button.tag = 0
                 button.setImage(#imageLiteral(resourceName: "uncheck_filter"), for: .normal)
             }
-            button.imageEdgeInsets = UIEdgeInsets(top: 15, left: contentWidth - contentWidth / 7, bottom: 15, right: contentWidth / 20)
+            button.imageEdgeInsets = UIEdgeInsets(top: 15, left: contentWidth - contentWidth / 9, bottom: 15, right: contentWidth / 20)
             button.setTitleColor(.ecaftRed, for: .normal)
             button.setTitle(title, for: .normal)
             button.titleLabel?.font = UIFont(name: "Helvetica", size: UIScreen.main.bounds.height > 568 ? 14.0 : 12.0)
@@ -220,7 +220,7 @@ class CompanyViewController: UIViewController, UISearchBarDelegate, UIScrollView
         if (sender.tag == 0) { //user is checking
             appliedFilters.append(filterBy)
             sender.tag = 1
-            sender.setImage(#imageLiteral(resourceName: "check_filter"), for: .normal)
+            sender.setImage(#imageLiteral(resourceName: "check_filter2"), for: .normal)
         } else {
             if let index = appliedFilters.index(of: filterBy) {
                 appliedFilters.remove(at: index)
