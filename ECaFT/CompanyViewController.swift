@@ -54,6 +54,7 @@ class CompanyViewController: UIViewController, UISearchBarDelegate, UIScrollView
         
         loadData()
         
+        //filtering
         if let filters = UserDefaults.standard.object(forKey: Property.filtersApplied.rawValue) as? Data {
             appliedFilters = NSKeyedUnarchiver.unarchiveObject(with: filters) as! [String]
         }
@@ -67,6 +68,11 @@ class CompanyViewController: UIViewController, UISearchBarDelegate, UIScrollView
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
+        
+        if (isViewLoaded) {
+            let filterButton = UIBarButtonItem(image: #imageLiteral(resourceName: "filter"), style: .plain, target: self, action: #selector(filterButtonTapped))
+            navigationController?.navigationBar.topItem?.rightBarButtonItem = filterButton
+        }
         
         navigationController?.navigationBar.topItem?.title = "Companies"
         UIView.animate(withDuration: 0.0, animations: {
@@ -88,6 +94,11 @@ class CompanyViewController: UIViewController, UISearchBarDelegate, UIScrollView
                 favorites.remove(at: index)
             }
         }
+    }
+    
+    override func viewWillDisappear(_ animated: Bool) {
+        navigationController?.navigationBar.topItem?.rightBarButtonItem = nil
+        view.endEditing(true)
     }
     
     func loadData() {
@@ -256,6 +267,8 @@ class CompanyViewController: UIViewController, UISearchBarDelegate, UIScrollView
         searchBar.tintColor = UIColor.ecaftRed
         
         //Buttons & text
+        searchBar.returnKeyType = .done
+        searchBar.enablesReturnKeyAutomatically = false
         searchBar.placeholder = "Search"
         searchBar.showsCancelButton = false
         searchBar.showsBookmarkButton = false
