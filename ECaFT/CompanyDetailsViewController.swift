@@ -241,11 +241,23 @@ class CompanyDetailsViewController: UIViewController, UITableViewDelegate, UITab
             return customCell
         } else {
             let customCell = cell as! NotesTableViewCell
-            customCell.notesTextView.text = ""
+            customCell.companyName = company.name
+            customCell.placeholderText = "Takes notes about \(company.name) here"
+            
+            //NOTE TO SELF: notes says Loreum iptesum... in many cells b/c previously assigned that to all notes by accident & core data probably saved it
+            if let savedNote = UserDefaults.standard.string(forKey: company.name) {
+                customCell.notesTextView.text = savedNote
+                if(customCell.notesTextView.text == "") {
+                    customCell.applyPlaceholderStyle(customCell.notesTextView, placeholderText: customCell.placeholderText)
+                } else {
+                    customCell.applyNonPlaceholderStyle(customCell.notesTextView)
+                }
+            }
             //set up cell & return cell
             return customCell
         }
     }
+    
     
     //Table: Stop table cell turning grey when click on cell
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
