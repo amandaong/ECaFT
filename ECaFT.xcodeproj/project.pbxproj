@@ -235,7 +235,7 @@
 				TargetAttributes = {
 					02ECF1D11DE518050032EEC2 = {
 						CreatedOnToolsVersion = 8.1;
-						DevelopmentTeam = 9CVHL8W7A5;
+						DevelopmentTeam = MP3F2VY4AY;
 						ProvisioningStyle = Automatic;
 					};
 				};
@@ -466,8 +466,9 @@
 			buildSettings = {
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
-				DEVELOPMENT_TEAM = 9CVHL8W7A5;
+				DEVELOPMENT_TEAM = MP3F2VY4AY;
 				INFOPLIST_FILE = ECaFT/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = "Allen-Logan.ECaFT";
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -481,8 +482,9 @@
 			buildSettings = {
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
-				DEVELOPMENT_TEAM = 9CVHL8W7A5;
+				DEVELOPMENT_TEAM = MP3F2VY4AY;
 				INFOPLIST_FILE = ECaFT/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = "Allen-Logan.ECaFT";
 				PRODUCT_NAME = "$(TARGET_NAME)";
