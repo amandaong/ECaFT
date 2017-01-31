@@ -14,13 +14,7 @@ class FavoritesTableViewCell: UITableViewCell {
 
     override func awakeFromNib() {
         super.awakeFromNib()
-        // Initialization code
+       
+        companyLabel.frame = CGRect(x: companyLabel.frame.origin.x, y: companyLabel.frame.origin.y, width: companyLabel.frame.size.width - 50, height: companyLabel.frame.size.height)
     }
-
-    override func setSelected(_ selected: Bool, animated: Bool) {
-        super.setSelected(selected, animated: animated)
-
-        // Configure the view for the selected state
-    }
-
 }

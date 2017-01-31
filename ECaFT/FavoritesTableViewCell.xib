@@ -15,13 +15,13 @@
             <rect key="frame" x="0.0" y="0.0" width="375" height="44"/>
             <autoresizingMask key="autoresizingMask"/>
             <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="znT-et-pdf" id="kFk-ch-Xnx">
-                <rect key="frame" x="0.0" y="0.0" width="342" height="43"/>
+                <rect key="frame" x="0.0" y="0.0" width="342" height="43.5"/>
                 <autoresizingMask key="autoresizingMask"/>
                 <subviews>
                     <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Jrr-BA-rkz">
                         <rect key="frame" x="16" y="8" width="27" height="27"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                        <state key="normal" title="Button" image="uncheck"/>
+                        <state key="normal" title="Button" image="uncheck_favorites"/>
                     </button>
                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="1st Dibs" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="ykk-8Z-yTY">
                         <rect key="frame" x="57" y="11" width="277" height="21"/>
@@ -40,6 +40,6 @@
         </tableViewCell>
     </objects>
     <resources>
-        <image name="uncheck" width="85" height="85"/>
+        <image name="uncheck_favorites" width="85" height="85"/>
     </resources>
 </document>

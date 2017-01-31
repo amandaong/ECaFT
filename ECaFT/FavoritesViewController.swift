@@ -49,6 +49,9 @@ class FavoritesViewController: UITableViewController, FavoritesProtocol {
             
             if (infoSC.favoritesString.count == 0) { //favorites tabbed has not been access yet
                 infoSC.favoritesString = newOnes
+                if (!(checks.contains(true))) {
+                    checks = [Bool](repeating: false, count: infoSC.favoritesString.count)
+                }
             }
             
             else if (newOnes.count > infoSC.favoritesString.count) { //added a favorite on the main page
@@ -81,19 +84,16 @@ class FavoritesViewController: UITableViewController, FavoritesProtocol {
             }
             
             else { //no changes
-                print("no changes")
                 return
             }
             
             DispatchQueue.main.async {
                 self.loadCompanyObjects()
                 self.infoSC.sortByCompanyName()
-                print("saving checks in viewDidAppear")
                 self.saveChecks()
             }
             tableView.reloadData()
         } else {
-            print("in the else")
             checks = [Bool](repeatElement(false, count: infoSC.favoritesString.count))
         }
     }
