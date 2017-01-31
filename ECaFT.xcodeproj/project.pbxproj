@@ -27,8 +27,6 @@
 		3775F3291E231EF40072A9DC /* CompanyTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 3775F3271E231EF40072A9DC /* CompanyTableViewCell.xib */; };
 		378A44071E241B3200A1373A /* ButtonSpacing.swift in Sources */ = {isa = PBXBuildFile; fileRef = 378A44061E241B3200A1373A /* ButtonSpacing.swift */; };
 		378A44091E2434AA00A1373A /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 378A44081E2434AA00A1373A /* GoogleService-Info.plist */; };
-		378C6B5C1E3E92130013315F /* FavoritesTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 378C6B5A1E3E92130013315F /* FavoritesTableViewCell.swift */; };
-		378C6B5D1E3E92130013315F /* FavoritesTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 378C6B5B1E3E92130013315F /* FavoritesTableViewCell.xib */; };
 		37B0BB841E2072F8000D490C /* CompanyDetailsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 37B0BB831E2072F8000D490C /* CompanyDetailsViewController.swift */; };
 		37BFBA321E21D62F00E71040 /* CompanyInfoTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 37BFBA301E21D62F00E71040 /* CompanyInfoTableViewCell.swift */; };
 		37BFBA331E21D62F00E71040 /* CompanyInfoTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 37BFBA311E21D62F00E71040 /* CompanyInfoTableViewCell.xib */; };
@@ -64,8 +62,6 @@
 		3775F3271E231EF40072A9DC /* CompanyTableViewCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = CompanyTableViewCell.xib; sourceTree = "<group>"; };
 		378A44061E241B3200A1373A /* ButtonSpacing.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ButtonSpacing.swift; sourceTree = "<group>"; };
 		378A44081E2434AA00A1373A /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
-		378C6B5A1E3E92130013315F /* FavoritesTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FavoritesTableViewCell.swift; sourceTree = "<group>"; };
-		378C6B5B1E3E92130013315F /* FavoritesTableViewCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = FavoritesTableViewCell.xib; sourceTree = "<group>"; };
 		37B0BB831E2072F8000D490C /* CompanyDetailsViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CompanyDetailsViewController.swift; sourceTree = "<group>"; };
 		37BFBA301E21D62F00E71040 /* CompanyInfoTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CompanyInfoTableViewCell.swift; sourceTree = "<group>"; };
 		37BFBA311E21D62F00E71040 /* CompanyInfoTableViewCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = CompanyInfoTableViewCell.xib; sourceTree = "<group>"; };
@@ -239,7 +235,7 @@
 				TargetAttributes = {
 					02ECF1D11DE518050032EEC2 = {
 						CreatedOnToolsVersion = 8.1;
-						DevelopmentTeam = 9CVHL8W7A5;
+						DevelopmentTeam = MP3F2VY4AY;
 						ProvisioningStyle = Automatic;
 					};
 				};
@@ -470,8 +466,9 @@
 			buildSettings = {
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
-				DEVELOPMENT_TEAM = 9CVHL8W7A5;
+				DEVELOPMENT_TEAM = MP3F2VY4AY;
 				INFOPLIST_FILE = ECaFT/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = "Allen-Logan.ECaFT";
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -485,8 +482,9 @@
 			buildSettings = {
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
-				DEVELOPMENT_TEAM = 9CVHL8W7A5;
+				DEVELOPMENT_TEAM = MP3F2VY4AY;
 				INFOPLIST_FILE = ECaFT/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = "Allen-Logan.ECaFT";
 				PRODUCT_NAME = "$(TARGET_NAME)";

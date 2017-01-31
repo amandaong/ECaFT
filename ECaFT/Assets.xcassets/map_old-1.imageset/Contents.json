@@ -2,17 +2,17 @@
   "images" : [
     {
       "idiom" : "universal",
-      "filename" : "iphone_home.png",
+      "filename" : "map.png",
       "scale" : "1x"
     },
     {
       "idiom" : "universal",
-      "filename" : "iphone_home@2x.png",
+      "filename" : "map2x.png",
       "scale" : "2x"
     },
     {
       "idiom" : "universal",
-      "filename" : "iphone_home@3x.png",
+      "filename" : "map3x.png",
       "scale" : "3x"
     }
   ],

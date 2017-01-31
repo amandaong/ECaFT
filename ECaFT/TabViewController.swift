@@ -23,19 +23,19 @@ class TabViewController: UITabBarController, SlidingTabBarDataSource, SlidingTab
         delegate = self
         
         let homeVC = HomeViewController()
-        let homeBarItem = UITabBarItem(title: "Home", image: UIImage(named: "home.png"), selectedImage: UIImage(named: "homeSelected.png"))
+        let homeBarItem = UITabBarItem(title: "Home", image: #imageLiteral(resourceName: "home"), selectedImage: #imageLiteral(resourceName: "home"))
         homeVC.tabBarItem = homeBarItem
         
         let mapVC = MapViewController()
-        let mapBarItem = UITabBarItem(title: "Map", image: UIImage(named: "map.png"), selectedImage: UIImage(named: "mapSelected.png"))
+        let mapBarItem = UITabBarItem(title: "Map", image: #imageLiteral(resourceName: "map"), selectedImage: #imageLiteral(resourceName: "map"))
         mapVC.tabBarItem = mapBarItem
         
         let companyVC = CompanyViewController()
-        let companyBarItem = UITabBarItem(title: "Companies", image: UIImage(named: "company.png"), selectedImage: UIImage(named: "companySelected.png"))
+        let companyBarItem = UITabBarItem(title: "Companies", image: #imageLiteral(resourceName: "companies"), selectedImage: #imageLiteral(resourceName: "companies"))
         companyVC.tabBarItem = companyBarItem
         
         let favoritesVC = FavoritesViewController()
-        let favoritesBarItem = UITabBarItem(title: "Favorites", image: UIImage(named: "favorites.png"), selectedImage: UIImage(named: "favoritesSelected.png"))
+        let favoritesBarItem = UITabBarItem(title: "Favorites", image: #imageLiteral(resourceName: "checklist"), selectedImage: #imageLiteral(resourceName: "checklist"))
         favoritesVC.tabBarItem = favoritesBarItem
  
         viewControllers = [homeVC, mapVC, companyVC, favoritesVC]
