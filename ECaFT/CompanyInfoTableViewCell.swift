@@ -52,7 +52,7 @@ class CompanyInfoTableViewCell: UITableViewCell {
         
         //Tint image red
         websiteButton.tintColor = UIColor.ecaftRed
-        websiteButton.setImage(#imageLiteral(resourceName: "website").withRenderingMode(UIImageRenderingMode.alwaysTemplate), for: .normal)
+        websiteButton.setImage(#imageLiteral(resourceName: "filter").withRenderingMode(UIImageRenderingMode.alwaysTemplate), for: .normal)
         websiteButton.centerTextAndImage(spacing: 10)
         contentView.addSubview(websiteButton)
     }
