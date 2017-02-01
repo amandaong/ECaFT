@@ -24,10 +24,10 @@ class CompanyInfoTableViewCell: UITableViewCell {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
         
         //Hor offset
-        let horOffset = 0.05*screenSize.width
+        let horOffSet = 0.05*screenSize.width
         
         //Create industry label
-        informationTextView = UITextView(frame: CGRect(x: horOffset, y: 0, width: 0.9*screenSize.width, height: 135))
+        informationTextView = UITextView(frame: CGRect(x: horOffSet, y: 0, width: 0.9*screenSize.width, height: 135))
         informationTextView.center.y = 80
         informationTextView.textAlignment = .left
         informationTextView.textColor = UIColor.ecaftDarkGray
@@ -45,9 +45,9 @@ class CompanyInfoTableViewCell: UITableViewCell {
         //Create website button
         websiteButton.setTitle("Go to website", for: .normal)
         websiteButton.titleLabel?.textAlignment = .left
+        websiteButton.titleLabel?.font = .systemFont(ofSize: 15)
         websiteButton.setTitleColor(UIColor.ecaftRed, for: .normal)
-        websiteButton.frame = CGRect(x: 0, y: 0, width: screenSize.width, height: 30)
-        websiteButton.center.x = 0.5*screenSize.width
+        websiteButton.frame = CGRect(x: horOffSet, y: 0, width: 0.34*screenSize.width, height: 30)
         websiteButton.center.y = 175
         websiteButton.addTarget(self, action: #selector(CompanyInfoTableViewCell.websiteButtonPressed(button:)), for: .touchUpInside)
         

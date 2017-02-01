@@ -117,7 +117,7 @@ class CompanyDetailsViewController: UIViewController, UITableViewDelegate, UITab
 
         //Create favorites button
         favoritesButton.setTitleColor(UIColor.ecaftGold, for: .normal)
-        favoritesButton.frame = CGRect(x: 0.45*screenSize.width, y: 0, width: 0.55*screenSize.width, height: 50)
+        favoritesButton.frame = CGRect(x: 0.425*screenSize.width, y: 0, width: 0.4*screenSize.width, height: 50)
         favoritesButton.addTarget(self, action: #selector(CompanyDetailsViewController.favoritesButtonPressed(button:)), for: .touchUpInside)
         
         //Move text to left of button image
