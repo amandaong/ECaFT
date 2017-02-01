@@ -11,7 +11,7 @@ import Firebase
 import FirebaseStorage
 import FirebaseDatabase
 
-class CompanyViewController: UIViewController, UISearchBarDelegate, UIScrollViewDelegate, UITableViewDelegate, UITableViewDataSource, FavoritesProtocol {
+class CompanyViewController: UIViewController, UISearchBarDelegate, UIScrollViewDelegate, UITableViewDelegate, UITableViewDataSource {
     let screenSize : CGRect = UIScreen.main.bounds
     var allCompanies : [Company] = []
     var filteredCompanies : [Company] = []
@@ -28,7 +28,6 @@ class CompanyViewController: UIViewController, UISearchBarDelegate, UIScrollView
     var checkIV : UIImageView!
     
     //favorites
-    var favorites : [String] = []
     var favoriteUpdateStatus : (Int, String) = (0, "")
     
     //Company Table View
@@ -81,17 +80,12 @@ class CompanyViewController: UIViewController, UISearchBarDelegate, UIScrollView
         })
         
         if let favs = UserDefaults.standard.object(forKey: Property.favorites.rawValue) as? Data {
-            favorites = NSKeyedUnarchiver.unarchiveObject(with: favs) as! [String]
-        }
-        
-        let status = favoriteUpdateStatus.0
-        let name = favoriteUpdateStatus.1
-        if (status == 1) { //Favorited company on table view cell
-            favorites.append(name)
-            favorites.sort()
-        } else if (status == 2) { //Unfavorited company on table view cell
-            if let index = favorites.index(of: name) {
-                favorites.remove(at: index)
+            let temp = NSKeyedUnarchiver.unarchiveObject(with: favs) as! [String]
+            if (isViewLoaded) {
+                if (temp.count != informationStateController?.favoritesString.count) {
+                    informationStateController?.favoritesString = temp
+                    companyTableView.reloadData()
+                }
             }
         }
     }
@@ -396,7 +390,7 @@ class CompanyViewController: UIViewController, UISearchBarDelegate, UIScrollView
             customCell.companyImage.image = #imageLiteral(resourceName: "placeholder")
         }
 
-        if (favorites.contains(company.name)) {
+        if (informationStateController?.favoritesString.contains(company.name))! {
             company.isFavorite = true
             customCell.favoritesButton.setImage(#imageLiteral(resourceName: "favoritesFilled"), for: .normal)
         } else {
@@ -415,22 +409,22 @@ class CompanyViewController: UIViewController, UISearchBarDelegate, UIScrollView
         var company: Company!
         company = informationStateController?.companies[(indexPath?.row)!]
         
-        if (!( favorites.contains((company?.name)!))) { //not in favorites
+        if (!((informationStateController?.favoritesString.contains((company?.name)!))!)) { //not in favorites
             company.isFavorite = true
-            favorites.append((company?.name)!)
+            informationStateController?.favoritesString.append((company?.name)!)
             sender.setImage(#imageLiteral(resourceName: "favoritesFilled"), for: .normal)
-            favorites.sort()
+            informationStateController?.sortFavStrings()
         } else {
-            if let index = favorites.index(of: (company?.name)!) { //get index of the company in favorites
+            if let index = informationStateController?.favoritesString.index(of: (company?.name)!) { //get index of the company in favorites
                 company.isFavorite = false
-                favorites.remove(at: index) //remove it
+                informationStateController?.favoritesString.remove(at: index) //remove it
                 sender.setImage(#imageLiteral(resourceName: "favorites"), for: .normal)
             }
         }
         
         DispatchQueue.main.async {
             UserDefaults.standard.removeObject(forKey: Property.favorites.rawValue)
-            let savedData = NSKeyedArchiver.archivedData(withRootObject: self.favorites)
+            let savedData = NSKeyedArchiver.archivedData(withRootObject: self.informationStateController?.favoritesString)
             UserDefaults.standard.set(savedData, forKey: Property.favorites.rawValue)
         }
     }
@@ -450,13 +444,8 @@ class CompanyViewController: UIViewController, UISearchBarDelegate, UIScrollView
         } else {
             companyDetailsVC.isFavorite = false
         }
-        
-        companyDetailsVC.delegate = self
+
         self.show(companyDetailsVC, sender: nil)
-    }
-    
-    func changeFavorites(status: Int, name: String) {
-        favoriteUpdateStatus = (status, name)
     }
 
     func setAnchorPoint(_ anchorPoint: CGPoint, forView view: UIView) {
