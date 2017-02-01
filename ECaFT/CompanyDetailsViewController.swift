@@ -8,17 +8,15 @@
 
 import UIKit
 
-protocol FavoritesProtocol {
-    func changeFavorites(status: Int, name: String)
-}
 
-class CompanyDetailsViewController: UIViewController, UITableViewDelegate, UITableViewDataSource, UITextViewDelegate {
-    var delegate:FavoritesProtocol!
+class CompanyDetailsViewController: UIViewController, UITableViewDelegate, UITableViewDataSource {
     
     let screenSize : CGRect = UIScreen.main.bounds
     var tableView = UITableView()
     var headerView = UIView()
     var company: Company!
+    
+    var infoSC = informationStateController()
     
     //Table view properties
     var name = UILabel() //company name
@@ -44,7 +42,6 @@ class CompanyDetailsViewController: UIViewController, UITableViewDelegate, UITab
         //tableView.register(NotesTableViewCell.self, forCellReuseIdentifier: "NotesTableViewCell")
         tableView.register(UINib(nibName: "ListTableViewCell", bundle: Bundle.main), forCellReuseIdentifier: "ListTableViewCell")
         tableView.register(UINib(nibName: "NotesTableViewCell", bundle: Bundle.main), forCellReuseIdentifier: "NotesTableViewCell")
-        delegate.changeFavorites(status: 0, name: "")
         
         //Register notification observer for when keyboard shows & hides
         NotificationCenter.default.addObserver(self, selector: #selector(CompanyDetailsViewController.keyboardWillShow(notification:)), name: NSNotification.Name.UIKeyboardDidShow, object: nil)
@@ -55,6 +52,9 @@ class CompanyDetailsViewController: UIViewController, UITableViewDelegate, UITab
     
     override func viewWillAppear(_ animated: Bool) {
         createHeaderView() //put method in viewWillAppear so information updated depending on what company is tapped
+        if let favs = UserDefaults.standard.object(forKey: Property.favorites.rawValue) as? Data {
+            infoSC.favoritesString = NSKeyedUnarchiver.unarchiveObject(with: favs) as! [String]
+        }
     }
   
     func createHeaderView() {
@@ -156,16 +156,20 @@ class CompanyDetailsViewController: UIViewController, UITableViewDelegate, UITab
         //Add to favorites data list and change uibutton image to filled in star
          if (!isFavorite) { //wants to add company
             setUpFavorite()
-            delegate.changeFavorites(status: 1, name: name.text!)
+            infoSC.favoritesString.append(name.text!)
             isFavorite = true
          }
          else { //wants to remove company
             setUpNotFavorite()
-            delegate.changeFavorites(status: 2, name: name.text!)
+            if let i = infoSC.favoritesString.index(of: name.text!) {
+                infoSC.favoritesString.remove(at: i)
+            }
             isFavorite = false
          }
         
-        
+        UserDefaults.standard.removeObject(forKey: Property.favorites.rawValue)
+        let savedData = NSKeyedArchiver.archivedData(withRootObject: infoSC.favoritesString)
+        UserDefaults.standard.set(savedData, forKey: Property.favorites.rawValue)
     }
     
     func setUpFavorite() {

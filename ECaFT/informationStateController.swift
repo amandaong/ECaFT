@@ -31,10 +31,6 @@ class informationStateController {
     func clearCompanies() {
         companies = []
     }
-
-    func sortByCompanyName() {
-        companies.sort { $0.name < $1.name }
-    }
   
     func addFilteredCompany(_ company: Company) {
         filteredCompanies.append(company)
@@ -48,15 +44,21 @@ class informationStateController {
         self.companies = companies
     }
     
+    func sortFavStrings() {
+        favoritesString.sort {
+            return $0.lowercased() < $1.lowercased()
+        }
+    }
+    
     func sortCompaniesAlphabetically() {
         companies.sort {
-            return $0.name < $1.name
+            return $0.name.lowercased() < $1.name.lowercased()
         }
     }
     
     func sortFavoritesAlphabetically() {
         favoriteCompanies.sort {
-            return $0.name < $1.name
+            return $0.name.lowercased() < $1.name.lowercased()
         }
     }
 
