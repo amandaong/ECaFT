@@ -19,7 +19,7 @@ class HomeViewController: UIViewController {
         let backgroundHeight = view.frame.height - navBarHeight
         let backgroundImageView = UIImageView(frame: CGRect(origin: CGPoint(x: 0, y: navBarHeight), size: CGSize(width: view.frame.width, height: backgroundHeight)))
         
-        backgroundImageView.image = UIImage(named: "ecaftBackground.png")
+        backgroundImageView.image = #imageLiteral(resourceName: "ecaftBackground")
         
         view.addSubview(backgroundImageView)
         view.sendSubview(toBack: backgroundImageView)
