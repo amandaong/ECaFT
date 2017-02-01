@@ -432,19 +432,15 @@ class CompanyViewController: UIViewController, UISearchBarDelegate, UIScrollView
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         tableView.deselectRow(at: indexPath as IndexPath, animated: false)
         let companyDetailsVC = CompanyDetailsViewController()
-
+        
         if (searchBar.text != "") {
             companyDetailsVC.company = informationStateController?.filteredCompanies[indexPath.row]
+            companyDetailsVC.isFavorite = (informationStateController?.filteredCompanies[indexPath.row].isFavorite)!
         } else {
             companyDetailsVC.company = informationStateController?.companies[indexPath.row]
+            companyDetailsVC.isFavorite = (informationStateController?.companies[indexPath.row].isFavorite)! //set favorites' property of DetailVC's company to selected company of table view's favorite property
         }
         
-        if (informationStateController?.favoriteCompanies.contains(companyDetailsVC.company))! {
-            companyDetailsVC.isFavorite = true
-        } else {
-            companyDetailsVC.isFavorite = false
-        }
-
         self.show(companyDetailsVC, sender: nil)
     }
 
