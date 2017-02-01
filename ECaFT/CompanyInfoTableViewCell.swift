@@ -55,6 +55,8 @@ class CompanyInfoTableViewCell: UITableViewCell {
         websiteButton.setImage(#imageLiteral(resourceName: "website").withRenderingMode(UIImageRenderingMode.alwaysTemplate), for: .normal)
         websiteButton.centerTextAndImage(spacing: 10)
         contentView.addSubview(websiteButton)
+        
+        
     }
     
     func websiteButtonPressed(button: UIButton!) {

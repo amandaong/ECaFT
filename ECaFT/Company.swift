@@ -17,6 +17,9 @@ class Company: NSObject {
     var positions: [String] = []
     var majors: [String] = []
     var website: String = ""
+    var sponsor: Bool = false
+    var optcpt: Bool = false
+
     var notes: String = ""
     var isFavorite: Bool = false
     var image: UIImage!
@@ -51,6 +54,9 @@ class Company: NSObject {
         website = aDecoder.decodeObject(forKey: Property.website.rawValue) as! String
         isFavorite = aDecoder.decodeBool(forKey: Property.isFavorite.rawValue)
         imageURL = aDecoder.decodeObject(forKey: Property.imageURL.rawValue) as! URL
+        sponsor = aDecoder.decodeBool(forKey: Property.sponsor.rawValue)
+        optcpt = aDecoder.decodeBool(forKey: Property.optcpt.rawValue)
+
     }
     
     func encode(with aCoder: NSCoder) {
@@ -62,6 +68,8 @@ class Company: NSObject {
         aCoder.encode(website, forKey: Property.website.rawValue)
         aCoder.encode(isFavorite, forKey: Property.isFavorite.rawValue)
         aCoder.encode(imageURL, forKey: Property.imageURL.rawValue)
+        aCoder.encode(sponsor, forKey: Property.sponsor.rawValue)
+        aCoder.encode(optcpt, forKey: Property.optcpt.rawValue)
     }
 }
 
@@ -83,4 +91,6 @@ enum Property: String {
     case jobtypes = "jobtypes"
     case website = "website"
     case id = "id"
+    case sponsor = "sponsor"
+    case optcpt = "optcpt"
 }

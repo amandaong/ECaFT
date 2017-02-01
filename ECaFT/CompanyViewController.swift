@@ -118,6 +118,9 @@ class CompanyViewController: UIViewController, UISearchBarDelegate, UIScrollView
                 
                 company.website = item.childSnapshot(forPath: Property.website.rawValue).value as! String
 
+                company.sponsor = item.childSnapshot(forPath: Property.sponsor.rawValue).value as! Bool
+                company.optcpt = item.childSnapshot(forPath: Property.optcpt.rawValue).value as! Bool
+
                 //Get image
                 let id = item.childSnapshot(forPath: Property.id.rawValue).value as! String
                 let imageName = id + ".png"

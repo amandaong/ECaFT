@@ -24,6 +24,8 @@ class CompanyDetailsViewController: UIViewController, UITableViewDelegate, UITab
     var name = UILabel() //company name
     var isFavorite : Bool = false
     var location = UILabel() //company booth location
+    var sponsorLabel = UILabel()
+    var optcptLabel = UILabel()
     var favoritesButton = UIButton()
     let sectionTitles : [String] = ["Company Information", "Open Positions", "Majors of Interest", "Notes"]
     var numOfSections = 4 //number of sections
@@ -65,7 +67,7 @@ class CompanyDetailsViewController: UIViewController, UITableViewDelegate, UITab
         self.tableView.tableHeaderView?.addSubview(imageView)
         
         //Create name label
-        name = UILabel(frame: CGRect(x: 0.43*screenSize.width, y: 0, width: screenSize.width*0.5, height: 21)) //same x value as location so name & location label are aligned
+        name = UILabel(frame: CGRect(x: 0.43*screenSize.width, y: 0, width: screenSize.width*0.58, height: 21)) //same x value as location so name & location label are aligned
         name.center.y = 0.18*(self.tableView.tableHeaderView?.frame.height)!
         name.textAlignment = NSTextAlignment.left
         name.text = company.name
@@ -83,24 +85,39 @@ class CompanyDetailsViewController: UIViewController, UITableViewDelegate, UITab
         location.font = UIFont.systemFont(ofSize: 18)
         location.textColor = UIColor.ecaftDarkGray
         location.text = "Booth " + company.location
-        
-        //Calculate num of lines for company name label & adjust booth location label accordingly
-        print("Height of label's frame: \(name.frame.size.height)")
-        print("Line height of label's font: \(name.font.leading)")
-        let numLines = Int(name.frame.size.height/name.font.ascender) //Divide height of multiline label by line height of UILabel's font (from text to top of label's frame)
-        print("Num of lines is: \(numLines)")
-        if (numLines < 2) {
-            location.center.y = 0.38*(self.tableView.tableHeaderView?.frame.height)!
-        } else {
-            location.center.y = 0.53*(self.tableView.tableHeaderView?.frame.height)!
-            
-        }
         self.tableView.tableHeaderView?.addSubview(location)
-        
+
+        //Create sponsor label
+        sponsorLabel = UILabel(frame: CGRect(x: 0, y: 0, width: screenSize.width*0.75, height: 21))
+        sponsorLabel.textAlignment = NSTextAlignment.right
+        sponsorLabel.font = UIFont.systemFont(ofSize: 15)
+        sponsorLabel.textColor = UIColor.ecaftDarkGray
+        print("sponser: ")
+        print(company.sponsor)
+        if(company.sponsor) {
+            sponsorLabel.text = "Does Sponsor"
+        } else {
+            sponsorLabel.text = "Does Not Sponsor"
+        }
+        self.tableView.tableHeaderView?.addSubview(sponsorLabel)
+
+        //Create opt/cpt label
+        optcptLabel = UILabel(frame: CGRect(x: 0, y: 0, width: screenSize.width*0.75, height: 21))
+        optcptLabel.textAlignment = NSTextAlignment.right
+        optcptLabel.font = UIFont.systemFont(ofSize: 15)
+        optcptLabel.textColor = UIColor.ecaftDarkGray
+        print("optcpt ")
+        print(company.optcpt)
+        if(company.optcpt) {
+            optcptLabel.text = "Accepts OPT/CPT"
+        } else {
+            optcptLabel.text = "Does Not Accept OPT/CPT"
+        }
+        self.tableView.tableHeaderView?.addSubview(optcptLabel)
+
         //Create favorites button
         favoritesButton.setTitleColor(UIColor.ecaftGold, for: .normal)
-        favoritesButton.frame = CGRect(x: 0.47*screenSize.width, y: 0, width: 0.5*screenSize.width, height: 50)
-        favoritesButton.center.y = 0.75*(self.tableView.tableHeaderView?.frame.height)!
+        favoritesButton.frame = CGRect(x: 0.48*screenSize.width, y: 0, width: 0.5*screenSize.width, height: 50)
         favoritesButton.addTarget(self, action: #selector(CompanyDetailsViewController.favoritesButtonPressed(button:)), for: .touchUpInside)
         
         //Move text to left of button image
@@ -113,6 +130,26 @@ class CompanyDetailsViewController: UIViewController, UITableViewDelegate, UITab
         else { setUpNotFavorite() }
         
         self.tableView.tableHeaderView?.addSubview(favoritesButton)
+        
+        //Calculate num of lines for company name label & adjust booth location label accordingly
+        let numLines = Int(name.frame.size.height/name.font.ascender) //Divide height of multiline label by line height of UILabel's font (from text to top of label's frame)
+        print("Num of lines is: \(numLines)")
+        if (numLines < 2) {
+            location.center.y = 0.38*(self.tableView.tableHeaderView?.frame.height)!
+            favoritesButton.center.y = 0.55*(self.tableView.tableHeaderView?.frame.height)!
+            sponsorLabel.center = CGPoint(x: 0.58*screenSize.width, y: 0.75*(self.tableView.tableHeaderView?.frame.height)!)
+            optcptLabel.center = CGPoint(x: 0.58*screenSize.width, y: 0.88*(self.tableView.tableHeaderView?.frame.height)!)
+        } else if (numLines == 2){
+            location.center.y = 0.53*(self.tableView.tableHeaderView?.frame.height)!
+            favoritesButton.center.y = 0.67*(self.tableView.tableHeaderView?.frame.height)!
+            sponsorLabel.center = CGPoint(x: 0.58*screenSize.width, y: 0.82*(self.tableView.tableHeaderView?.frame.height)!)
+            optcptLabel.center = CGPoint(x: 0.58*screenSize.width, y: 0.92*(self.tableView.tableHeaderView?.frame.height)!)
+        } else { //numLines is 3
+            location.center.y = 0.66*(self.tableView.tableHeaderView?.frame.height)!
+            favoritesButton.center.y = 0.83*(self.tableView.tableHeaderView?.frame.height)!
+            sponsorLabel.text = ""
+            optcptLabel.text = ""
+        }
     }
     
     func favoritesButtonPressed(button: UIButton!) {
@@ -249,7 +286,6 @@ class CompanyDetailsViewController: UIViewController, UITableViewDelegate, UITab
             }
             if (customCell.notesTextView.text == "") {
                 customCell.applyPlaceholderStyle(customCell.notesTextView, placeholderText: customCell.placeholderText)
-                print("apply damit")
             }
             //set up cell & return cell
             return customCell
