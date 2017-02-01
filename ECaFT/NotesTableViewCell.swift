@@ -33,6 +33,7 @@ class NotesTableViewCell: UITableViewCell, UITextViewDelegate {
         UserDefaults.standard.synchronize() //make sure data is persistant even when close/open app
     }
     
+    /***---------------------------PLACE HOLDER TEXT---------------------------***/
     func applyPlaceholderStyle(_ aTextview: UITextView, placeholderText: String)
     {
         // make it look (initially) like a placeholder

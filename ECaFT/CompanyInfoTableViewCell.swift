@@ -46,7 +46,8 @@ class CompanyInfoTableViewCell: UITableViewCell {
         websiteButton.setTitle("Go to website", for: .normal)
         websiteButton.titleLabel?.textAlignment = .left
         websiteButton.setTitleColor(UIColor.ecaftRed, for: .normal)
-        websiteButton.frame = CGRect(x: horOffset, y: 0, width: 0.41*screenSize.width, height: 30)
+        websiteButton.frame = CGRect(x: 0, y: 0, width: screenSize.width, height: 30)
+        websiteButton.center.x = 0.5*screenSize.width
         websiteButton.center.y = 175
         websiteButton.addTarget(self, action: #selector(CompanyInfoTableViewCell.websiteButtonPressed(button:)), for: .touchUpInside)
         
@@ -63,12 +64,6 @@ class CompanyInfoTableViewCell: UITableViewCell {
         if let url = NSURL(string: websiteLink!){
             UIApplication.shared.open(url as URL, options: [:], completionHandler: nil)
         }
-    }
-    
-    func notesButtonPressed(button: UIButton!) {
-        print("notes btn pressed")
-        //move to notes section of table
-        
     }
     
     required init(coder aDecoder: NSCoder) {

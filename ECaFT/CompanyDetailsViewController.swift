@@ -12,7 +12,7 @@ protocol FavoritesProtocol {
     func changeFavorites(status: Int, name: String)
 }
 
-class CompanyDetailsViewController: UIViewController, UITableViewDelegate, UITableViewDataSource {
+class CompanyDetailsViewController: UIViewController, UITableViewDelegate, UITableViewDataSource, UITextViewDelegate {
     var delegate:FavoritesProtocol!
     
     let screenSize : CGRect = UIScreen.main.bounds
@@ -30,7 +30,6 @@ class CompanyDetailsViewController: UIViewController, UITableViewDelegate, UITab
     let sectionTitles : [String] = ["Company Information", "Open Positions", "Majors of Interest", "Notes"]
     var numOfSections = 4 //number of sections
     
-    
     override func viewDidLoad() {
         super.viewDidLoad()
         let navBarAndStatusBarHeight = (self.navigationController?.navigationBar.frame.size.height)!+UIApplication.shared.statusBarFrame.height
@@ -46,6 +45,11 @@ class CompanyDetailsViewController: UIViewController, UITableViewDelegate, UITab
         tableView.register(UINib(nibName: "ListTableViewCell", bundle: Bundle.main), forCellReuseIdentifier: "ListTableViewCell")
         tableView.register(UINib(nibName: "NotesTableViewCell", bundle: Bundle.main), forCellReuseIdentifier: "NotesTableViewCell")
         delegate.changeFavorites(status: 0, name: "")
+        
+        //Register notification observer for when keyboard shows & hides
+        NotificationCenter.default.addObserver(self, selector: #selector(CompanyDetailsViewController.keyboardWillShow(notification:)), name: NSNotification.Name.UIKeyboardDidShow, object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(CompanyDetailsViewController.keyboardWillHide(notification:)), name: NSNotification.Name.UIKeyboardDidHide, object: nil)
+        
         self.view.addSubview(self.tableView)
     }
     
@@ -92,8 +96,6 @@ class CompanyDetailsViewController: UIViewController, UITableViewDelegate, UITab
         sponsorLabel.textAlignment = NSTextAlignment.right
         sponsorLabel.font = UIFont.systemFont(ofSize: 15)
         sponsorLabel.textColor = UIColor.ecaftDarkGray
-        print("sponser: ")
-        print(company.sponsor)
         if(company.sponsor) {
             sponsorLabel.text = "Does Sponsor"
         } else {
@@ -106,8 +108,6 @@ class CompanyDetailsViewController: UIViewController, UITableViewDelegate, UITab
         optcptLabel.textAlignment = NSTextAlignment.right
         optcptLabel.font = UIFont.systemFont(ofSize: 15)
         optcptLabel.textColor = UIColor.ecaftDarkGray
-        print("optcpt ")
-        print(company.optcpt)
         if(company.optcpt) {
             optcptLabel.text = "Accepts OPT/CPT"
         } else {
@@ -117,11 +117,12 @@ class CompanyDetailsViewController: UIViewController, UITableViewDelegate, UITab
 
         //Create favorites button
         favoritesButton.setTitleColor(UIColor.ecaftGold, for: .normal)
-        favoritesButton.frame = CGRect(x: 0.48*screenSize.width, y: 0, width: 0.5*screenSize.width, height: 50)
+        favoritesButton.frame = CGRect(x: 0.45*screenSize.width, y: 0, width: 0.55*screenSize.width, height: 50)
         favoritesButton.addTarget(self, action: #selector(CompanyDetailsViewController.favoritesButtonPressed(button:)), for: .touchUpInside)
         
         //Move text to left of button image
         favoritesButton.transform = CGAffineTransform(scaleX: -1.0, y: 1.0)
+        favoritesButton.titleLabel?.font = UIFont.systemFont(ofSize: 15)
         favoritesButton.titleLabel?.transform = CGAffineTransform(scaleX: -1.0, y: 1.0)
         favoritesButton.imageView?.transform = CGAffineTransform(scaleX: -1.0, y: 1.0)
         favoritesButton.centerTextAndImage(spacing: 10)
@@ -133,7 +134,6 @@ class CompanyDetailsViewController: UIViewController, UITableViewDelegate, UITab
         
         //Calculate num of lines for company name label & adjust booth location label accordingly
         let numLines = Int(name.frame.size.height/name.font.ascender) //Divide height of multiline label by line height of UILabel's font (from text to top of label's frame)
-        print("Num of lines is: \(numLines)")
         if (numLines < 2) {
             location.center.y = 0.38*(self.tableView.tableHeaderView?.frame.height)!
             favoritesButton.center.y = 0.55*(self.tableView.tableHeaderView?.frame.height)!
@@ -178,7 +178,24 @@ class CompanyDetailsViewController: UIViewController, UITableViewDelegate, UITab
         favoritesButton.setTitle("Add to favorites", for: .normal)
     }
     
-        
+    /*****-------KEYBOARD: Prevent keyboard from hiding notes text view-----*****/
+    deinit {
+        NotificationCenter.default.removeObserver(self)
+    }
+    
+    func keyboardWillShow(notification: NSNotification) {
+        if let keyboardHeight = (notification.userInfo?[UIKeyboardFrameEndUserInfoKey] as? NSValue)?.cgRectValue.height {
+            tableView.contentInset = UIEdgeInsetsMake(0, 0, keyboardHeight, 0)
+        }
+    }
+    
+    func keyboardWillHide(notification: NSNotification) {
+        UIView.animate(withDuration: 0.2, animations: {
+            // For some reason adding inset in keyboardWillShow is animated by itself but removing is not, that's why we have to use animateWithDuration here
+            self.tableView.contentInset = UIEdgeInsetsMake(0, 0, 0, 0)
+        })
+    }
+    
     /*****------------------------------TABLE VIEW METHODS------------------------------*****/
     //Section: Set number of sections and section headers
     func numberOfSections(in tableView: UITableView) -> Int {
@@ -223,22 +240,22 @@ class CompanyDetailsViewController: UIViewController, UITableViewDelegate, UITab
     //Rows: Set height for each row    
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat{
         var height:CGFloat = 120.0
-        if(indexPath.section == 0) {
+        if(indexPath.section == 0) { //header section
             height = 200.0
-        } else if(indexPath.section == 1) {
+        } else if(indexPath.section == 1) { //open positions section
             if(indexPath.row==0 || indexPath.row==company.positions.count+1) {
                 height = 5.0
             } else {
                 height = 40.0
             }
-        } else if(indexPath.section == 2) {
+        } else if(indexPath.section == 2) { //majors of interest section
             if(indexPath.row==0 || indexPath.row==company.majors.count+1) {
                 height = 5.0
             } else {
                 height = 40.0
             }
-        } else {
-            height = 110.0
+        } else { //notes section
+            height = 310.0
         }
         return height
     }
@@ -279,6 +296,7 @@ class CompanyDetailsViewController: UIViewController, UITableViewDelegate, UITab
         } else {
             let customCell = cell as! NotesTableViewCell
             customCell.companyName = company.name
+            customCell.notesTextView.tag = indexPath.row
             customCell.placeholderText = "Takes notes about \(company.name) here"
             
             if let savedNote = UserDefaults.standard.string(forKey: company.name) {

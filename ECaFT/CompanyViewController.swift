@@ -48,6 +48,9 @@ class CompanyViewController: UIViewController, UISearchBarDelegate, UIScrollView
         makeSearchBar()
         makeTableView()
         
+        //Get favorites array from information state controller
+        favorites = (informationStateController?.favoritesString)!
+        
         //Load data from firebase
         databaseRef = FIRDatabase.database().reference()
         storageRef = FIRStorage.storage().reference(forURL: "gs://ecaft-4a6e7.appspot.com/logos") //reference to logos folder in storage
