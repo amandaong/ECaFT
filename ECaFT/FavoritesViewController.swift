@@ -9,7 +9,7 @@
 import UIKit
 import Firebase
 
-class FavoritesViewController: UITableViewController, FavoritesProtocol {
+class FavoritesViewController: UITableViewController {
     var databaseRef: FIRDatabaseReference?
     var storageRef: FIRStorageReference?
     var databaseHandle: FIRDatabaseHandle?
@@ -27,7 +27,7 @@ class FavoritesViewController: UITableViewController, FavoritesProtocol {
         storageRef = FIRStorage.storage().reference(forURL: "gs://ecaft-4a6e7.appspot.com/logos")
         DispatchQueue.main.async {
             self.loadCompanyObjects()
-            self.infoSC.sortByCompanyName()
+            self.infoSC.sortCompaniesAlphabetically()
         }
     }
     
@@ -88,8 +88,10 @@ class FavoritesViewController: UITableViewController, FavoritesProtocol {
             }
             
             DispatchQueue.main.async {
+                self.infoSC.favoritesString.sort()
+                self.infoSC.clearCompanies()
                 self.loadCompanyObjects()
-                self.infoSC.sortByCompanyName()
+                self.infoSC.sortCompaniesAlphabetically()
                 self.saveChecks()
             }
             tableView.reloadData()
@@ -118,9 +120,11 @@ class FavoritesViewController: UITableViewController, FavoritesProtocol {
             for item in snapshot.children.allObjects as! [FIRDataSnapshot] {
                 let company = Company()
                 company.name = item.childSnapshot(forPath: Property.name.rawValue).value as! String
-                if (!(self.infoSC.favoritesString.contains(company.name))) {
+                let isFavCompany = self.infoSC.favoritesString.contains(company.name)
+                if (!isFavCompany) {
                     continue
                 }
+                print("\(company.name) is good")
                 company.information = item.childSnapshot(forPath: Property.information.rawValue).value as! String
                 company.location = item.childSnapshot(forPath: Property.location.rawValue).value as! String
                 
@@ -145,6 +149,7 @@ class FavoritesViewController: UITableViewController, FavoritesProtocol {
                     }
                 }
                 self.infoSC.addCompany(company)
+                
             }
         })
     }
@@ -198,10 +203,13 @@ class FavoritesViewController: UITableViewController, FavoritesProtocol {
     }
     
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        print("row: \(indexPath.row)\n")
+        for company in infoSC.companies {
+            print("\(company.name), ")
+        }
         let detailVC = CompanyDetailsViewController()
         detailVC.company = infoSC.companies[indexPath.row]
         detailVC.isFavorite = true
-        detailVC.delegate = self
         show(detailVC, sender: nil)
     }
 }
