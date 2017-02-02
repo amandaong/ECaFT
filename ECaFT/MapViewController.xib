@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="11762" systemVersion="16C67" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES">
+    <device id="retina4_0" orientation="portrait">
+        <adaptation id="fullscreen"/>
+    </device>
+    <dependencies>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="11757"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+    </dependencies>
+    <objects>
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="MapViewController" customModule="ECaFT" customModuleProvider="target">
+            <connections>
+                <outlet property="mapImageView" destination="mvr-qn-COy" id="QN2-kk-Rjv"/>
+                <outlet property="mapScrollView" destination="wI1-AN-tuB" id="dOQ-bj-iNR"/>
+                <outlet property="view" destination="i5M-Pr-FkT" id="sfx-zR-JGt"/>
+            </connections>
+        </placeholder>
+        <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
+        <view clearsContextBeforeDrawing="NO" contentMode="scaleToFill" id="i5M-Pr-FkT">
+            <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
+            <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+            <subviews>
+                <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="ecaftBackground" translatesAutoresizingMaskIntoConstraints="NO" id="mvr-qn-COy">
+                    <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
+                </imageView>
+                <scrollView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="wI1-AN-tuB" customClass="ImageScrollView" customModule="ImageScrollView">
+                    <rect key="frame" x="0.0" y="139" width="320" height="292"/>
+                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                </scrollView>
+            </subviews>
+            <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+            <constraints>
+                <constraint firstAttribute="trailing" secondItem="mvr-qn-COy" secondAttribute="trailing" id="car-T1-htX"/>
+                <constraint firstItem="mvr-qn-COy" firstAttribute="leading" secondItem="i5M-Pr-FkT" secondAttribute="leading" id="iKO-g4-xEH"/>
+                <constraint firstAttribute="bottom" secondItem="mvr-qn-COy" secondAttribute="bottom" id="tEI-qW-JRo"/>
+                <constraint firstItem="mvr-qn-COy" firstAttribute="top" secondItem="i5M-Pr-FkT" secondAttribute="top" id="xsm-2f-3Ri"/>
+            </constraints>
+            <point key="canvasLocation" x="33" y="115"/>
+        </view>
+    </objects>
+    <resources>
+        <image name="ecaftBackground" width="189" height="271"/>
+    </resources>
+</document>
