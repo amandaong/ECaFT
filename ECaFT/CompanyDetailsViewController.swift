@@ -22,11 +22,10 @@ class CompanyDetailsViewController: UIViewController, UITableViewDelegate, UITab
     var name = UILabel() //company name
     var isFavorite : Bool = false
     var location = UILabel() //company booth location
-    var sponsorLabel = UILabel()
-    var optcptLabel = UILabel()
+    
     var favoritesButton = UIButton()
-    let sectionTitles : [String] = ["Company Information", "Open Positions", "Majors of Interest", "Notes"]
-    var numOfSections = 4 //number of sections
+    let sectionTitles : [String] = ["Company Information", "Open Positions", "Majors of Interest", "Sponsorship", "OPT/CPT","Notes"]
+    var numOfSections = 6 //number of sections
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -39,10 +38,10 @@ class CompanyDetailsViewController: UIViewController, UITableViewDelegate, UITab
         //Regsiter custom cells and xib files
         tableView.register(CompanyInfoTableViewCell.self, forCellReuseIdentifier: "CompanyInfoTableViewCell")
         //tableView.register(ListTableViewCell.self, forCellReuseIdentifier: "ListTableViewCell")
-        //tableView.register(NotesTableViewCell.self, forCellReuseIdentifier: "NotesTableViewCell")
         tableView.register(UINib(nibName: "ListTableViewCell", bundle: Bundle.main), forCellReuseIdentifier: "ListTableViewCell")
+        tableView.register(textViewTableViewCell.self, forCellReuseIdentifier: "textViewTableViewCell")
         tableView.register(UINib(nibName: "NotesTableViewCell", bundle: Bundle.main), forCellReuseIdentifier: "NotesTableViewCell")
-        
+
         //Register notification observer for when keyboard shows & hides
         NotificationCenter.default.addObserver(self, selector: #selector(CompanyDetailsViewController.keyboardWillShow(notification:)), name: NSNotification.Name.UIKeyboardDidShow, object: nil)
         NotificationCenter.default.addObserver(self, selector: #selector(CompanyDetailsViewController.keyboardWillHide(notification:)), name: NSNotification.Name.UIKeyboardDidHide, object: nil)
@@ -63,8 +62,8 @@ class CompanyDetailsViewController: UIViewController, UITableViewDelegate, UITab
         tableView.tableHeaderView = headerView
         
         //Add image view
-        let imageView = UIImageView(frame: CGRect(x:0, y:0, width:125, height:125))
-        imageView.center.y = 0.5*(self.tableView.tableHeaderView?.frame.height)!
+        let imageView = UIImageView(frame: CGRect(x:0, y:0, width:110, height:110))
+        imageView.center.y = 0.48*(self.tableView.tableHeaderView?.frame.height)!
         imageView.center.x = 0.2*self.screenSize.width
         imageView.image = company.image
         imageView.contentMode = UIViewContentMode.scaleAspectFit
@@ -91,38 +90,18 @@ class CompanyDetailsViewController: UIViewController, UITableViewDelegate, UITab
         location.text = "Booth " + company.location
         self.tableView.tableHeaderView?.addSubview(location)
 
-        //Create sponsor label
-        sponsorLabel = UILabel(frame: CGRect(x: 0, y: 0, width: screenSize.width*0.75, height: 21))
-        sponsorLabel.textAlignment = NSTextAlignment.right
-        sponsorLabel.font = UIFont.systemFont(ofSize: 15)
-        sponsorLabel.textColor = UIColor.ecaftDarkGray
-        if(company.sponsor) {
-            sponsorLabel.text = "Does Sponsor"
-        } else {
-            sponsorLabel.text = "Does Not Sponsor"
-        }
-        self.tableView.tableHeaderView?.addSubview(sponsorLabel)
-
-        //Create opt/cpt label
-        optcptLabel = UILabel(frame: CGRect(x: 0, y: 0, width: screenSize.width*0.75, height: 21))
-        optcptLabel.textAlignment = NSTextAlignment.right
-        optcptLabel.font = UIFont.systemFont(ofSize: 15)
-        optcptLabel.textColor = UIColor.ecaftDarkGray
-        if(company.optcpt) {
-            optcptLabel.text = "Accepts OPT/CPT"
-        } else {
-            optcptLabel.text = "Does Not Accept OPT/CPT"
-        }
-        self.tableView.tableHeaderView?.addSubview(optcptLabel)
 
         //Create favorites button
         favoritesButton.setTitleColor(UIColor.ecaftGold, for: .normal)
-        favoritesButton.frame = CGRect(x: 0.425*screenSize.width, y: 0, width: 0.4*screenSize.width, height: 50)
+        favoritesButton.frame = CGRect(x: 0.38*screenSize.width, y: 0, width: 0.5*screenSize.width, height: 50)
+        if(screenSize.height < 667.0) { //iPhone 5s & below
+            favoritesButton.frame = CGRect(x: 0.41*screenSize.width, y: 0, width: 0.5*screenSize.width, height: 50)
+        }
         favoritesButton.addTarget(self, action: #selector(CompanyDetailsViewController.favoritesButtonPressed(button:)), for: .touchUpInside)
         
         //Move text to left of button image
         favoritesButton.transform = CGAffineTransform(scaleX: -1.0, y: 1.0)
-        favoritesButton.titleLabel?.font = UIFont.systemFont(ofSize: 15)
+        favoritesButton.titleLabel?.font = UIFont.systemFont(ofSize: 16)
         favoritesButton.titleLabel?.transform = CGAffineTransform(scaleX: -1.0, y: 1.0)
         favoritesButton.imageView?.transform = CGAffineTransform(scaleX: -1.0, y: 1.0)
         favoritesButton.centerTextAndImage(spacing: 10)
@@ -136,19 +115,13 @@ class CompanyDetailsViewController: UIViewController, UITableViewDelegate, UITab
         let numLines = Int(name.frame.size.height/name.font.ascender) //Divide height of multiline label by line height of UILabel's font (from text to top of label's frame)
         if (numLines < 2) {
             location.center.y = 0.38*(self.tableView.tableHeaderView?.frame.height)!
-            favoritesButton.center.y = 0.55*(self.tableView.tableHeaderView?.frame.height)!
-            sponsorLabel.center = CGPoint(x: 0.58*screenSize.width, y: 0.75*(self.tableView.tableHeaderView?.frame.height)!)
-            optcptLabel.center = CGPoint(x: 0.58*screenSize.width, y: 0.88*(self.tableView.tableHeaderView?.frame.height)!)
+            favoritesButton.center.y = 0.57*(self.tableView.tableHeaderView?.frame.height)!
         } else if (numLines == 2){
             location.center.y = 0.53*(self.tableView.tableHeaderView?.frame.height)!
-            favoritesButton.center.y = 0.67*(self.tableView.tableHeaderView?.frame.height)!
-            sponsorLabel.center = CGPoint(x: 0.58*screenSize.width, y: 0.82*(self.tableView.tableHeaderView?.frame.height)!)
-            optcptLabel.center = CGPoint(x: 0.58*screenSize.width, y: 0.92*(self.tableView.tableHeaderView?.frame.height)!)
+            favoritesButton.center.y = 0.69*(self.tableView.tableHeaderView?.frame.height)!
         } else { //numLines is 3
             location.center.y = 0.66*(self.tableView.tableHeaderView?.frame.height)!
             favoritesButton.center.y = 0.83*(self.tableView.tableHeaderView?.frame.height)!
-            sponsorLabel.text = ""
-            optcptLabel.text = ""
         }
     }
     
@@ -228,15 +201,15 @@ class CompanyDetailsViewController: UIViewController, UITableViewDelegate, UITab
     //Rows: Set num of rows per section
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int
     {
-        if(section == 0) {
+        if(section == 0) { //Company information sect
             return 1
         }
-        else if (section == 1) {
+        else if (section == 1) { //Open positions sect
             return company.positions.count + 2
         }
-        else if (section == 2) {
+        else if (section == 2) { //Majors sect
             return company.majors.count + 2
-        } else {
+        } else { //Sponsorship sect, OPT/CPT sect
             return 1
         }
     }
@@ -258,14 +231,19 @@ class CompanyDetailsViewController: UIViewController, UITableViewDelegate, UITab
             } else {
                 height = 40.0
             }
-        } else { //notes section
+        } else if (indexPath.section == 3) { //sponsorship section (3)
+            height = 60.0
+        } else if (indexPath.section == 4) { //OPT/CPT section (4)
+            height = 40.0
+        }
+        else { //notes section
             height = 310.0
         }
         return height
     }
     
     //Table: Load in custom cells
-    let customCellIdentifier = [0: "CompanyInfoTableViewCell", 1 : "ListTableViewCell", 2 : "ListTableViewCell", 3 : "NotesTableViewCell"]
+    let customCellIdentifier = [0: "CompanyInfoTableViewCell", 1 : "ListTableViewCell", 2 : "ListTableViewCell", 3 : "textViewTableViewCell", 4 : "textViewTableViewCell", 5 : "NotesTableViewCell"]
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell
     {
@@ -297,7 +275,25 @@ class CompanyDetailsViewController: UIViewController, UITableViewDelegate, UITab
                 }
             }
             return customCell
-        } else {
+        } else if (identifier == customCellIdentifier[3] || identifier == customCellIdentifier[4]) {
+            let customCell = cell as! textViewTableViewCell
+            if(indexPath.section == 3) {
+                print("does sponsor: \(company.sponsor)")
+                if(company.sponsor) {
+                    customCell.bodyTextView.text = "The company can sponsor the candidate"
+                } else {
+                    customCell.bodyTextView.text = "The company cannot sponsor the candidate"
+                }
+            } else if (indexPath.section == 4) {
+                if(company.optcpt) {
+                    customCell.bodyTextView.text = "The company accepts opt/cpt"
+                } else {
+                    customCell.bodyTextView.text = "The company does not accept opt/cpt"
+                }
+            }
+            return customCell
+        }
+        else {
             let customCell = cell as! NotesTableViewCell
             customCell.companyName = company.name
             customCell.notesTextView.tag = indexPath.row

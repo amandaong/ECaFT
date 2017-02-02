@@ -48,6 +48,10 @@ class CompanyInfoTableViewCell: UITableViewCell {
         websiteButton.titleLabel?.font = .systemFont(ofSize: 15)
         websiteButton.setTitleColor(UIColor.ecaftRed, for: .normal)
         websiteButton.frame = CGRect(x: horOffSet, y: 0, width: 0.34*screenSize.width, height: 30)
+        if(screenSize.height < 667.0) { //iPhone 5s & below
+            websiteButton.frame = CGRect(x: horOffSet, y: 0, width: 0.4*screenSize.width, height: 30)
+            print("ipohne 5s")
+        }
         websiteButton.center.y = 175
         websiteButton.addTarget(self, action: #selector(CompanyInfoTableViewCell.websiteButtonPressed(button:)), for: .touchUpInside)
         
