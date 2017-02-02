@@ -13,7 +13,7 @@ class MapViewController: UIViewController {
     @IBOutlet weak var mapScrollView: ImageScrollView!
     @IBOutlet weak var mapImageView: UIImageView!
 
-    override func viewDidLoad() {
+    override func viewDidLoad() { 
         super.viewDidLoad()
         
         let topHeight = UIApplication.shared.statusBarFrame.height + (navigationController?.navigationBar.frame.height)!
