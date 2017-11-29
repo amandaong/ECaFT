@@ -58,18 +58,18 @@ class CompanyViewController: UIViewController, UISearchBarDelegate, UIScrollView
             appliedFilters = NSKeyedUnarchiver.unarchiveObject(with: filters) as! [String]
         }
         
-        let filterButton = UIBarButtonItem(image: #imageLiteral(resourceName: "filter"), style: .plain, target: self, action: #selector(filterButtonTapped))
+        let filterButton = UIBarButtonItem(title: "Filter", style: .plain, target: self, action: #selector(filterButtonTapped))
         navigationController?.navigationBar.topItem?.rightBarButtonItem = filterButton
         tapsOutsideFilterButton = UIButton(frame: view.frame)
         setUpFilter()
         isFilterDropDown = false
     }
-    
+   
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         
         if (isViewLoaded) {
-            let filterButton = UIBarButtonItem(image: #imageLiteral(resourceName: "filter"), style: .plain, target: self, action: #selector(filterButtonTapped))
+            let filterButton = UIBarButtonItem(title: "Filter", style: .plain, target: self, action: #selector(filterButtonTapped))
             navigationController?.navigationBar.topItem?.rightBarButtonItem = filterButton
         }
         
@@ -137,7 +137,7 @@ class CompanyViewController: UIViewController, UISearchBarDelegate, UIScrollView
         })
     }
 
-    func filterButtonTapped() {
+    @objc func filterButtonTapped() {
         let transform: CGFloat = isFilterDropDown! ? 0.001 : 1
         UIView.animate(withDuration: 0.2, animations: {
             self.scrollFilterView.transform = CGAffineTransform(scaleX: transform, y: transform)
@@ -154,9 +154,10 @@ class CompanyViewController: UIViewController, UISearchBarDelegate, UIScrollView
         let contentWidth: CGFloat = UIScreen.main.bounds.width
         let contentHeight: CGFloat = CGFloat(filterOptions.count) * buttonHeight
         
-        //create arrow for drop-down menu
+        //create triangle arrow for drop-down menu
         let filterBarButton = navigationController?.navigationBar.topItem?.rightBarButtonItem
-        let x = (filterBarButton?.value(forKey: "view")! as AnyObject).frame.minX + ((filterBarButton?.value(forKey: "view")! as AnyObject).size.width / 2) - 5
+        let btnView = filterBarButton?.value(forKey: "view") != nil ? filterBarButton?.value(forKey: "view") as AnyObject : UIView(frame: CGRect(x: 0, y: 0, width: 10, height: 10))
+        let x = btnView.frame.minX + (btnView.size.width / 2) - 5
         arrowIV = UIImageView(frame: CGRect(x: x, y: (navigationController?.navigationBar.frame.height)! + UIApplication.shared.statusBarFrame.height - 10, width: 10, height: 10))
         arrowIV.image = #imageLiteral(resourceName: "arrow")
         setAnchorPoint(CGPoint(x: 0.5, y: 1.0), forView: arrowIV)
@@ -200,7 +201,7 @@ class CompanyViewController: UIViewController, UISearchBarDelegate, UIScrollView
         }
 
         // make the drop-down menu open/close from the arrow
-        let anchorPoint = CGPoint(x: 1 - (filterBarButton?.value(forKey: "view") as! UIView).frame.size.width / 2 / contentWidth, y: 0)
+        let anchorPoint = CGPoint(x: 1 - btnView.frame.size.width / 2 / contentWidth, y: 0)
         setAnchorPoint(anchorPoint, forView: scrollFilterView)
         
         view.addSubview(scrollFilterView)
@@ -212,7 +213,7 @@ class CompanyViewController: UIViewController, UISearchBarDelegate, UIScrollView
         UserDefaults.standard.set(savedData, forKey: Property.appliedFilters.rawValue)
     }
 
-    func filterOptionTapped(_ sender: UIButton) {
+    @objc func filterOptionTapped(_ sender: UIButton) {
         let filterBy = (sender.titleLabel?.text)!
         if (sender.tag == 0) { //user is checking
             appliedFilters.append(filterBy)
@@ -403,7 +404,7 @@ class CompanyViewController: UIViewController, UISearchBarDelegate, UIScrollView
         return customCell
     }
     
-    func toggleFavorite(sender: UIButton) {
+    @objc func toggleFavorite(sender: UIButton) {
         let touchPoint = sender.convert(CGPoint(x: 0, y: 0), to: companyTableView)
         let indexPath = companyTableView.indexPathForRow(at: touchPoint)
         var company: Company!

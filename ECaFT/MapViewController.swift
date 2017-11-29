@@ -17,8 +17,7 @@ class MapViewController: UIViewController {
         super.viewDidLoad()
         
         let topHeight = UIApplication.shared.statusBarFrame.height + (navigationController?.navigationBar.frame.height)!
-        let bottomHeight = tabBarController?.tabBar.frame.height
-
+        let bottomHeight = tabBarController?.tabBar.frame.height != nil ? tabBarController?.tabBar.frame.height : 0
         let width = UIScreen.main.bounds.width
         let height = width * 1.29
         let y = (UIScreen.main.bounds.height - topHeight - bottomHeight!) / 2 - height / 2.0

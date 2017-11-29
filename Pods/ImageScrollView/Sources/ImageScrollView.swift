@@ -130,7 +130,7 @@ open class ImageScrollView: UIScrollView {
 
     // MARK: - Display image
     
-    open func display(image image: UIImage) {
+    open func display(image: UIImage) {
 
         if let zoomView = zoomView {
             zoomView.removeFromSuperview()
@@ -178,7 +178,7 @@ open class ImageScrollView: UIScrollView {
     
     // MARK: - Gesture
     
-    func doubleTapGestureRecognizer(_ gestureRecognizer: UIGestureRecognizer) {
+    @objc func doubleTapGestureRecognizer(_ gestureRecognizer: UIGestureRecognizer) {
         // zoom out if it bigger than middle scale point. Else, zoom in
         if zoomScale >= maximumZoomScale / 2.0 {
             setZoomScale(minimumZoomScale, animated: true)

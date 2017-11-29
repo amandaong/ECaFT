@@ -178,7 +178,7 @@ class FavoritesViewController: UITableViewController {
         return cell
     }
     
-    func toggleCheck(sender: UIButton) {
+    @objc func toggleCheck(sender: UIButton) {
         let touchPoint = sender.convert(CGPoint(x: 0, y: 0), to: tableView)
         let indexPath = tableView.indexPathForRow(at: touchPoint)!
 

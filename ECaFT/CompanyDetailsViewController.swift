@@ -125,7 +125,7 @@ class CompanyDetailsViewController: UIViewController, UITableViewDelegate, UITab
         }
     }
     
-    func favoritesButtonPressed(button: UIButton!) {
+    @objc func favoritesButtonPressed(button: UIButton!) {
         //Add to favorites data list and change uibutton image to filled in star
          if (!isFavorite) { //wants to add company
             setUpFavorite()
@@ -160,13 +160,13 @@ class CompanyDetailsViewController: UIViewController, UITableViewDelegate, UITab
         NotificationCenter.default.removeObserver(self)
     }
     
-    func keyboardWillShow(notification: NSNotification) {
+    @objc func keyboardWillShow(notification: NSNotification) {
         if let keyboardHeight = (notification.userInfo?[UIKeyboardFrameEndUserInfoKey] as? NSValue)?.cgRectValue.height {
             tableView.contentInset = UIEdgeInsetsMake(0, 0, keyboardHeight, 0)
         }
     }
     
-    func keyboardWillHide(notification: NSNotification) {
+    @objc func keyboardWillHide(notification: NSNotification) {
         UIView.animate(withDuration: 0.2, animations: {
             // For some reason adding inset in keyboardWillShow is animated by itself but removing is not, that's why we have to use animateWithDuration here
             self.tableView.contentInset = UIEdgeInsetsMake(0, 0, 0, 0)

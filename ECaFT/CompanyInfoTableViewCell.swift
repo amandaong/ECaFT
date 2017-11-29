@@ -64,7 +64,7 @@ class CompanyInfoTableViewCell: UITableViewCell {
         
     }
     
-    func websiteButtonPressed(button: UIButton!) {
+    @objc func websiteButtonPressed(button: UIButton!) {
         if let url = NSURL(string: websiteLink!){
             UIApplication.shared.open(url as URL, options: [:], completionHandler: nil)
         }
