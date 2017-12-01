@@ -16,16 +16,7 @@ class CompanyViewController: UIViewController, UISearchBarDelegate, UIScrollView
     var allCompanies : [Company] = []
     var filteredCompanies : [Company] = []
     var appliedFilters : [String] = []
-    var isFilterOn : Bool = false
     var searchBar : UISearchBar!
-    var firstLoad : Bool! = true
-    var scrollFilterView : UIScrollView!
-    var filterTitle : UILabel!
-    var isFilterDropDown : Bool!
-    var tapsOutsideFilterButton : UIButton!
-    var scrollView : UIScrollView!
-    var arrowIV : UIImageView!
-    var checkIV : UIImageView!
     
     //favorites
     var favoriteUpdateStatus : (Int, String) = (0, "")
@@ -60,9 +51,6 @@ class CompanyViewController: UIViewController, UISearchBarDelegate, UIScrollView
         
         let filterButton = UIBarButtonItem(title: "Filter", style: .plain, target: self, action: #selector(filterButtonTapped))
         navigationController?.navigationBar.topItem?.rightBarButtonItem = filterButton
-        tapsOutsideFilterButton = UIButton(frame: view.frame)
-        setUpFilter()
-        isFilterDropDown = false
     }
    
     override func viewWillAppear(_ animated: Bool) {
@@ -74,10 +62,6 @@ class CompanyViewController: UIViewController, UISearchBarDelegate, UIScrollView
         }
         
         navigationController?.navigationBar.topItem?.title = "Companies"
-        UIView.animate(withDuration: 0.0, animations: {
-            self.scrollFilterView.transform = CGAffineTransform(scaleX: 0.001, y: 0.001)
-            self.arrowIV.transform = CGAffineTransform(scaleX: 0.001, y: 0.001)
-        })
         
         if let favs = UserDefaults.standard.object(forKey: Property.favorites.rawValue) as? Data {
             let temp = NSKeyedUnarchiver.unarchiveObject(with: favs) as! [String]
@@ -138,95 +122,14 @@ class CompanyViewController: UIViewController, UISearchBarDelegate, UIScrollView
     }
 
     @objc func filterButtonTapped() {
-        let transform: CGFloat = isFilterDropDown! ? 0.001 : 1
-        UIView.animate(withDuration: 0.2, animations: {
-            self.scrollFilterView.transform = CGAffineTransform(scaleX: transform, y: transform)
-            self.arrowIV.transform = CGAffineTransform(scaleX: transform, y: transform)
-        })
-        
-        tapsOutsideFilterButton.isHidden = isFilterDropDown
-        isFilterDropDown = !isFilterDropDown
-    }
-    
-    func setUpFilter() {
-        let filterOptions = ["Aerospace Engineering", "Atmospheric Science", "Biological Engineering", "Biomedical Engineering", "Biological and Environmental Engineering", "Chemical Engineering", "Civil Engineering", "Computer Science", "Electrical and Computer Engineering", "Engineering Management", "Engineering Physics", "Environmental Engineering", "Information Science", "Materials Science and Engineering", "Mechanical Engineering", "Operations Research and Engineering", "Systems Engineering"]
-        let buttonHeight: CGFloat = UIScreen.main.bounds.height / 13
-        let contentWidth: CGFloat = UIScreen.main.bounds.width
-        let contentHeight: CGFloat = CGFloat(filterOptions.count) * buttonHeight
-        
-        //create triangle arrow for drop-down menu
-        let filterBarButton = navigationController?.navigationBar.topItem?.rightBarButtonItem
-        let btnView = filterBarButton?.value(forKey: "view") != nil ? filterBarButton?.value(forKey: "view") as AnyObject : UIView(frame: CGRect(x: 0, y: 0, width: 10, height: 10))
-        let x = btnView.frame.minX + (btnView.size.width / 2) - 5
-        arrowIV = UIImageView(frame: CGRect(x: x, y: (navigationController?.navigationBar.frame.height)! + UIApplication.shared.statusBarFrame.height - 10, width: 10, height: 10))
-        arrowIV.image = #imageLiteral(resourceName: "arrow")
-        setAnchorPoint(CGPoint(x: 0.5, y: 1.0), forView: arrowIV)
-        UIApplication.shared.keyWindow?.addSubview(arrowIV)
-        
-        //closes filter when user taps anywhere on screen
-        tapsOutsideFilterButton.backgroundColor = .clear
-        tapsOutsideFilterButton.isHidden = true
-        tapsOutsideFilterButton.addTarget(self, action: #selector(filterButtonTapped), for: .touchUpInside)
-        view.addSubview(tapsOutsideFilterButton)
-        
-        //enable scrolling
-        scrollFilterView =  UIScrollView(frame: CGRect(x: 0, y: 0, width: contentWidth, height: UIScreen.main.bounds.height / 2.0))
-        scrollFilterView.delegate = self
-        scrollFilterView.contentSize = CGSize(width: contentWidth, height: contentHeight)
-        
-        //create options button
-        for (index, title) in filterOptions.enumerated() {
-            let button = UIButton(type: .custom)
-            button.backgroundColor = .white
-            button.frame = CGRect(x: 0, y: buttonHeight * CGFloat(index), width: contentWidth, height: buttonHeight)
-            button.layer.borderWidth = 0.5
-            button.layer.borderColor = UIColor(red: 203/255.0, green: 208/255.0, blue: 216/255.0, alpha: 1.0).cgColor
-
-            if (appliedFilters.contains(title)) {
-                button.tag = 1
-                button.setImage(#imageLiteral(resourceName: "check_filter2"), for: .normal)
-            } else {
-                button.tag = 0
-                button.setImage(#imageLiteral(resourceName: "uncheck_filter"), for: .normal)
-            }
-            button.imageEdgeInsets = UIEdgeInsets(top: 15, left: contentWidth - contentWidth / 9, bottom: 15, right: contentWidth / 20)
-            button.setTitleColor(.ecaftRed, for: .normal)
-            button.setTitle(title, for: .normal)
-            button.titleLabel?.font = UIFont(name: "Helvetica", size: UIScreen.main.bounds.height > 568 ? 14.0 : 12.0)
-            button.titleLabel?.numberOfLines = 0
-            button.contentHorizontalAlignment = .left
-            button.titleEdgeInsets = UIEdgeInsets(top: 0, left: -(contentWidth / 14), bottom: 0, right: (button.currentImage?.size.width)!)
-            button.addTarget(self, action: #selector(filterOptionTapped(_:)), for: .touchUpInside)
-            scrollFilterView.addSubview(button)
-        }
-
-        // make the drop-down menu open/close from the arrow
-        let anchorPoint = CGPoint(x: 1 - btnView.frame.size.width / 2 / contentWidth, y: 0)
-        setAnchorPoint(anchorPoint, forView: scrollFilterView)
-        
-        view.addSubview(scrollFilterView)
+        let filtersVC = FiltersViewController()
+        self.navigationController?.pushViewController(filtersVC, animated: true)
     }
     
     func save() {
         UserDefaults.standard.removeObject(forKey: Property.appliedFilters.rawValue)
         let savedData = NSKeyedArchiver.archivedData(withRootObject: appliedFilters)
         UserDefaults.standard.set(savedData, forKey: Property.appliedFilters.rawValue)
-    }
-
-    @objc func filterOptionTapped(_ sender: UIButton) {
-        let filterBy = (sender.titleLabel?.text)!
-        if (sender.tag == 0) { //user is checking
-            appliedFilters.append(filterBy)
-            sender.tag = 1
-            sender.setImage(#imageLiteral(resourceName: "check_filter2"), for: .normal)
-        } else {
-            if let index = appliedFilters.index(of: filterBy) {
-                appliedFilters.remove(at: index)
-            }
-            sender.tag = 0
-            sender.setImage(#imageLiteral(resourceName: "uncheck_filter"), for: .normal)
-        }
-        applyFilters()
     }
 
     func applyFilters() {
