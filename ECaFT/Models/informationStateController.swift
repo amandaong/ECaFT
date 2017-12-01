@@ -3,7 +3,7 @@
 //  ECaFT
 //
 //  Created by Amanda Ong on 1/11/17.
-//  Copyright © 2017 loganallen. All rights reserved.
+//  Copyright © 2017 ECAFT. All rights reserved.
 //
 
 import Foundation

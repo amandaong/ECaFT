@@ -3,7 +3,7 @@
 //  ECaFT
 //
 //  Created by Logan Allen on 11/22/16.
-//  Copyright © 2016 loganallen. All rights reserved.
+//  Copyright © 2016 ECAFT. All rights reserved.
 //
 
 import UIKit
@@ -64,7 +64,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
     func applicationWillTerminate(_ application: UIApplication) {
         // Called when the application is about to terminate. Save data if appropriate. See also applicationDidEnterBackground:.
-        CompanyDataController.saveContext()
     }
     
 

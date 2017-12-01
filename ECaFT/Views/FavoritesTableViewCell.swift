@@ -3,7 +3,7 @@
 //  ECaFT
 //
 //  Created by Emily Lien on 1/28/17.
-//  Copyright © 2017 loganallen. All rights reserved.
+//  Copyright © 2017 ECAFT. All rights reserved.
 //
 
 import UIKit
