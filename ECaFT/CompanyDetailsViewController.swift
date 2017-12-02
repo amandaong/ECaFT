@@ -22,13 +22,31 @@ class CompanyDetailsViewController: UIViewController, UITableViewDelegate, UITab
     var name = UILabel() //company name
     var isFavorite : Bool = false
     var location = UILabel() //company booth location
-    
     var favoritesButton = UIButton()
-    let sectionTitles : [String] = ["Company Information", "Open Positions", "Majors of Interest", "Sponsorship", "OPT/CPT","Notes"]
-    var numOfSections = 6 //number of sections
+    
+    //segmented control
+    let segmentTitles : [String] = ["Company Info", "Notes"]
+    var segControl = UISegmentedControl()
+    
+    //Sections in "Company Info"
+    let compInfoSectionTitles : [String] = ["Company Information", "Open Positions", "Majors of Interest", "Sponsorship", "OPT/CPT","Notes"]
+    var compInfoNumOfSections = 6 //number of sections in "Company Info"
+    
+    //Sections in "Notes"
+    let notesSectionTitles : [String] = ["Notes", "Photos"]
+    var notesNumOfSections = 2 //number of sections in "Notes"
+    
+    //Section titles in general
+    var sectionTitles : [String] = []
+    
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        /*
+        //initialize segmented control
+        segControl = UISegmentedControl(items: segmentTitles)
+        segControl.selectedSegmentIndex = 0*/
+        
         let navBarAndStatusBarHeight = (self.navigationController?.navigationBar.frame.size.height)!+UIApplication.shared.statusBarFrame.height
         tableView = UITableView(frame: CGRect(x: 0, y: 0, width: screenSize.width, height: screenSize.height - navBarAndStatusBarHeight), style: UITableViewStyle.plain) //sets tableview to size of view below status bar and nav bar
         tableView.delegate      =   self
@@ -111,6 +129,19 @@ class CompanyDetailsViewController: UIViewController, UITableViewDelegate, UITab
         
         self.tableView.tableHeaderView?.addSubview(favoritesButton)
         
+        //Create segmented control
+        segControl = UISegmentedControl(items: segmentTitles)
+        segControl.selectedSegmentIndex = 0
+        
+        segControl.frame = CGRect(x: 0.43*screenSize.width, y: 0, width: screenSize.width*0.75, height: 21)
+        segControl.layer.cornerRadius = 5.0
+        segControl.backgroundColor = UIColor.white
+        segControl.tintColor = UIColor.ecaftRed
+        
+        segControl.addTarget(self, action: #selector(CompanyDetailsViewController.segmentControlHandler(sender:)), for: .valueChanged)
+        
+        self.tableView.tableHeaderView?.addSubview(segControl)
+        
         //Calculate num of lines for company name label & adjust booth location label accordingly
         let numLines = Int(name.frame.size.height/name.font.ascender) //Divide height of multiline label by line height of UILabel's font (from text to top of label's frame)
         if (numLines < 2) {
@@ -145,6 +176,11 @@ class CompanyDetailsViewController: UIViewController, UITableViewDelegate, UITab
         UserDefaults.standard.set(savedData, forKey: Property.favorites.rawValue)
     }
     
+    func segmentControlHandler(sender: UISegmentedControl){
+        //Handler for when custom Segmented Control changes and will change the content of the following table depending on the value selected
+        print("Selected segment index is: \(sender.selectedSegmentIndex)")
+    }
+    
     func setUpFavorite() {
         favoritesButton.setImage(#imageLiteral(resourceName: "favoritesFilled"), for: .normal)
         favoritesButton.setTitle("Remove favorites", for: .normal)
@@ -176,10 +212,30 @@ class CompanyDetailsViewController: UIViewController, UITableViewDelegate, UITab
     /*****------------------------------TABLE VIEW METHODS------------------------------*****/
     //Section: Set number of sections and section headers
     func numberOfSections(in tableView: UITableView) -> Int {
+        var numOfSections = compInfoNumOfSections
+        
+        switch(segControl.selectedSegmentIndex){
+        
+        case 1:
+            numOfSections = notesNumOfSections
+            
+        default:
+            numOfSections = compInfoNumOfSections
+        }
+        
         return numOfSections
     }
     
     func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
+        switch(segControl.selectedSegmentIndex){
+            
+        case 1:
+            sectionTitles = notesSectionTitles
+            
+        default:
+            sectionTitles = compInfoSectionTitles
+        }
+        
         return sectionTitles[section]
     }
 
@@ -201,53 +257,67 @@ class CompanyDetailsViewController: UIViewController, UITableViewDelegate, UITab
     //Rows: Set num of rows per section
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int
     {
-        if(section == 0) { //Company information sect
-            return 1
+        if(segControl.selectedSegmentIndex==1) {  //"Notes" page
+            return 1 //for Notes sect and Photos sect
         }
-        else if (section == 1) { //Open positions sect
-            return company.positions.count + 2
-        }
-        else if (section == 2) { //Majors sect
-            return company.majors.count + 2
-        } else { //Sponsorship sect, OPT/CPT sect
-            return 1
+        else {  //"Company Info" page
+            if(section == 0) { //Company information sect
+                return 1
+            }
+            else if (section == 1) { //Open positions sect
+                return company.positions.count + 2
+            }
+            else if (section == 2) { //Majors sect
+                return company.majors.count + 2
+            } else { //Sponsorship sect, OPT/CPT sect
+                return 1
+            }
         }
     }
     
     //Rows: Set height for each row    
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat{
         var height:CGFloat = 120.0
-        if(indexPath.section == 0) { //header section
-            height = 200.0
-        } else if(indexPath.section == 1) { //open positions section
-            if(indexPath.row==0 || indexPath.row==company.positions.count+1) {
-                height = 5.0
-            } else {
-                height = 40.0
-            }
-        } else if(indexPath.section == 2) { //majors of interest section
-            if(indexPath.row==0 || indexPath.row==company.majors.count+1) {
-                height = 5.0
-            } else {
-                height = 40.0
-            }
-        } else if (indexPath.section == 3) { //sponsorship section (3)
-            height = 60.0
-        } else if (indexPath.section == 4) { //OPT/CPT section (4)
-            height = 40.0
+        if(segControl.selectedSegmentIndex==1) {  //"Notes" page
+            height = 200.0 //for Notes sect and Photos sect
         }
-        else { //notes section
-            height = 310.0
+        else {  //"Company Info" page
+            if(indexPath.section == 0) { //company info section
+                height = 200.0
+            } else if(indexPath.section == 1) { //open positions section
+                if(indexPath.row==0 || indexPath.row==company.positions.count+1) {
+                    height = 5.0
+                } else {
+                    height = 40.0
+                }
+            } else if(indexPath.section == 2) { //majors of interest section
+                if(indexPath.row==0 || indexPath.row==company.majors.count+1) {
+                    height = 5.0
+                } else {
+                    height = 40.0
+                }
+            } else if (indexPath.section == 3) { //sponsorship section (3)
+                height = 60.0
+            } else if (indexPath.section == 4) { //OPT/CPT section (4)
+                height = 40.0
+            }
+            else { //notes section
+                height = 310.0
+            }
         }
         return height
     }
     
     //Table: Load in custom cells
     let customCellIdentifier = [0: "CompanyInfoTableViewCell", 1 : "ListTableViewCell", 2 : "ListTableViewCell", 3 : "textViewTableViewCell", 4 : "textViewTableViewCell", 5 : "NotesTableViewCell"]
+    let notesCustomCellIdentifier = [0: "NotesTableViewCell", 1: ""] //NEED TO CREATE NEW TABLEVIEW CELL FOR PHOTOS SECTION
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell
     {
-        let identifier = customCellIdentifier[indexPath.section]
+        var identifier = customCellIdentifier[indexPath.section]
+        if(segControl.selectedSegmentIndex==1) {
+            identifier = notesCustomCellIdentifier[indexPath.section]
+        }
         let cell = tableView.dequeueReusableCell(withIdentifier: identifier!, for: indexPath)
         
         //Remove left indent for text in cell
@@ -293,7 +363,7 @@ class CompanyDetailsViewController: UIViewController, UITableViewDelegate, UITab
             }
             return customCell
         }
-        else {
+        else {  //applies to "Notes" page as well. Change up later to implement photos section
             let customCell = cell as! NotesTableViewCell
             customCell.companyName = company.name
             customCell.notesTextView.tag = indexPath.row
