@@ -29,23 +29,19 @@ class CompanyDetailsViewController: UIViewController, UITableViewDelegate, UITab
     var segControl = UISegmentedControl()
     
     //Sections in "Company Info"
-    let compInfoSectionTitles : [String] = ["Company Information", "Open Positions", "Majors of Interest", "Sponsorship", "OPT/CPT","Notes"]
-    var compInfoNumOfSections = 6 //number of sections in "Company Info"
+    let compInfoSectionTitles : [String] = ["Company Information", "Open Positions", "Majors of Interest", "Sponsorship", "OPT/CPT"]
+    var compInfoNumOfSections = 5 //number of sections in "Company Info"
     
     //Sections in "Notes"
     let notesSectionTitles : [String] = ["Notes", "Photos"]
     var notesNumOfSections = 2 //number of sections in "Notes"
     
-    //Section titles in general
-    var sectionTitles : [String] = []
+    
     
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        /*
-        //initialize segmented control
-        segControl = UISegmentedControl(items: segmentTitles)
-        segControl.selectedSegmentIndex = 0*/
+        
         
         let navBarAndStatusBarHeight = (self.navigationController?.navigationBar.frame.size.height)!+UIApplication.shared.statusBarFrame.height
         tableView = UITableView(frame: CGRect(x: 0, y: 0, width: screenSize.width, height: screenSize.height - navBarAndStatusBarHeight), style: UITableViewStyle.plain) //sets tableview to size of view below status bar and nav bar
@@ -75,13 +71,13 @@ class CompanyDetailsViewController: UIViewController, UITableViewDelegate, UITab
     }
   
     func createHeaderView() {
-        headerView = UIView(frame: CGRect(x: 0, y: 0, width: screenSize.width, height: 150))
+        headerView = UIView(frame: CGRect(x: 0, y: 0, width: screenSize.width, height: 200))
         headerView.backgroundColor = UIColor.white
         tableView.tableHeaderView = headerView
         
         //Add image view
         let imageView = UIImageView(frame: CGRect(x:0, y:0, width:110, height:110))
-        imageView.center.y = 0.48*(self.tableView.tableHeaderView?.frame.height)!
+        imageView.center.y = 0.375*(self.tableView.tableHeaderView?.frame.height)!
         imageView.center.x = 0.2*self.screenSize.width
         imageView.image = company.image
         imageView.contentMode = UIViewContentMode.scaleAspectFit
@@ -133,7 +129,8 @@ class CompanyDetailsViewController: UIViewController, UITableViewDelegate, UITab
         segControl = UISegmentedControl(items: segmentTitles)
         segControl.selectedSegmentIndex = 0
         
-        segControl.frame = CGRect(x: 0.43*screenSize.width, y: 0, width: screenSize.width*0.75, height: 21)
+        segControl.frame = CGRect(x: 0.25*screenSize.width, y: (self.tableView.tableHeaderView?.frame.height)! - 38, width: screenSize.width*0.5, height: 26)
+        segControl.center.x = 0.5*self.screenSize.width
         segControl.layer.cornerRadius = 5.0
         segControl.backgroundColor = UIColor.white
         segControl.tintColor = UIColor.ecaftRed
@@ -176,9 +173,10 @@ class CompanyDetailsViewController: UIViewController, UITableViewDelegate, UITab
         UserDefaults.standard.set(savedData, forKey: Property.favorites.rawValue)
     }
     
-    func segmentControlHandler(sender: UISegmentedControl){
+    @IBAction func segmentControlHandler(sender: UISegmentedControl){
         //Handler for when custom Segmented Control changes and will change the content of the following table depending on the value selected
         print("Selected segment index is: \(sender.selectedSegmentIndex)")
+        tableView.reloadData()
     }
     
     func setUpFavorite() {
@@ -227,6 +225,8 @@ class CompanyDetailsViewController: UIViewController, UITableViewDelegate, UITab
     }
     
     func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
+        var sectionTitles : [String] = compInfoSectionTitles
+        
         switch(segControl.selectedSegmentIndex){
             
         case 1:
@@ -246,9 +246,19 @@ class CompanyDetailsViewController: UIViewController, UITableViewDelegate, UITab
         
         let label = UILabel(frame: CGRect(x: 0.05*screenSize.width, y: 0, width: screenSize.width, height: 25))
         label.center.y = 0.5*label.frame.height
-        label.text = self.sectionTitles[section]
+        //label.text = sectionTitles[section]
         label.font = UIFont.boldSystemFont(ofSize: 16.0)
         label.textColor = .ecaftDarkGray
+        
+        switch(segControl.selectedSegmentIndex){
+            
+        case 1:
+            label.text = notesSectionTitles[section]
+            
+        default:
+            label.text = compInfoSectionTitles[section]
+        }
+        
         returnedView.addSubview(label)
         
         return returnedView
@@ -299,9 +309,9 @@ class CompanyDetailsViewController: UIViewController, UITableViewDelegate, UITab
             } else if (indexPath.section == 3) { //sponsorship section (3)
                 height = 60.0
             } else if (indexPath.section == 4) { //OPT/CPT section (4)
-                height = 40.0
+                height = 60.0
             }
-            else { //notes section
+            else { //default (Can delete or make OPT/CPT section height into 310)
                 height = 310.0
             }
         }
@@ -309,8 +319,8 @@ class CompanyDetailsViewController: UIViewController, UITableViewDelegate, UITab
     }
     
     //Table: Load in custom cells
-    let customCellIdentifier = [0: "CompanyInfoTableViewCell", 1 : "ListTableViewCell", 2 : "ListTableViewCell", 3 : "textViewTableViewCell", 4 : "textViewTableViewCell", 5 : "NotesTableViewCell"]
-    let notesCustomCellIdentifier = [0: "NotesTableViewCell", 1: ""] //NEED TO CREATE NEW TABLEVIEW CELL FOR PHOTOS SECTION
+    let customCellIdentifier = [0: "CompanyInfoTableViewCell", 1 : "ListTableViewCell", 2 : "ListTableViewCell", 3 : "textViewTableViewCell", 4 : "textViewTableViewCell"]
+    let notesCustomCellIdentifier = [0: "NotesTableViewCell", 1: "NotesTableViewCell"] //NEED TO CREATE NEW TABLEVIEW CELL FOR PHOTOS SECTION
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell
     {
@@ -363,7 +373,7 @@ class CompanyDetailsViewController: UIViewController, UITableViewDelegate, UITab
             }
             return customCell
         }
-        else {  //applies to "Notes" page as well. Change up later to implement photos section
+        else {  //applies to "Notes" page. Change up later to implement photos section
             let customCell = cell as! NotesTableViewCell
             customCell.companyName = company.name
             customCell.notesTextView.tag = indexPath.row
