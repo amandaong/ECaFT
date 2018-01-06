@@ -10,6 +10,7 @@ import UIKit
 
 class CompanyTableViewCell: UITableViewCell {
     
+    @IBOutlet weak var companyBack: UIImageView!
     @IBOutlet weak var companyImage: UIImageView!
     @IBOutlet weak var nameLabel: UILabel!
     @IBOutlet weak var locationLabel: UILabel!

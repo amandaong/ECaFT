@@ -25,6 +25,9 @@ class Company: NSObject {
     var image: UIImage!
     var imageURL: URL!
     
+    //add background image
+    var background: UIImage!
+    
     init(json: JSON) {
         super.init()
         name = json[Property.name.rawValue].stringValue

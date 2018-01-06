@@ -33,7 +33,17 @@ class CompanyViewController: UIViewController, UISearchBarDelegate, UIScrollView
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        view.backgroundColor = UIColor.ecaftGray
+        view.backgroundColor = UIColor(red:0.97, green:0.97, blue:0.97, alpha:1.0)
+        
+        // make navigation bar white
+        /*
+        navigationController?.navigationBar.barTintColor = UIColor.white
+        
+        navigationController?.navigationBar.tintColor = UIColor.black
+        
+        navigationController?.navigationBar.titleTextAttributes = [NSAttributedStringKey.foregroundColor: UIColor.black]
+         */
+        
         
         makeSearchBar()
         makeTableView()
@@ -59,9 +69,11 @@ class CompanyViewController: UIViewController, UISearchBarDelegate, UIScrollView
         if (isViewLoaded) {
             let filterButton = UIBarButtonItem(title: "Filter", style: .plain, target: self, action: #selector(filterButtonTapped))
             navigationController?.navigationBar.topItem?.rightBarButtonItem = filterButton
+            
         }
         
-        navigationController?.navigationBar.topItem?.title = "Companies"
+        //navigationController?.navigationBar.topItem?.title = "Companies"
+
         
         if let favs = UserDefaults.standard.object(forKey: Property.favorites.rawValue) as? Data {
             let temp = NSKeyedUnarchiver.unarchiveObject(with: favs) as! [String]
@@ -161,7 +173,11 @@ class CompanyViewController: UIViewController, UISearchBarDelegate, UIScrollView
         //Make UISearchBar instance
         searchBar = UISearchBar()
         searchBar.delegate = self
-        searchBar.frame = CGRect(x: 0, y: 0, width: screenSize.width, height: 50)
+        searchBar.frame = CGRect(x: 0, y: 0, width: screenSize.width-80, height: 50)
+       // searchBar.sizeToFit()
+        
+        //put searchbar in navigation bar
+       navigationItem.titleView = searchBar
         
         //Style & color
         searchBar.searchBarStyle = UISearchBarStyle.minimal
@@ -170,7 +186,7 @@ class CompanyViewController: UIViewController, UISearchBarDelegate, UIScrollView
         //Buttons & text
         searchBar.returnKeyType = .done
         searchBar.enablesReturnKeyAutomatically = false
-        searchBar.placeholder = "Search"
+        searchBar.placeholder = "company name"
         searchBar.showsCancelButton = false
         searchBar.showsBookmarkButton = false
         searchBar.showsSearchResultsButton = false
@@ -221,7 +237,8 @@ class CompanyViewController: UIViewController, UISearchBarDelegate, UIScrollView
         //Total height of nav bar, status bar, tab bar
         let barHeights = (self.navigationController?.navigationBar.frame.size.height)!+UIApplication.shared.statusBarFrame.height + 100
         
-        companyTableView = UITableView(frame: CGRect(x: 0, y: searchBar.frame.maxY, width: screenSize.width, height: screenSize.height - barHeights), style: UITableViewStyle.plain) //sets tableview to size of view below status bar and nav bar
+        //edited CGRect to make margins and center it
+        companyTableView = UITableView(frame: CGRect(x: 25, y: searchBar.frame.maxY, width: screenSize.width-50, height: screenSize.height - barHeights), style: UITableViewStyle.plain) //sets tableview to size of view below status bar and nav bar
         
         companyTableView.dataSource = self
         companyTableView.delegate = self
@@ -236,27 +253,31 @@ class CompanyViewController: UIViewController, UISearchBarDelegate, UIScrollView
     }
     
     func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
-        return informationStateController!.sectionTitles[section]
+        return nil
     }
    
     //Section: Change font color and background color for section headers
     func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
+        
         let screenSize : CGRect = UIScreen.main.bounds
-        let headerView = UIView(frame: CGRect(x: 0, y: 0, width: screenSize.width, height: 28))
+        let headerView = UIView(frame: CGRect(x: 0, y: 0, width: 0, height: 0))
         headerView.backgroundColor = UIColor.ecaftLightGray
         
-        let label = UILabel(frame: CGRect(x: 0.05*screenSize.width, y: 0, width: screenSize.width, height: 28))
+        
+        let label = UILabel(frame: CGRect(x: 0.05*screenSize.width, y: 0, width: screenSize.width, height: 0))
         label.center.y = 0.5*headerView.frame.height
         label.text = informationStateController?.sectionTitles[section]
         label.font = UIFont.boldSystemFont(ofSize: 16.0)
         label.textColor = .ecaftDarkGray
+ 
         headerView.addSubview(label)
         
-        return headerView
+        return nil
     }
+ 
     
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat{
-        return 70
+        return 120
     }
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection
@@ -287,11 +308,30 @@ class CompanyViewController: UIViewController, UISearchBarDelegate, UIScrollView
         customCell.selectionStyle = .none
         customCell.name = company.name
         customCell.location = company.location
+        
+        //set cell font, color, and size
+        customCell.nameLabel.textColor = UIColor.white
+        customCell.nameLabel.font = UIFont(name: "Verdana", size: 25)
+        customCell.locationLabel.textColor = UIColor.white
+        customCell.locationLabel.font = UIFont(name: "Verdana", size: 20)
+        
+        //set cell borders
+        customCell.contentView.layer.borderWidth = 2
+        
+        let myColor : UIColor = UIColor(red:0.61, green:0.15, blue:0.12, alpha:1.0)
+        customCell.contentView.layer.borderColor = myColor.cgColor
 
         if(company.image != nil) {
             customCell.companyImage.image = company.image
         } else {
             customCell.companyImage.image = #imageLiteral(resourceName: "placeholder")
+        }
+        
+        //added section for background image
+        if(company.background != nil) {
+            customCell.companyBack.image = company.background
+        } else {
+            customCell.companyBack.image = #imageLiteral(resourceName: "sample")
         }
 
         if (informationStateController?.favoritesString.contains(company.name))! {
