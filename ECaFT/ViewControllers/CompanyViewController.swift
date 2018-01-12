@@ -35,17 +35,8 @@ class CompanyViewController: UIViewController, UISearchBarDelegate, UIScrollView
         super.viewDidLoad()
         view.backgroundColor = UIColor(red:0.97, green:0.97, blue:0.97, alpha:1.0)
         
-        // make navigation bar white
-        /*
-        navigationController?.navigationBar.barTintColor = UIColor.white
-        
-        navigationController?.navigationBar.tintColor = UIColor.black
-        
-        navigationController?.navigationBar.titleTextAttributes = [NSAttributedStringKey.foregroundColor: UIColor.black]
-         */
-        
-        
         makeSearchBar()
+        makeFilterButton()
         makeTableView()
         
         //Load data from firebase
@@ -59,21 +50,11 @@ class CompanyViewController: UIViewController, UISearchBarDelegate, UIScrollView
             appliedFilters = NSKeyedUnarchiver.unarchiveObject(with: filters) as! [String]
         }
         
-        let filterButton = UIBarButtonItem(title: "Filter", style: .plain, target: self, action: #selector(filterButtonTapped))
-        navigationController?.navigationBar.topItem?.rightBarButtonItem = filterButton
     }
-   
+    
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        
-        if (isViewLoaded) {
-            let filterButton = UIBarButtonItem(title: "Filter", style: .plain, target: self, action: #selector(filterButtonTapped))
-            navigationController?.navigationBar.topItem?.rightBarButtonItem = filterButton
-            
-        }
-        
-        //navigationController?.navigationBar.topItem?.title = "Companies"
-
+        navigationController?.navigationBar.topItem?.title = "Companies"
         
         if let favs = UserDefaults.standard.object(forKey: Property.favorites.rawValue) as? Data {
             let temp = NSKeyedUnarchiver.unarchiveObject(with: favs) as! [String]
@@ -133,6 +114,17 @@ class CompanyViewController: UIViewController, UISearchBarDelegate, UIScrollView
         })
     }
 
+    // MARK - Filtering
+    private func makeFilterButton() {
+        let filterButton = UIButton()
+        filterButton.setTitle("Filter", for: .normal)
+        filterButton.setTitleColor(UIColor.black, for: .normal)
+        filterButton.frame = CGRect(x: searchBar.frame.maxX + 9, y: 0, width: screenSize.width*0.2, height: 50)
+        filterButton.center.y = searchBar.center.y
+        filterButton.addTarget(self, action: #selector(filterButtonTapped), for: .touchUpInside)
+        self.view.addSubview(filterButton)
+    }
+    
     @objc func filterButtonTapped() {
         let filtersVC = FiltersViewController()
         self.navigationController?.pushViewController(filtersVC, animated: true)
@@ -169,15 +161,11 @@ class CompanyViewController: UIViewController, UISearchBarDelegate, UIScrollView
         }
     }
     
-    func makeSearchBar() {
+    private func makeSearchBar() {
         //Make UISearchBar instance
         searchBar = UISearchBar()
         searchBar.delegate = self
         searchBar.frame = CGRect(x: 0, y: 0, width: screenSize.width-80, height: 50)
-       // searchBar.sizeToFit()
-        
-        //put searchbar in navigation bar
-       navigationItem.titleView = searchBar
         
         //Style & color
         searchBar.searchBarStyle = UISearchBarStyle.minimal
@@ -233,7 +221,7 @@ class CompanyViewController: UIViewController, UISearchBarDelegate, UIScrollView
     }
     
     //Tableview: Make table view
-    func makeTableView() {
+    private func makeTableView() {
         //Total height of nav bar, status bar, tab bar
         let barHeights = (self.navigationController?.navigationBar.frame.size.height)!+UIApplication.shared.statusBarFrame.height + 100
         
@@ -250,10 +238,6 @@ class CompanyViewController: UIViewController, UISearchBarDelegate, UIScrollView
     
     func numberOfSections(in tableView: UITableView) -> Int {
         return 1
-    }
-    
-    func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
-        return nil
     }
    
     //Section: Change font color and background color for section headers

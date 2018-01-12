@@ -12,6 +12,11 @@
 		02ECF1E01DE518050032EEC2 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 02ECF1DE1DE518050032EEC2 /* LaunchScreen.storyboard */; };
 		378A44091E2434AA00A1373A /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 378A44081E2434AA00A1373A /* GoogleService-Info.plist */; };
 		52B8CB3D6FBF6B47D6116ED5 /* Pods_ECaFT.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9744EAF4BD284A05D8A29D36 /* Pods_ECaFT.framework */; };
+		DA3A49FC20087952004170DF /* FilterOptionItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = DA3A49FB20087952004170DF /* FilterOptionItem.swift */; };
+		DA3A49FE20088166004170DF /* FilterViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = DA3A49FD20088166004170DF /* FilterViewModel.swift */; };
+		DA3A4A0120088625004170DF /* FilterTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = DA3A49FF20088625004170DF /* FilterTableViewCell.swift */; };
+		DA3A4A0220088625004170DF /* FilterTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = DA3A4A0020088625004170DF /* FilterTableViewCell.xib */; };
+		DA3BF0C62008F07C0086C042 /* Property.swift in Sources */ = {isa = PBXBuildFile; fileRef = DA3BF0C52008F07C0086C042 /* Property.swift */; };
 		DA43D95F1FD1049800F580B9 /* FiltersViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = DA43D95E1FD1049800F580B9 /* FiltersViewController.swift */; };
 		DA43D9621FD1050F00F580B9 /* ButtonSpacing.swift in Sources */ = {isa = PBXBuildFile; fileRef = DA43D9601FD1050F00F580B9 /* ButtonSpacing.swift */; };
 		DA43D9631FD1050F00F580B9 /* UIColor+Shared.swift in Sources */ = {isa = PBXBuildFile; fileRef = DA43D9611FD1050F00F580B9 /* UIColor+Shared.swift */; };
@@ -48,6 +53,11 @@
 		5AA22436DA24D1F81DA8EA9F /* Pods-ECaFT.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-ECaFT.release.xcconfig"; path = "Pods/Target Support Files/Pods-ECaFT/Pods-ECaFT.release.xcconfig"; sourceTree = "<group>"; };
 		655850E907766C700827834D /* Pods-ECaFT.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-ECaFT.debug.xcconfig"; path = "Pods/Target Support Files/Pods-ECaFT/Pods-ECaFT.debug.xcconfig"; sourceTree = "<group>"; };
 		9744EAF4BD284A05D8A29D36 /* Pods_ECaFT.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_ECaFT.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		DA3A49FB20087952004170DF /* FilterOptionItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = FilterOptionItem.swift; path = Models/FilterOptionItem.swift; sourceTree = "<group>"; };
+		DA3A49FD20088166004170DF /* FilterViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = FilterViewModel.swift; path = Models/FilterViewModel.swift; sourceTree = "<group>"; };
+		DA3A49FF20088625004170DF /* FilterTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = FilterTableViewCell.swift; path = Views/FilterTableViewCell.swift; sourceTree = "<group>"; };
+		DA3A4A0020088625004170DF /* FilterTableViewCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = FilterTableViewCell.xib; path = Views/FilterTableViewCell.xib; sourceTree = "<group>"; };
+		DA3BF0C52008F07C0086C042 /* Property.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = Property.swift; path = Utilities/Property.swift; sourceTree = "<group>"; };
 		DA43D95E1FD1049800F580B9 /* FiltersViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = FiltersViewController.swift; path = ViewControllers/FiltersViewController.swift; sourceTree = "<group>"; };
 		DA43D9601FD1050F00F580B9 /* ButtonSpacing.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = ButtonSpacing.swift; path = Utilities/ButtonSpacing.swift; sourceTree = "<group>"; };
 		DA43D9611FD1050F00F580B9 /* UIColor+Shared.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = "UIColor+Shared.swift"; path = "Utilities/UIColor+Shared.swift"; sourceTree = "<group>"; };
@@ -149,6 +159,8 @@
 				DA43D9731FD1058B00F580B9 /* NotesTableViewCell.xib */,
 				DA43D97A1FD1058B00F580B9 /* textViewTableViewCell.swift */,
 				DA43D9761FD1058B00F580B9 /* textViewTableViewCell.xib */,
+				DA3A49FF20088625004170DF /* FilterTableViewCell.swift */,
+				DA3A4A0020088625004170DF /* FilterTableViewCell.xib */,
 			);
 			name = Views;
 			sourceTree = "<group>";
@@ -158,6 +170,8 @@
 			children = (
 				DA43D98A1FD1059700F580B9 /* Company.swift */,
 				DA43D98B1FD1059700F580B9 /* informationStateController.swift */,
+				DA3A49FB20087952004170DF /* FilterOptionItem.swift */,
+				DA3A49FD20088166004170DF /* FilterViewModel.swift */,
 			);
 			name = Models;
 			sourceTree = "<group>";
@@ -168,6 +182,7 @@
 				DA43D9601FD1050F00F580B9 /* ButtonSpacing.swift */,
 				DA43D9611FD1050F00F580B9 /* UIColor+Shared.swift */,
 				02ECF1DC1DE518050032EEC2 /* Assets.xcassets */,
+				DA3BF0C52008F07C0086C042 /* Property.swift */,
 			);
 			name = Utilities;
 			sourceTree = "<group>";
@@ -262,6 +277,7 @@
 				02ECF1DD1DE518050032EEC2 /* Assets.xcassets in Resources */,
 				DA43D9821FD1058B00F580B9 /* textViewTableViewCell.xib in Resources */,
 				378A44091E2434AA00A1373A /* GoogleService-Info.plist in Resources */,
+				DA3A4A0220088625004170DF /* FilterTableViewCell.xib in Resources */,
 				DA43D97F1FD1058B00F580B9 /* NotesTableViewCell.xib in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -323,6 +339,8 @@
 			files = (
 				02ECF1D61DE518050032EEC2 /* AppDelegate.swift in Sources */,
 				DA43D9621FD1050F00F580B9 /* ButtonSpacing.swift in Sources */,
+				DA3BF0C62008F07C0086C042 /* Property.swift in Sources */,
+				DA3A49FE20088166004170DF /* FilterViewModel.swift in Sources */,
 				DA43D9801FD1058B00F580B9 /* CompanyInfoTableViewCell.swift in Sources */,
 				DA43D96D1FD1057100F580B9 /* HomeViewController.swift in Sources */,
 				DA43D9891FD1058C00F580B9 /* ListTableViewCell.swift in Sources */,
@@ -332,7 +350,9 @@
 				DA43D98D1FD1059700F580B9 /* informationStateController.swift in Sources */,
 				DA43D9701FD1057100F580B9 /* CompanyDetailsViewController.swift in Sources */,
 				DA43D9711FD1057100F580B9 /* FavoritesViewController.swift in Sources */,
+				DA3A4A0120088625004170DF /* FilterTableViewCell.swift in Sources */,
 				DA43D9861FD1058C00F580B9 /* textViewTableViewCell.swift in Sources */,
+				DA3A49FC20087952004170DF /* FilterOptionItem.swift in Sources */,
 				DA43D9631FD1050F00F580B9 /* UIColor+Shared.swift in Sources */,
 				DA43D98C1FD1059700F580B9 /* Company.swift in Sources */,
 				DA43D95F1FD1049800F580B9 /* FiltersViewController.swift in Sources */,
