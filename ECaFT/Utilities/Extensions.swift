@@ -30,7 +30,7 @@ extension UIColor {
 }
 
 extension UIView {
-    
+    // Rotate an image by specified degrees (eg .pi/2)
     func rotate(_ toValue: CGFloat, duration: CFTimeInterval = 0.2) {
         let animation = CABasicAnimation(keyPath: "transform.rotation")
         

@@ -36,9 +36,15 @@ class CollapsibleFilterTableViewHeader: UITableViewHeaderFooterView {
         delegate?.toggleSection(header: self, section: cell.section)
     }
     
+    //If expanded is true, rotate arrow so arrow points up
     func setExpanded(expanded: Bool) {
-        // Animate the arrow rotation (see Extensions.swf)
-        arrowImageView.rotate(expanded ? .pi : 0.0)
+        //Get angle of arrow (0.0 for pointing up or 180.0 for pointing down)
+        if (expanded) {
+            arrowImageView.transform = CGAffineTransform(rotationAngle: CGFloat.pi)
+            
+        } else {
+            arrowImageView.transform =  CGAffineTransform.identity
+        }
     }
     
     private func makeArrow() {
