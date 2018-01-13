@@ -68,7 +68,6 @@ class CompanyViewController: UIViewController, UISearchBarDelegate, UIScrollView
     }
     
     override func viewWillDisappear(_ animated: Bool) {
-        navigationController?.navigationBar.topItem?.rightBarButtonItem = nil
         view.endEditing(true)
     }
     
@@ -126,6 +125,7 @@ class CompanyViewController: UIViewController, UISearchBarDelegate, UIScrollView
     }
     
     @objc func filterButtonTapped() {
+        
         let filtersVC = FiltersViewController()
         self.navigationController?.pushViewController(filtersVC, animated: true)
     }

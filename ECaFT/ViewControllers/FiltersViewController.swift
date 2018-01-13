@@ -15,6 +15,7 @@ class FiltersViewController: UIViewController, UITableViewDelegate {
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        self.title = "Filters"
         makeTableView()
     }
     
@@ -22,6 +23,7 @@ class FiltersViewController: UIViewController, UITableViewDelegate {
         //Total height of nav bar, status bar, tab bar
         let barHeights = (self.navigationController?.navigationBar.frame.size.height)!+UIApplication.shared.statusBarFrame.height + 100
         let frame = CGRect(x: 0, y: 0, width: screenSize.width, height: screenSize.height - barHeights)
+        
         //Sets tableview to size of view below status bar and nav bar
         filtersTableView = UITableView(frame: frame, style: UITableViewStyle.plain)
         
@@ -29,16 +31,76 @@ class FiltersViewController: UIViewController, UITableViewDelegate {
         filtersTableView.dataSource = filterViewModel
         filtersTableView.delegate = self
         filtersTableView.register(UINib(nibName: "FilterTableViewCell", bundle: nil), forCellReuseIdentifier: "FilterTableViewCell")
+        
+        // Auto resizing the height of the cell
+        filtersTableView.estimatedRowHeight = 44.0
+        filtersTableView.rowHeight = UITableViewAutomaticDimension
         self.view.addSubview(self.filtersTableView)
     }
     
+    // MARK - Table View functions
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        let filterOptions = filterViewModel.filterItems[indexPath.section].1
-        filterOptions[indexPath.row].isSelected = true
+        //Get filtering options for specific section (e.g. All Majors, CS, etc)
+        let filterSect = filterViewModel.filterSections[indexPath.section]
+        let filterOptions = filterSect.items
+        //If section is Majors or Open Positions & first cell selected
+        if(indexPath.section <= 1 && indexPath.row == 0) {
+            filterOptions[indexPath.row].isSelected = !filterOptions[indexPath.row].isSelected
+            filterSect.isAllSelected = true
+            for index in filterOptions.indices {
+                filterOptions[index].isSelected = filterOptions[indexPath.row].isSelected
+            }
+        }
+        //If section is Majors or Open Positions & any other cell selected
+        else if (indexPath.section <= 1 && indexPath.row > 0) {
+            filterOptions[indexPath.row].isSelected = !filterOptions[indexPath.row].isSelected
+            
+            //If all filter cells other than first cell are selected
+            if filterOptions.dropFirst().filter({ $0.isSelected }).count == filterOptions.dropFirst().count {
+                //Select first cell (the "All" cell)
+                filterOptions[0].isSelected = true
+                filterSect.isAllSelected = true
+            }
+            else {
+                filterOptions[0].isSelected = false
+                filterSect.isAllSelected = false
+            }
+        }
+        //If sponsorship is selected
+        else {
+            filterOptions[indexPath.row].isSelected = !filterOptions[indexPath.row].isSelected
+        }
+        tableView.reloadData()
     }
-    func tableView(_ tableView: UITableView, didDeselectRowAt indexPath: IndexPath) {
-        let filterOptions = filterViewModel.filterItems[indexPath.section].1
-        filterOptions[indexPath.row].isSelected = false
+    
+    func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
+        return filterViewModel.filterSections[indexPath.section].isExpanded ? UITableViewAutomaticDimension : 0
+    }
+    
+    // MARK - Header functions
+    func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
+        let filterSection = filterViewModel.filterSections[section]
+        let header = tableView.dequeueReusableHeaderFooterView(withIdentifier: "header") as? CollapsibleFilterTableViewHeader ?? CollapsibleFilterTableViewHeader(reuseIdentifier: "header")
+        header.titleLabel.text = filterViewModel.filterSections[section].name
+        header.setExpanded(expanded: filterSection.isExpanded)
+        header.section = section
+        header.delegate = self
+        return header
+    }
+    
+}
+
+extension FiltersViewController: CollapsibleFilterTableViewHeaderDelegate {
+    
+    func toggleSection(header: CollapsibleFilterTableViewHeader, section: Int) {
+        let filterSection = filterViewModel.filterSections[section]
+        let isExpanded = !filterSection.isExpanded
+        
+        // Toggle isExpanded
+        filterSection.isExpanded = isExpanded
+        header.setExpanded(expanded: isExpanded)
+        
+        filtersTableView.reloadSections(NSIndexSet(index: section) as IndexSet, with: .automatic)
     }
     
 }

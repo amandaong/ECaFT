@@ -25,27 +25,29 @@
                         <nil key="textColor"/>
                         <nil key="highlightedColor"/>
                     </label>
-                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Xyb-8n-Tve">
-                        <rect key="frame" x="273" y="4.5" width="32" height="34"/>
-                        <accessibility key="accessibilityConfiguration" identifier="FilterTableViewCell"/>
+                    <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="filterCheckmark" translatesAutoresizingMaskIntoConstraints="NO" id="A3f-XN-XZ0">
+                        <rect key="frame" x="271" y="5" width="32" height="32"/>
                         <constraints>
-                            <constraint firstAttribute="width" constant="32" id="yZA-ik-cMh"/>
+                            <constraint firstAttribute="height" constant="32" id="SrT-j5-SZO"/>
+                            <constraint firstAttribute="width" constant="32" id="aiX-nn-mzU"/>
                         </constraints>
-                        <state key="normal" title="Button"/>
-                    </button>
+                    </imageView>
                 </subviews>
                 <constraints>
-                    <constraint firstAttribute="trailing" secondItem="Xyb-8n-Tve" secondAttribute="trailing" constant="15" id="Pqw-ph-Uph"/>
+                    <constraint firstItem="A3f-XN-XZ0" firstAttribute="centerY" secondItem="H2p-sc-9uM" secondAttribute="centerY" id="Rac-Vl-CUG"/>
                     <constraint firstItem="wmY-7C-29c" firstAttribute="leading" secondItem="H2p-sc-9uM" secondAttribute="leading" constant="15" id="h4M-X2-Hlc"/>
-                    <constraint firstItem="Xyb-8n-Tve" firstAttribute="centerY" secondItem="H2p-sc-9uM" secondAttribute="centerY" id="hnj-Za-C3d"/>
+                    <constraint firstAttribute="trailing" secondItem="A3f-XN-XZ0" secondAttribute="trailing" constant="17" id="trc-RM-8DS" userLabel="trailing = Check Btn Image View.trailing + 15"/>
                     <constraint firstItem="wmY-7C-29c" firstAttribute="centerY" secondItem="H2p-sc-9uM" secondAttribute="centerY" id="uVL-NO-Zew"/>
                 </constraints>
             </tableViewCellContentView>
             <viewLayoutGuide key="safeArea" id="njF-e1-oar"/>
             <connections>
-                <outlet property="checkBtn" destination="Xyb-8n-Tve" id="rx3-On-qPR"/>
+                <outlet property="checkBtnImageView" destination="A3f-XN-XZ0" id="5Uw-8z-uPx"/>
                 <outlet property="titleLabel" destination="wmY-7C-29c" id="EPU-HJ-o4I"/>
             </connections>
         </tableViewCell>
     </objects>
+    <resources>
+        <image name="filterCheckmark" width="29" height="29"/>
+    </resources>
 </document>

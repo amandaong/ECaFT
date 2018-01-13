@@ -13,40 +13,80 @@ class FilterViewModel: NSObject {
     let majors = [Filter(title:"All Majors"), Filter(title: "CS"), Filter(title: "ECE"), Filter(title: "IS")]
     let openPositions = [Filter(title:"All Positions"), Filter(title: "Co-op"), Filter(title: "Full Time"), Filter(title: "Internship")]
     let sponsorship = [Filter(title: "Required")]
-    var filterItems: [(String, [FilterOptionItem])]
+    var filterSections: [FilterSection] = []
     
     override init() {
+        super.init()
+        
+        //Create list of filter section
+        filterSections = self.getFilterSections()
+    }
+    
+    private func getFilterSections() -> [FilterSection] {
         //Create array of filterOptionItmes from model filter items
         let majorsItems = majors.map { FilterOptionItem(item: $0, type: FilterType.Majors) }
-        let openPositionsItems = openPositions.map { FilterOptionItem(item: $0, type: FilterType.OpenPositions) }
+        let openPosItems = openPositions.map { FilterOptionItem(item: $0, type: FilterType.OpenPositions) }
         let sponsorshipItems = sponsorship.map { FilterOptionItem(item: $0, type: FilterType.Sponsorship) }
         
-        //Create list associated for each filter section
-        filterItems = [("Majors", majorsItems), ("Open Positions", openPositionsItems), ("Sponsorship", sponsorshipItems)]
+        //Create sections containing list of filtering options
+        let majorsSect = FilterSection(name: "Majors", items: majorsItems)
+        let openPosSect = FilterSection(name: "Open Positions", items: openPosItems)
+        let sponsorshipSect = FilterSection(name: "Sponsorship", items: sponsorshipItems)
+        sponsorshipSect.isAllSelected = false //B/c only has 1 cell
+        
+        let filterSections = [majorsSect, openPosSect, sponsorshipSect]
+        return filterSections
     }
 }
 
 extension FilterViewModel: UITableViewDataSource {
+    
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        guard let cell:UITableViewCell = tableView.dequeueReusableCell(withIdentifier: FilterTableViewCell.identifier) as? FilterTableViewCell else {
+        guard let cell = tableView.dequeueReusableCell(withIdentifier: FilterTableViewCell.identifier) as? FilterTableViewCell else {
             print("Creating custom filter cell error")
             return UITableViewCell()
         }
-        let filterOptions = filterItems[indexPath.section].1
-        cell.textLabel?.text = filterOptions[indexPath.row].title
+        let filterSect = filterSections[indexPath.section]
+        let filterItems = filterSect.items
+        cell.titleLabel?.text = filterItems[indexPath.row].title
+        
+        //If "All" option selected, highlight "All" option & fade out rest of filter options
+        if (filterSect.isAllSelected) {
+            if(indexPath.row == 0) {
+                cell.checkBtnImageView.image = #imageLiteral(resourceName: "filterCheckmark")
+                cell.titleLabel.textColor = UIColor.ecaftBlack
+            } else {
+                cell.checkBtnImageView.image = #imageLiteral(resourceName: "filterCheckmarkFaded")
+                cell.titleLabel.textColor = UIColor.ecaftBlackFaded
+            }
+        }
+        //If "All" option not selected
+        else {
+            cell.titleLabel.textColor = UIColor.ecaftBlack
+            let isSelected = filterItems[indexPath.row].isSelected
+            cell.checkBtnImageView.image = isSelected ? #imageLiteral(resourceName: "filterCheckmark") : nil
+            
+            //If Sponsorship section selected, also toggle label
+            if (indexPath.section == 2) {
+                cell.titleLabel.text = isSelected ? "Supports Sponsorship" : "Does Not Support Sponsorship" 
+            }
+        }
         return cell
     }
     
     func numberOfSections(in tableView: UITableView) -> Int {
-        return filterItems.count
+        return filterSections.count
     }
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        let numRows = filterItems[section].1.count
+        let filterSect = filterSections[section]
+        let numRows = filterSect.isExpanded ? filterSect.items.count : 0
         return numRows
     }
     
-     func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
-        return filterItems[section].0
+    // MARK - Custom Header
+    func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        return filterSections[section].isExpanded ? filterSections[section].items.count : 0
     }
+
 }

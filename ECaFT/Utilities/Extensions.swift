@@ -1,11 +1,12 @@
 //
-//  UIColor+Shared.swift
+//  Extensions.swift
 //  ECaFT
 //
-//  Created by Logan Allen on 11/25/16.
-//  Copyright © 2016 ECAFT. All rights reserved.
+//  Created by Amanda Ong on 1/12/18.
+//  Copyright © 2018 ECAFT. All rights reserved.
 //
 
+import Foundation
 import UIKit
 
 extension UIColor {
@@ -16,7 +17,9 @@ extension UIColor {
     public static let ecaftGray = UIColor(red: 233/255, green: 233/255, blue: 233/255, alpha: 1)
     public static let ecaftDarkGray = UIColor(red: 100/255, green: 100/255, blue: 100/255, alpha: 1)
     public static let ecaftLightGray = UIColor(red: 233/255, green: 233/255, blue: 233/255, alpha: 1)
-
+    public static let ecaftBlack = UIColor(red: 34/255, green: 34/255, blue: 34/255, alpha: 1)
+    public static let ecaftBlackFaded = UIColor(red: 34/255, green: 34/255, blue: 34/255, alpha: 0.5)
+    
     public static func colorFromCode(code: Int) -> UIColor {
         let red = CGFloat((code & 0xFF0000) >> 16) / 255
         let green = CGFloat((code & 0xFF00) >> 8) / 255
@@ -25,4 +28,20 @@ extension UIColor {
         return UIColor(red: red, green: green, blue: blue, alpha: 1)
     }
 }
+
+extension UIView {
+    
+    func rotate(_ toValue: CGFloat, duration: CFTimeInterval = 0.2) {
+        let animation = CABasicAnimation(keyPath: "transform.rotation")
+        
+        animation.toValue = toValue
+        animation.duration = duration
+        animation.isRemovedOnCompletion = false
+        animation.fillMode = kCAFillModeForwards
+        
+        self.layer.add(animation, forKey: nil)
+    }
+    
+}
+
 
