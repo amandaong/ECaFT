@@ -240,6 +240,9 @@ class CompanyViewController: UIViewController, UISearchBarDelegate, UIScrollView
         //edited CGRect to make margins and center it
         companyTableView = UITableView(frame: CGRect(x: 25, y: searchBar.frame.maxY, width: screenSize.width-50, height: screenSize.height - barHeights), style: UITableViewStyle.plain) //sets tableview to size of view below status bar and nav bar
         
+        //Remove vertical scroll bar
+        companyTableView.showsVerticalScrollIndicator = false;
+        
         companyTableView.dataSource = self
         companyTableView.delegate = self
         
@@ -308,12 +311,6 @@ class CompanyViewController: UIViewController, UISearchBarDelegate, UIScrollView
         customCell.selectionStyle = .none
         customCell.name = company.name
         customCell.location = company.location
-        
-        //set cell font, color, and size
-        customCell.nameLabel.textColor = UIColor.white
-        customCell.nameLabel.font = UIFont(name: "Verdana", size: 25)
-        customCell.locationLabel.textColor = UIColor.white
-        customCell.locationLabel.font = UIFont(name: "Verdana", size: 20)
         
         //set cell borders
         customCell.contentView.layer.borderWidth = 2
