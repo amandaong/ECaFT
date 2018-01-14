@@ -7,55 +7,49 @@
 //
 import UIKit
 
+protocol FilterSelectionProtocol {
+    func setSelectedFiltersTo(filtersSent: [FilterSection])
+}
+
 class FiltersViewController: UIViewController, UITableViewDelegate {
     let filterViewModel = FilterViewModel()
     var filtersTableView = UITableView()
     let screenSize : CGRect = UIScreen.main.bounds
-    let isDefaultSelected = true //Default option = all major, all positions, sponsorship NOT required
+    
+    var filterSelectionDelegate: FilterSelectionProtocol?
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        // Set navigation bar title
         self.title = "Filters"
         makeTableView()
     }
     
-    private func makeTableView() {
-        //Total height of nav bar, status bar, tab bar
-        let barHeights = (self.navigationController?.navigationBar.frame.size.height)!+UIApplication.shared.statusBarFrame.height + 100
-        let frame = CGRect(x: 0, y: 0, width: screenSize.width, height: screenSize.height - barHeights)
-        
-        //Sets tableview to size of view below status bar and nav bar
-        filtersTableView = UITableView(frame: frame, style: UITableViewStyle.plain)
-        
-        filtersTableView.allowsMultipleSelection = true
-        filtersTableView.dataSource = filterViewModel
-        filtersTableView.delegate = self
-        filtersTableView.register(UINib(nibName: "FilterTableViewCell", bundle: nil), forCellReuseIdentifier: "FilterTableViewCell")
-        
-        // Auto resizing the height of the cell
-        filtersTableView.estimatedRowHeight = 44.0
-        filtersTableView.rowHeight = UITableViewAutomaticDimension
-        self.view.addSubview(self.filtersTableView)
+    override func viewWillDisappear(_ animated: Bool) {
+        super.viewWillDisappear(animated)
+        let selectedFilterSects = filterViewModel.getSelectedFilterSections()
+        filterSelectionDelegate?.setSelectedFiltersTo(filtersSent: selectedFilterSects)
     }
     
     // MARK - Table View functions
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        //Get filtering options for specific section (e.g. All Majors, CS, etc)
+        // Get filtering options for specific section (e.g. All Majors, CS, etc)
         let filterSect = filterViewModel.filterSections[indexPath.section]
         let filterOptions = filterSect.items
-        //If section is Majors or Open Positions & first cell selected
+        // If section is Majors or Open Positions & first cell selected
         if(indexPath.section <= 1 && indexPath.row == 0) {
-            filterOptions[indexPath.row].isSelected = !filterOptions[indexPath.row].isSelected
-            filterSect.isAllSelected = true
+            let firstRow = indexPath.row
+            filterOptions[firstRow].isSelected = !filterOptions[firstRow].isSelected
+            filterSect.isAllSelected = !filterSect.isAllSelected
             for index in filterOptions.indices {
-                filterOptions[index].isSelected = filterOptions[indexPath.row].isSelected
+                filterOptions[index].isSelected = filterOptions[firstRow].isSelected
             }
         }
-        //If section is Majors or Open Positions & any other cell selected
+        // If section is Majors or Open Positions & any other cell selected
         else if (indexPath.section <= 1 && indexPath.row > 0) {
             filterOptions[indexPath.row].isSelected = !filterOptions[indexPath.row].isSelected
             
-            //If all filter cells other than first cell are selected
+            // If all filter cells other than first cell are selected
             if filterOptions.dropFirst().filter({ $0.isSelected }).count == filterOptions.dropFirst().count {
                 //Select first cell (the "All" cell)
                 filterOptions[0].isSelected = true
@@ -66,7 +60,7 @@ class FiltersViewController: UIViewController, UITableViewDelegate {
                 filterSect.isAllSelected = false
             }
         }
-        //If sponsorship is selected
+        // If sponsorship is selected
         else {
             filterOptions[indexPath.row].isSelected = !filterOptions[indexPath.row].isSelected
         }
@@ -90,6 +84,26 @@ class FiltersViewController: UIViewController, UITableViewDelegate {
     
     func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
         return 40
+    }
+    
+    // MARK - Private functions
+    private func makeTableView() {
+        // Total height of nav bar, status bar, tab bar
+        let barHeights = (self.navigationController?.navigationBar.frame.size.height)!+UIApplication.shared.statusBarFrame.height + 100
+        let frame = CGRect(x: 0, y: 0, width: screenSize.width, height: screenSize.height - barHeights)
+        
+        // Sets tableview to size of view below status bar and nav bar
+        filtersTableView = UITableView(frame: frame, style: UITableViewStyle.plain)
+        
+        filtersTableView.allowsMultipleSelection = true
+        filtersTableView.dataSource = filterViewModel
+        filtersTableView.delegate = self
+        filtersTableView.register(UINib(nibName: "FilterTableViewCell", bundle: nil), forCellReuseIdentifier: "FilterTableViewCell")
+        
+        // Auto resizing the height of the cell for collapsible sections
+        filtersTableView.estimatedRowHeight = 44.0
+        filtersTableView.rowHeight = UITableViewAutomaticDimension
+        self.view.addSubview(self.filtersTableView)
     }
     
 }

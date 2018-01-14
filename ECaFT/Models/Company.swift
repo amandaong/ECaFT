@@ -9,6 +9,36 @@
 import UIKit
 import SwiftyJSON
 
+enum Major: String {
+    case be = "biological engineering"
+    case bme = "biomedical engineering"
+    case cheme = "chemical engineering"
+    case ce = "civil engineering"
+    case cs = "computer science"
+    case ece = "electrical and computer engineering"
+    case phy = "physics"
+    case enve = "environmental engineering"
+    case isst = "information science systems and technology"
+    case mse = "materials science and engineering"
+    case me = "mechanical engineering"
+    case ore = "operations research and engineering"
+    case ses = "science of earth systems"
+    case bs = "biological sciences"
+    case gd = "game design"
+    case math = "mathematics"
+    case bio = "biology"
+    case chem = "chemistry"
+    case ss = "statistical science"
+    case infosci = "information science"
+    case astro = "astronomy"
+}
+
+enum Position: String {
+    case fullTime = "full time"
+    case internship = "internship"
+    case coop = "co-op"
+}
+
 //Represent the data
 class Company: NSObject {
     var name: String = ""
@@ -75,3 +105,5 @@ class Company: NSObject {
         aCoder.encode(optcpt, forKey: Property.optcpt.rawValue)
     }
 }
+
+

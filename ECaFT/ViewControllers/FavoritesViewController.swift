@@ -27,7 +27,7 @@ class FavoritesViewController: UITableViewController {
         storageRef = FIRStorage.storage().reference(forURL: "gs://ecaft-4a6e7.appspot.com/logos")
         DispatchQueue.main.async {
             self.loadCompanyObjects()
-            self.infoSC.sortCompaniesAlphabetically()
+            self.infoSC.sortAllCompaniesAlphabetically()
         }
     }
     
@@ -91,7 +91,7 @@ class FavoritesViewController: UITableViewController {
                 self.infoSC.favoritesString.sort()
                 self.infoSC.clearCompanies()
                 self.loadCompanyObjects()
-                self.infoSC.sortCompaniesAlphabetically()
+                self.infoSC.sortAllCompaniesAlphabetically()
                 self.saveChecks()
             }
             tableView.reloadData()
@@ -204,11 +204,11 @@ class FavoritesViewController: UITableViewController {
     
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         print("row: \(indexPath.row)\n")
-        for company in infoSC.companies {
+        for company in infoSC.allCompanies {
             print("\(company.name), ")
         }
         let detailVC = CompanyDetailsViewController()
-        detailVC.company = infoSC.companies[indexPath.row]
+        detailVC.company = infoSC.allCompanies[indexPath.row]
         detailVC.isFavorite = true
         show(detailVC, sender: nil)
     }

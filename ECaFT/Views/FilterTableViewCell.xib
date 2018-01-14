@@ -19,9 +19,9 @@
                 <rect key="frame" x="0.0" y="0.0" width="320" height="43.5"/>
                 <autoresizingMask key="autoresizingMask"/>
                 <subviews>
-                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="wmY-7C-29c">
-                        <rect key="frame" x="15" y="22" width="0.0" height="0.0"/>
-                        <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Hello" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="wmY-7C-29c">
+                        <rect key="frame" x="15" y="12" width="246" height="21"/>
+                        <fontDescription key="fontDescription" name=".AppleSystemUIFont" family=".AppleSystemUIFont" pointSize="17"/>
                         <nil key="textColor"/>
                         <nil key="highlightedColor"/>
                     </label>
@@ -36,6 +36,7 @@
                 <constraints>
                     <constraint firstItem="A3f-XN-XZ0" firstAttribute="centerY" secondItem="H2p-sc-9uM" secondAttribute="centerY" id="Rac-Vl-CUG"/>
                     <constraint firstItem="wmY-7C-29c" firstAttribute="leading" secondItem="H2p-sc-9uM" secondAttribute="leading" constant="15" id="h4M-X2-Hlc"/>
+                    <constraint firstItem="A3f-XN-XZ0" firstAttribute="leading" secondItem="wmY-7C-29c" secondAttribute="trailing" constant="10" id="rI2-33-pzv"/>
                     <constraint firstAttribute="trailing" secondItem="A3f-XN-XZ0" secondAttribute="trailing" constant="17" id="trc-RM-8DS" userLabel="trailing = Check Btn Image View.trailing + 15"/>
                     <constraint firstItem="wmY-7C-29c" firstAttribute="centerY" secondItem="H2p-sc-9uM" secondAttribute="centerY" id="uVL-NO-Zew"/>
                 </constraints>

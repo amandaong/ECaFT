@@ -17,6 +17,7 @@ extension UIColor {
     public static let ecaftGray = UIColor(red: 233/255, green: 233/255, blue: 233/255, alpha: 1)
     public static let ecaftDarkGray = UIColor(red: 100/255, green: 100/255, blue: 100/255, alpha: 1)
     public static let ecaftLightGray = UIColor(red: 233/255, green: 233/255, blue: 233/255, alpha: 1)
+    public static let ecaftLightGray2 = UIColor(red: 200/255, green: 200/255, blue: 200/255, alpha: 1)
     public static let ecaftBlack = UIColor(red: 34/255, green: 34/255, blue: 34/255, alpha: 1)
     public static let ecaftBlackFaded = UIColor(red: 34/255, green: 34/255, blue: 34/255, alpha: 0.5)
     

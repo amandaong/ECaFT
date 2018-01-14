@@ -52,7 +52,8 @@ class CollapsibleFilterTableViewHeader: UITableViewHeaderFooterView {
         
         contentView.addSubview(arrowImageView)
         arrowImageView.frame = CGRect(x: 0, y: 0, width: 20, height: 17)
-        arrowImageView.image = #imageLiteral(resourceName: "DownArrow")
+        arrowImageView.image = #imageLiteral(resourceName: "DownArrow").withRenderingMode(.alwaysTemplate)
+        arrowImageView.tintColor = UIColor.ecaftLightGray2
         arrowImageView.contentMode = .scaleAspectFit
         arrowImageView.translatesAutoresizingMaskIntoConstraints = false
         arrowImageView.widthAnchor.constraint(equalToConstant: 20).isActive = true
