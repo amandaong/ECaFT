@@ -35,16 +35,6 @@ class CompanyViewController: UIViewController, UISearchBarDelegate, UIScrollView
         super.viewDidLoad()
         view.backgroundColor = UIColor(red:0.97, green:0.97, blue:0.97, alpha:1.0)
         
-        // make navigation bar white
-        /*
-        navigationController?.navigationBar.barTintColor = UIColor.white
-        
-        navigationController?.navigationBar.tintColor = UIColor.black
-        
-        navigationController?.navigationBar.titleTextAttributes = [NSAttributedStringKey.foregroundColor: UIColor.black]
-         */
-        
-        
         makeSearchBar()
         makeTableView()
         
@@ -173,7 +163,7 @@ class CompanyViewController: UIViewController, UISearchBarDelegate, UIScrollView
         //Make UISearchBar instance
         searchBar = UISearchBar()
         searchBar.delegate = self
-        searchBar.frame = CGRect(x: 0, y: 0, width: screenSize.width-80, height: 50)
+        searchBar.frame = CGRect(x: 0, y: 0, width: screenSize.width, height: 50)
        // searchBar.sizeToFit()
         
         //put searchbar in navigation bar
