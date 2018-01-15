@@ -23,6 +23,9 @@ class FavoritesViewController: UITableViewController {
         tableView.dataSource = self
         tableView.register(UINib(nibName: "FavoritesTableViewCell", bundle: nil), forCellReuseIdentifier: "FavoritesCell")
         
+        //remove automatic bottom cell border
+        tableView.separatorStyle = UITableViewCellSeparatorStyle.none
+        
         databaseRef = FIRDatabase.database().reference()
         storageRef = FIRStorage.storage().reference(forURL: "gs://ecaft-4a6e7.appspot.com/logos")
         DispatchQueue.main.async {
@@ -155,6 +158,12 @@ class FavoritesViewController: UITableViewController {
     }
 
     // MARK: - Table view data source
+    
+    
+    //change row height
+    override func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat{
+        return 56.5
+    }
 
     override func numberOfSections(in tableView: UITableView) -> Int {
         return 1
@@ -167,6 +176,9 @@ class FavoritesViewController: UITableViewController {
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "FavoritesCell") as! FavoritesTableViewCell
         cell.companyLabel.text = infoSC.favoritesString[indexPath.row]
+        
+        //set cell location label text
+        
         cell.checkButton.tag = indexPath.row
         cell.checkButton.addTarget(self, action: #selector(toggleCheck(sender:)), for: .touchUpInside)
         if (checks[indexPath.row]) {
@@ -174,6 +186,14 @@ class FavoritesViewController: UITableViewController {
         } else {
             cell.checkButton.setImage(#imageLiteral(resourceName: "uncheck_favorites"), for: .normal)
         }
+        
+        print("# fav companies: ")
+        print (infoSC.favoriteCompanies.count)
+        
+        //add border
+        cell.contentView.layer.borderWidth = 0.5
+        let myColor : UIColor = UIColor.favoritesBorderGray
+        cell.contentView.layer.borderColor = myColor.cgColor
         
         return cell
     }
