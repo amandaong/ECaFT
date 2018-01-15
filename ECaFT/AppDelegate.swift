@@ -40,7 +40,10 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         informationSC = informationStateController()
         let companyVC = (self.tabVC.viewControllers?[2] as! CompanyViewController)
         companyVC.informationStateController = informationSC
-                
+        
+        let favoritesVC = (self.tabVC.viewControllers?[3] as! FavoritesViewController)
+        favoritesVC.infoSC = informationSC
+        
         return true
     }
 

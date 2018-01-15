@@ -15,16 +15,20 @@ class informationStateController {
     private(set) var searchBarCompanies = [Company]() //for search bar
     
     var displayedCompanies = [Company]() // Companies to display on company table view
-    var allCompanies = [Company]()
+    var allCompanies = [Company]() // Keep track of current info about companies (e.g. isFavorite is changed)
     var favoriteCompanies: [Company] = []
-    var favoritesString: [String] = []
+    var favoritesString: [String] = [] // Names of company that are favoritaed (isFavorite = true)
 
     //For Company Table View
     var numOfSections = 1
     var sectionTitles = ["All Companies", "Favorites", "Other Companies"]
     
-    func addCompany(_ company: Company) {
+    func addCompanyToAllCompanies(_ company: Company) {
         allCompanies.append(company)
+    }
+    
+    func addCompanyToDisplayedCompanies(_ company: Company) {
+        displayedCompanies.append(company)
     }
     
     func removeCompany(index: Int) {
@@ -73,7 +77,9 @@ class informationStateController {
                 for filterOptItem in filterSection.items {
                     let searchValue = filterOptItem.searchValue?.lowercased()
                     for company in allCompanies {
-                        if (company.majors.contains(searchValue!)) {
+                        //Insensitive case search
+                        let isFound = company.majors.contains(where: { $0.caseInsensitiveCompare(searchValue!) == ComparisonResult.orderedSame })
+                        if (isFound) {
                             filteredCompanies.insert(company)
                         }
                     }
@@ -82,7 +88,9 @@ class informationStateController {
                 for filterOptItem in filterSection.items {
                     let searchValue = filterOptItem.searchValue?.lowercased()
                     for company in allCompanies {
-                        if (company.positions.contains(searchValue!)) {
+                        //Insensitive case search
+                        let isFound = company.majors.contains(where: { $0.caseInsensitiveCompare(searchValue!) == ComparisonResult.orderedSame })
+                        if (isFound) {
                             filteredCompanies.insert(company)
                         }
                     }

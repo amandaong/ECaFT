@@ -64,6 +64,7 @@ class CompanyViewController: UIViewController, UISearchBarDelegate, UIScrollView
         }
         if let selectedFilterSects = selectedFilterSects {
             informationStateController?.applyFilters(filterSections: selectedFilterSects)
+            companyTableView.reloadData()
         }
     }
     
@@ -106,7 +107,8 @@ class CompanyViewController: UIViewController, UISearchBarDelegate, UIScrollView
                         }
                     }
                 }
-                self.informationStateController?.addCompany(company)
+                self.informationStateController?.addCompanyToAllCompanies(company)
+                self.informationStateController?.addCompanyToDisplayedCompanies(company)
             }
         })
     }
@@ -238,24 +240,19 @@ class CompanyViewController: UIViewController, UISearchBarDelegate, UIScrollView
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection
         section: Int) -> Int {
-
-        if let state = informationStateController {
-            let numRows = (searchBar.text != "") ? state.filteredCompanies.count : state.allCompanies.count
-            return numRows
+        guard let companyViewModel = informationStateController else {
+            return 0
         }
-        return 0
+        return companyViewModel.displayedCompanies.count
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell
     {
-        var company: Company!
-        if (searchBar.text != "") {
-            company = informationStateController!.filteredCompanies[indexPath.row]
-        } else {
-            company = (informationStateController?.allCompanies[indexPath.row])!
+        guard let company = informationStateController?.displayedCompanies[indexPath.row],
+            let customCell: CompanyTableViewCell = tableView.dequeueReusableCell(withIdentifier: CompanyTableViewCell.identifier) as? CompanyTableViewCell else {
+                print("CompanyViewController.swift - cellForRowAt method:  Company Table View dequeuing cell error")
+                return UITableViewCell()
         }
-        
-        let customCell = tableView.dequeueReusableCell(withIdentifier: CompanyTableViewCell.identifier) as! CompanyTableViewCell
         
         //Stops cell turning grey when click on it
         customCell.selectionStyle = .none
@@ -329,15 +326,8 @@ class CompanyViewController: UIViewController, UISearchBarDelegate, UIScrollView
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         tableView.deselectRow(at: indexPath as IndexPath, animated: false)
         let companyDetailsVC = CompanyDetailsViewController()
-        
-        if (searchBar.text != "") {
-            companyDetailsVC.company = informationStateController?.filteredCompanies[indexPath.row]
-            companyDetailsVC.isFavorite = (informationStateController?.filteredCompanies[indexPath.row].isFavorite)!
-        } else {
-            companyDetailsVC.company = informationStateController?.allCompanies[indexPath.row]
-            companyDetailsVC.isFavorite = (informationStateController?.allCompanies[indexPath.row].isFavorite)! //set favorites' property of DetailVC's company to selected company of table view's favorite property
-        }
-        
+        companyDetailsVC.company = informationStateController?.displayedCompanies[indexPath.row]
+        companyDetailsVC.isFavorite = (informationStateController?.displayedCompanies[indexPath.row].isFavorite)!
         self.show(companyDetailsVC, sender: nil)
     }
 
