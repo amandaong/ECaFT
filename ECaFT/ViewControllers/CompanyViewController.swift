@@ -33,7 +33,7 @@ class CompanyViewController: UIViewController, UISearchBarDelegate, UIScrollView
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        view.backgroundColor = UIColor(red:0.97, green:0.97, blue:0.97, alpha:1.0)
+        view.backgroundColor = UIColor.backgroundGray
         
         makeSearchBar()
         makeTableView()
@@ -229,6 +229,11 @@ class CompanyViewController: UIViewController, UISearchBarDelegate, UIScrollView
         
         //edited CGRect to make margins and center it
         companyTableView = UITableView(frame: CGRect(x: 25, y: searchBar.frame.maxY, width: screenSize.width-50, height: screenSize.height - barHeights), style: UITableViewStyle.plain) //sets tableview to size of view below status bar and nav bar
+        
+        // UI
+        companyTableView.backgroundColor = UIColor.backgroundGray
+        companyTableView.separatorStyle = UITableViewCellSeparatorStyle.none // Removes bottom border for cells
+        companyTableView.contentInset = UIEdgeInsetsMake(-27, 0, 0, 0) // Removes padding above first cell
         
         //Remove vertical scroll bar
         companyTableView.showsVerticalScrollIndicator = false;

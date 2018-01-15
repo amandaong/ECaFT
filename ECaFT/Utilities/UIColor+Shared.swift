@@ -16,6 +16,7 @@ extension UIColor {
     public static let ecaftGray = UIColor(red: 233/255, green: 233/255, blue: 233/255, alpha: 1)
     public static let ecaftDarkGray = UIColor(red: 100/255, green: 100/255, blue: 100/255, alpha: 1)
     public static let ecaftLightGray = UIColor(red: 233/255, green: 233/255, blue: 233/255, alpha: 1)
+    public static let backgroundGray = UIColor(red:0.97, green:0.97, blue:0.97, alpha:1.0)
 
     public static func colorFromCode(code: Int) -> UIColor {
         let red = CGFloat((code & 0xFF0000) >> 16) / 255
