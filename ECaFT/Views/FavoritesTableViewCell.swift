@@ -11,10 +11,12 @@ import UIKit
 class FavoritesTableViewCell: UITableViewCell {
     @IBOutlet weak var checkButton: UIButton!
     @IBOutlet weak var companyLabel: UILabel!
-
+    @IBOutlet weak var locationLabel: UILabel!
+    
+    
     override func awakeFromNib() {
         super.awakeFromNib()
        
-        companyLabel.frame = CGRect(x: companyLabel.frame.origin.x, y: companyLabel.frame.origin.y, width: companyLabel.frame.size.width - 50, height: companyLabel.frame.size.height)
+        
     }
 }
