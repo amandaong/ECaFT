@@ -2,6 +2,10 @@
 #
 # gitignore contributors: remember to update Global/Xcode.gitignore, Objective-C.gitignore & Swift.gitignore
 
+#Ignore DS_Store files in root directory & sub-directories respectively
+.DS_Store
+**/.DS_Store
+
 ## Build generated
 build/
 DerivedData/
