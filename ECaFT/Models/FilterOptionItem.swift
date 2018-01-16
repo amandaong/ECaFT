@@ -8,7 +8,7 @@
 
 import Foundation
 
-class Filter: NSObject, NSCoding {
+class Filter: NSObject {
     var title: String = ""
     var searchValue: String? = ""
     
@@ -21,28 +21,19 @@ class Filter: NSObject, NSCoding {
         
     }
     
-    required init?(coder decoder: NSCoder) {
-        self.title = decoder.decodeObject(forKey: Property.filterTitle.rawValue) as? String ?? ""
-        self.searchValue = decoder.decodeObject(forKey: Property.filterSearchValue.rawValue) as? String ?? ""
-    }
-    
     override var description: String {
         return "Title: \(title) | Search Value: \(searchValue ?? "")"
     }
     
-    func encode(with coder: NSCoder) {
-        coder.encode(title, forKey: Property.filterTitle.rawValue)
-        coder.encode(searchValue, forKey: Property.filterSearchValue.rawValue)
-    }
 }
 
-enum FilterType: String, Codable {
+enum FilterType: String {
     case Majors = "Majors"
     case OpenPositions = "OpenPositions"
     case Sponsorship = "Sponsorship"
 }
 
-class FilterOptionItem: NSObject, NSCoding {
+class FilterOptionItem: NSObject {
     private var item: Filter = Filter()
     var isSelected: Bool = true
     
@@ -61,21 +52,8 @@ class FilterOptionItem: NSObject, NSCoding {
         self.isSelected = isSelected
     }
     
-    required init?(coder decoder: NSCoder) {
-        self.item = decoder.decodeObject(forKey: Property.filterOptionItem.rawValue) as? Filter ?? Filter()
-        self.type = (decoder as! NSKeyedUnarchiver).decodeDecodable(FilterType.self, forKey: Property.itemFilterType.rawValue) ?? .Majors
-        self.isSelected = decoder.decodeObject(forKey: Property.isSelected.rawValue) as? Bool ?? true
-    }
-    
     override var description: String {
         return "Title: \(title) | Search Value: \(searchValue ?? "") | isSelected: \(isSelected)"
     }
-    
-    func encode(with coder: NSCoder) {
-        coder.encode(item, forKey: Property.filterOptionItem.rawValue)
-        try? (coder as! NSKeyedArchiver).encodeEncodable(type, forKey: Property.itemFilterType.rawValue)
-        coder.encode(isSelected, forKey: Property.isSelected.rawValue)
-    }
-    
     
 }

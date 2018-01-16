@@ -89,7 +89,7 @@ class informationStateController {
                     let searchValue = filterOptItem.searchValue?.lowercased()
                     for company in allCompanies {
                         //Insensitive case search
-                        let isFound = company.majors.contains(where: { $0.caseInsensitiveCompare(searchValue!) == ComparisonResult.orderedSame })
+                        let isFound = company.positions.contains(where: { $0.caseInsensitiveCompare(searchValue!) == ComparisonResult.orderedSame })
                         if (isFound) {
                             filteredCompanies.insert(company)
                         }

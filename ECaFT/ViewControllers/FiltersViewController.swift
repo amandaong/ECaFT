@@ -43,12 +43,6 @@ class FiltersViewController: UIViewController, UITableViewDelegate {
         super.viewWillDisappear(animated)
         let selectedFilterSects = filterViewModel.getSelectedFilterSections()
         filterSelectionDelegate?.setSelectedFiltersTo(filtersSent: selectedFilterSects)
-        let isSuccessful = NSKeyedArchiver.archiveRootObject(self.filterViewModel.filterSections, toFile: self.filterViewModel.filtersFilePath)
-        if (isSuccessful) {
-            print("Saved filters")
-        } else  {
-            print("Didn't Save filters")
-        }
     }
     
     // MARK - Table View functions

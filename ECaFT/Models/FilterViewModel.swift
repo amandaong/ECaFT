@@ -37,21 +37,9 @@ class FilterViewModel: NSObject {
     // Contains filter sections w/ only selected filter option items
     private(set) var selectedFilterSections: [FilterSection] = []
     
-    // File Path to saved Filter Sections
-    var filtersFilePath: String {
-        let manager = FileManager.default
-        let url = manager.urls(for: .documentDirectory, in: .userDomainMask).first
-        print("this is the url path in the documentDirectory \(url)")
-        return (url!.appendingPathComponent("FilterSelectionData").path)
-    }
-    
     override init() {
         super.init()
-        if let filterSections = NSKeyedUnarchiver.unarchiveObject(withFile: filtersFilePath) as? [FilterSection] {
-            self.filterSections = filterSections
-        } else {
-            self.filterSections = getDefaultFilterSections()
-        }
+        self.filterSections = getDefaultFilterSections()
     }
     
     // Checks if default filter options selected (all Majors, all Positions, may or may not support sponsorship selected)
