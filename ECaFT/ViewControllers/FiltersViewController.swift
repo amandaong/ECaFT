@@ -36,10 +36,7 @@ class FiltersViewController: UIViewController, UITableViewDelegate {
     
     // Shows what user selected
     override func viewWillAppear(_ animated: Bool) {
-       if let filterSections = NSKeyedUnarchiver.unarchiveObject(withFile: filterViewModel.filtersFilePath) as? [FilterSection] {
-            filterViewModel.filterSections = filterSections
-            filtersTableView.reloadData()
-        }
+       
     }
     
     override func viewWillDisappear(_ animated: Bool) {
@@ -51,10 +48,6 @@ class FiltersViewController: UIViewController, UITableViewDelegate {
             print("Saved filters")
         } else  {
             print("Didn't Save filters")
-        }
-        if let filterSections = NSKeyedUnarchiver.unarchiveObject(withFile: filterViewModel.filtersFilePath) as? [FilterSection] {
-            filterViewModel.filterSections = filterSections
-            filtersTableView.reloadData()
         }
     }
     

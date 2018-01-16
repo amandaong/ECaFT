@@ -47,7 +47,11 @@ class FilterViewModel: NSObject {
     
     override init() {
         super.init()
-        filterSections = self.getFilterSections()
+        if let filterSections = NSKeyedUnarchiver.unarchiveObject(withFile: filtersFilePath) as? [FilterSection] {
+            self.filterSections = filterSections
+        } else {
+            self.filterSections = getDefaultFilterSections()
+        }
     }
     
     // Checks if default filter options selected (all Majors, all Positions, may or may not support sponsorship selected)
@@ -94,7 +98,7 @@ class FilterViewModel: NSObject {
         return filterOptionItems.filter({$0.isSelected})
     }
     
-    private func getFilterSections() -> [FilterSection] {
+    private func getDefaultFilterSections() -> [FilterSection] {
         // Create array of filterOptionItmes from model filter items
         let majorsItems = majors.map { FilterOptionItem(item: $0, type: FilterType.Majors) }
         let openPosItems = openPositions.map { FilterOptionItem(item: $0, type: FilterType.OpenPositions) }
