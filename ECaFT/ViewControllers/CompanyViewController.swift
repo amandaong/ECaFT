@@ -11,59 +11,56 @@ import Firebase
 import FirebaseStorage
 import FirebaseDatabase
 
-class CompanyViewController: UIViewController, UISearchBarDelegate, UIScrollViewDelegate, UITableViewDelegate, UITableViewDataSource {
+class CompanyViewController: UIViewController, UISearchBarDelegate, UIScrollViewDelegate, UITableViewDelegate, UITableViewDataSource, FilterSelectionProtocol {
     let screenSize : CGRect = UIScreen.main.bounds
-    var allCompanies : [Company] = []
-    var filteredCompanies : [Company] = []
-    var appliedFilters : [String] = []
     var searchBar : UISearchBar!
     
-    //favorites
+    // Favorites
     var favoriteUpdateStatus : (Int, String) = (0, "")
     
-    //Company Table View
+    // Company Table View
     var companyTableView = UITableView()
     
-    //Information State Controller
+    // View Models
     var informationStateController: informationStateController?
+    var filterViewModel: FilterViewModel?
     
+    // Filtering
+    // Value sent from Filters VC. Holds filter section w/ selected filter options
+    var selectedFilterSects: [FilterSection]?
+    
+    //Database variables
     var databaseRef: FIRDatabaseReference?
     var storageRef: FIRStorageReference?
     var databaseHandle: FIRDatabaseHandle?
+    
+    init() {
+        super.init(nibName: nil, bundle: nil)
+    }
+    
+    required init?(coder aDecoder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
     
     override func viewDidLoad() {
         super.viewDidLoad()
         view.backgroundColor = UIColor.backgroundGray
         
         makeSearchBar()
+        makeFilterButton()
         makeTableView()
         
-        //Load data from firebase
+        // Load data from firebase
         databaseRef = FIRDatabase.database().reference()
-        storageRef = FIRStorage.storage().reference(forURL: "gs://ecaft-4a6e7.appspot.com/logos") //reference to logos folder in storage
+        // Reference to logos folder in storage
+        storageRef = FIRStorage.storage().reference(forURL: "gs://ecaft-4a6e7.appspot.com/logos")
         
         loadData()
-        
-        //filtering
-        if let filters = UserDefaults.standard.object(forKey: Property.filtersApplied.rawValue) as? Data {
-            appliedFilters = NSKeyedUnarchiver.unarchiveObject(with: filters) as! [String]
-        }
-        
-        let filterButton = UIBarButtonItem(title: "Filter", style: .plain, target: self, action: #selector(filterButtonTapped))
-        navigationController?.navigationBar.topItem?.rightBarButtonItem = filterButton
     }
-   
+    
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        
-        if (isViewLoaded) {
-            let filterButton = UIBarButtonItem(title: "Filter", style: .plain, target: self, action: #selector(filterButtonTapped))
-            navigationController?.navigationBar.topItem?.rightBarButtonItem = filterButton
-            
-        }
-        
-        //navigationController?.navigationBar.topItem?.title = "Companies"
-
+        navigationController?.navigationBar.topItem?.title = "Companies"
         
         if let favs = UserDefaults.standard.object(forKey: Property.favorites.rawValue) as? Data {
             let temp = NSKeyedUnarchiver.unarchiveObject(with: favs) as! [String]
@@ -74,10 +71,13 @@ class CompanyViewController: UIViewController, UISearchBarDelegate, UIScrollView
                 }
             }
         }
+        if let selectedFilterSects = selectedFilterSects {
+            informationStateController?.applyFilters(filterSections: selectedFilterSects)
+            companyTableView.reloadData()
+        }
     }
     
     override func viewWillDisappear(_ animated: Bool) {
-        navigationController?.navigationBar.topItem?.rightBarButtonItem = nil
         view.endEditing(true)
     }
     
@@ -110,70 +110,88 @@ class CompanyViewController: UIViewController, UISearchBarDelegate, UIScrollView
                         print((error as Error).localizedDescription)
                     } else if let data = data {
                         // Data for "images/companyid.png" is returned
-                        DispatchQueue.main.async {
+                        DispatchQueue.main.async { [weak self] in
                             company.image = UIImage(data: data)
-                            self.applyFilters()
-                            self.companyTableView.reloadData() //reload data here b/c this is when you know table view cell will have an image
+                            self?.companyTableView.reloadData() //reload data here b/c this is when you know table view cell will have an image
                         }
                     }
                 }
-                self.allCompanies.append(company)
-                self.informationStateController?.addCompany(company)
+                self.informationStateController?.addCompanyToAllCompanies(company)
+                self.informationStateController?.addCompanyToDisplayedCompanies(company)
             }
         })
     }
 
+    /*** -------------------- FILTERING -------------------- ***/
     @objc func filterButtonTapped() {
-        let filtersVC = FiltersViewController()
+        var filterViewModel: FilterViewModel
+        if (self.filterViewModel != nil) {
+            filterViewModel = self.filterViewModel!
+        }
+        else {
+            self.filterViewModel = FilterViewModel()
+            filterViewModel = self.filterViewModel!
+        }
+        let filtersVC = FiltersViewController(filterViewModel: filterViewModel)
+        filtersVC.filterSelectionDelegate = self
         self.navigationController?.pushViewController(filtersVC, animated: true)
+        
     }
     
-    func save() {
-        UserDefaults.standard.removeObject(forKey: Property.appliedFilters.rawValue)
-        let savedData = NSKeyedArchiver.archivedData(withRootObject: appliedFilters)
-        UserDefaults.standard.set(savedData, forKey: Property.appliedFilters.rawValue)
+    // Set selected filters to filters selected from Filters VC
+    func setSelectedFiltersTo(filtersSent: [FilterSection]) {
+        self.selectedFilterSects = filtersSent
     }
-
-    func applyFilters() {
-        informationStateController?.clearCompanies()
-        for filterBy in appliedFilters {
-            for company in allCompanies {
-                let notIn = !((informationStateController?.companies.contains(company))!)
-                if (notIn && (company.majors.contains(filterBy) || company.majors.contains(""))) {
-                    informationStateController?.addCompany(company)
+    
+    private func makeFilterButton() {
+        let filterButton = UIBarButtonItem(title: "Filter", style: .plain, target: self, action: #selector(filterButtonTapped))
+        navigationController?.navigationBar.topItem?.rightBarButtonItem = filterButton
+    }
+    
+    /*** -------------------- SEARCH BAR -------------------- ***/
+    // Called whenever text is changed.
+    func searchBar(_ searchBar: UISearchBar, textDidChange searchText: String) {
+        let text = searchText.lowercased()
+        if let state = informationStateController {
+            state.clearFilter()
+            for company in state.allCompanies {
+                if company.description.lowercased().range(of: text) != nil {
+                    state.addFilteredCompany(company)
                 }
             }
         }
-        
-        if (appliedFilters.count == 0) {
-            informationStateController?.setCompanies(companies: allCompanies)
-        }
-        
-        informationStateController?.sortCompaniesAlphabetically()
-        
-        DispatchQueue.main.async {
-            self.companyTableView.reloadData()
-            UserDefaults.standard.removeObject(forKey: Property.filtersApplied.rawValue)
-            let savedData = NSKeyedArchiver.archivedData(withRootObject: self.appliedFilters)
-            UserDefaults.standard.set(savedData, forKey: Property.filtersApplied.rawValue)
+        companyTableView.reloadData()
+    }
+    
+    // Called when cancel button is clicked
+    func searchBarCancelButtonClicked(_ searchBar: UISearchBar) {
+        searchBar.text = ""
+        if let state = informationStateController {
+            state.clearFilter()
         }
     }
     
-    func makeSearchBar() {
-        //Make UISearchBar instance
+    // Called when search button is clicked
+    func searchBarSearchButtonClicked(_ searchBar: UISearchBar) {
+        view.endEditing(true)
+    }
+    
+    // Called when keyboard return is pressed
+    func searchBarTextDidEndEditing(_ searchBar: UISearchBar) {
+        view.endEditing(true)
+    }
+    
+    private func makeSearchBar() {
+        // Make UISearchBar instance
         searchBar = UISearchBar()
         searchBar.delegate = self
         searchBar.frame = CGRect(x: 0, y: 0, width: screenSize.width, height: 50)
-       // searchBar.sizeToFit()
         
-        //put searchbar in navigation bar
-       navigationItem.titleView = searchBar
-        
-        //Style & color
+        // Style & color
         searchBar.searchBarStyle = UISearchBarStyle.minimal
         searchBar.tintColor = UIColor.ecaftRed
         
-        //Buttons & text
+        // Buttons & text
         searchBar.returnKeyType = .done
         searchBar.enablesReturnKeyAutomatically = false
         searchBar.placeholder = "company name"
@@ -185,45 +203,12 @@ class CompanyViewController: UIViewController, UISearchBarDelegate, UIScrollView
     }
     
     func scrollViewDidScroll(_ scrollView: UIScrollView) {
-        // disable top bounce on filterView
+        // Disable top bounce on filterView
         scrollView.bounces = scrollView.contentOffset.y > 0
     }
-
-    // MARK - Search bar functions
-    // called whenever text is changed.
-    func searchBar(_ searchBar: UISearchBar, textDidChange searchText: String) {
-        let text = searchText.lowercased()
-        if let state = informationStateController {
-            state.clearFilter()
-            for company in state.companies {
-                if company.description.lowercased().range(of: text) != nil {
-                    state.addFilteredCompany(company)
-                }
-            }
-        }
-        companyTableView.reloadData()
-    }
     
-    // called when cancel button is clicked
-    func searchBarCancelButtonClicked(_ searchBar: UISearchBar) {
-        searchBar.text = ""
-        if let state = informationStateController {
-            state.clearFilter()
-        }
-    }
-    
-    // called when search button is clicked
-    func searchBarSearchButtonClicked(_ searchBar: UISearchBar) {
-        view.endEditing(true)
-    }
-    
-    // called when keyboard return is pressed
-    func searchBarTextDidEndEditing(_ searchBar: UISearchBar) {
-        view.endEditing(true)
-    }
-    
-    //Tableview: Make table view
-    func makeTableView() {
+    /*** -------------------- TABLE VIEW -------------------- ***/
+    private func makeTableView() {
         //Total height of nav bar, status bar, tab bar
         let barHeights = (self.navigationController?.navigationBar.frame.size.height)!+UIApplication.shared.statusBarFrame.height + 100
         
@@ -248,10 +233,6 @@ class CompanyViewController: UIViewController, UISearchBarDelegate, UIScrollView
     
     func numberOfSections(in tableView: UITableView) -> Int {
         return 1
-    }
-    
-    func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
-        return nil
     }
    
     //Section: Change font color and background color for section headers
@@ -280,27 +261,19 @@ class CompanyViewController: UIViewController, UISearchBarDelegate, UIScrollView
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection
         section: Int) -> Int {
-
-        if let state = informationStateController {
-            if (searchBar.text != "") {
-                return state.filteredCompanies.count
-            } else {
-                return (informationStateController?.companies.count)!
-            }
+        guard let companyViewModel = informationStateController else {
+            return 0
         }
-        return 0
+        return companyViewModel.displayedCompanies.count
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell
     {
-        var company: Company!
-        if (searchBar.text != "") {
-            company = informationStateController!.filteredCompanies[indexPath.row]
-        } else {
-            company = (informationStateController?.companies[indexPath.row])!
+        guard let company = informationStateController?.displayedCompanies[indexPath.row],
+            let customCell: CompanyTableViewCell = tableView.dequeueReusableCell(withIdentifier: CompanyTableViewCell.identifier) as? CompanyTableViewCell else {
+                print("CompanyViewController.swift - cellForRowAt method:  Company Table View dequeuing cell error")
+                return UITableViewCell()
         }
-        
-        let customCell = tableView.dequeueReusableCell(withIdentifier: CompanyTableViewCell.identifier) as! CompanyTableViewCell
         
         //Stops cell turning grey when click on it
         customCell.selectionStyle = .none
@@ -343,7 +316,7 @@ class CompanyViewController: UIViewController, UISearchBarDelegate, UIScrollView
         let touchPoint = sender.convert(CGPoint(x: 0, y: 0), to: companyTableView)
         let indexPath = companyTableView.indexPathForRow(at: touchPoint)
         var company: Company!
-        company = informationStateController?.companies[(indexPath?.row)!]
+        company = informationStateController?.allCompanies[(indexPath?.row)!]
         
         if (!((informationStateController?.favoritesString.contains((company?.name)!))!)) { //not in favorites
             company.isFavorite = true
@@ -368,35 +341,11 @@ class CompanyViewController: UIViewController, UISearchBarDelegate, UIScrollView
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         tableView.deselectRow(at: indexPath as IndexPath, animated: false)
         let companyDetailsVC = CompanyDetailsViewController()
-        
-        if (searchBar.text != "") {
-            companyDetailsVC.company = informationStateController?.filteredCompanies[indexPath.row]
-            companyDetailsVC.isFavorite = (informationStateController?.filteredCompanies[indexPath.row].isFavorite)!
-        } else {
-            companyDetailsVC.company = informationStateController?.companies[indexPath.row]
-            companyDetailsVC.isFavorite = (informationStateController?.companies[indexPath.row].isFavorite)! //set favorites' property of DetailVC's company to selected company of table view's favorite property
-        }
-        
+        companyDetailsVC.company = informationStateController?.displayedCompanies[indexPath.row]
+        companyDetailsVC.isFavorite = (informationStateController?.displayedCompanies[indexPath.row].isFavorite)!
         self.show(companyDetailsVC, sender: nil)
     }
 
-    func setAnchorPoint(_ anchorPoint: CGPoint, forView view: UIView) {
-        var newPoint = CGPoint(x: view.bounds.size.width * anchorPoint.x, y: view.bounds.size.height * anchorPoint.y)
-        var oldPoint = CGPoint(x: view.bounds.size.width * view.layer.anchorPoint.x, y: view.bounds.size.height * view.layer.anchorPoint.y)
-        
-        newPoint = newPoint.applying(view.transform)
-        oldPoint = oldPoint.applying(view.transform)
-        
-        var position = view.layer.position
-        position.x -= oldPoint.x
-        position.x += newPoint.x
-        
-        position.y -= oldPoint.y
-        position.y += newPoint.y
-        
-        view.layer.position = position
-        view.layer.anchorPoint = anchorPoint
-    }
 }
 
 //Makes constraint errors more readable

@@ -14,7 +14,7 @@ class FavoritesViewController: UITableViewController {
     var storageRef: FIRStorageReference?
     var databaseHandle: FIRDatabaseHandle?
     
-    var infoSC: informationStateController = informationStateController()
+    var infoSC: informationStateController!
     var checks: [Bool]!
 
     override func viewDidLoad() {
@@ -28,9 +28,13 @@ class FavoritesViewController: UITableViewController {
         
         databaseRef = FIRDatabase.database().reference()
         storageRef = FIRStorage.storage().reference(forURL: "gs://ecaft-4a6e7.appspot.com/logos")
-        DispatchQueue.main.async {
-            self.loadCompanyObjects()
-            self.infoSC.sortCompaniesAlphabetically()
+        DispatchQueue.main.async { [weak self] in
+            guard let sself = self else {
+                print("FavoritesViewController.swift - closure strong self error")
+                return
+            }
+            sself.loadCompanyObjects()
+            sself.infoSC.sortAllCompaniesAlphabetically()
         }
     }
     
@@ -90,12 +94,16 @@ class FavoritesViewController: UITableViewController {
                 return
             }
             
-            DispatchQueue.main.async {
-                self.infoSC.favoritesString.sort()
-                self.infoSC.clearCompanies()
-                self.loadCompanyObjects()
-                self.infoSC.sortCompaniesAlphabetically()
-                self.saveChecks()
+            DispatchQueue.main.async { [weak self] in
+                guard let sself = self else {
+                    print("FavoritesViewController.swift - closure strong self error")
+                    return
+                }
+                sself.infoSC.favoritesString.sort()
+                sself.infoSC.clearCompanies()
+                sself.loadCompanyObjects()
+                sself.infoSC.sortAllCompaniesAlphabetically()
+                sself.saveChecks()
             }
             tableView.reloadData()
         } else {
@@ -151,8 +159,7 @@ class FavoritesViewController: UITableViewController {
                         
                     }
                 }
-                self.infoSC.addCompany(company)
-                
+                self.infoSC.addCompanyToAllCompanies(company)
             }
         })
     }
@@ -210,9 +217,13 @@ class FavoritesViewController: UITableViewController {
             sender.setImage(#imageLiteral(resourceName: "check_favorites"), for: .normal)
         }
         
-        DispatchQueue.main.async {
-            self.tableView.reloadData()
-            self.saveChecks()
+        DispatchQueue.main.async { [weak self] in
+            guard let sself = self else {
+                print("FavoritesViewController.swift - closure strong self error")
+                return
+            }
+            sself.tableView.reloadData()
+            sself.saveChecks()
         }
     }
     
@@ -224,11 +235,11 @@ class FavoritesViewController: UITableViewController {
     
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         print("row: \(indexPath.row)\n")
-        for company in infoSC.companies {
+        for company in infoSC.allCompanies {
             print("\(company.name), ")
         }
         let detailVC = CompanyDetailsViewController()
-        detailVC.company = infoSC.companies[indexPath.row]
+        detailVC.company = infoSC.allCompanies[indexPath.row]
         detailVC.isFavorite = true
         show(detailVC, sender: nil)
     }

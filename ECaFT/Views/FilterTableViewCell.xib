@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="13771" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+    <device id="retina4_7" orientation="portrait">
+        <adaptation id="fullscreen"/>
+    </device>
+    <dependencies>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="13772"/>
+        <capability name="Safe area layout guides" minToolsVersion="9.0"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+    </dependencies>
+    <objects>
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner"/>
+        <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
+        <tableViewCell contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" id="KGk-i7-Jjw" customClass="FilterTableViewCell" customModule="ECaFT" customModuleProvider="target">
+            <rect key="frame" x="0.0" y="0.0" width="320" height="44"/>
+            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+            <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="KGk-i7-Jjw" id="H2p-sc-9uM">
+                <rect key="frame" x="0.0" y="0.0" width="320" height="43.5"/>
+                <autoresizingMask key="autoresizingMask"/>
+                <subviews>
+                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Hello" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="wmY-7C-29c">
+                        <rect key="frame" x="15" y="12" width="246" height="21"/>
+                        <fontDescription key="fontDescription" name=".AppleSystemUIFont" family=".AppleSystemUIFont" pointSize="17"/>
+                        <nil key="textColor"/>
+                        <nil key="highlightedColor"/>
+                    </label>
+                    <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="filterCheckmark" translatesAutoresizingMaskIntoConstraints="NO" id="A3f-XN-XZ0">
+                        <rect key="frame" x="271" y="5" width="32" height="32"/>
+                        <constraints>
+                            <constraint firstAttribute="height" constant="32" id="SrT-j5-SZO"/>
+                            <constraint firstAttribute="width" constant="32" id="aiX-nn-mzU"/>
+                        </constraints>
+                    </imageView>
+                </subviews>
+                <constraints>
+                    <constraint firstItem="A3f-XN-XZ0" firstAttribute="centerY" secondItem="H2p-sc-9uM" secondAttribute="centerY" id="Rac-Vl-CUG"/>
+                    <constraint firstItem="wmY-7C-29c" firstAttribute="leading" secondItem="H2p-sc-9uM" secondAttribute="leading" constant="15" id="h4M-X2-Hlc"/>
+                    <constraint firstItem="A3f-XN-XZ0" firstAttribute="leading" secondItem="wmY-7C-29c" secondAttribute="trailing" constant="10" id="rI2-33-pzv"/>
+                    <constraint firstAttribute="trailing" secondItem="A3f-XN-XZ0" secondAttribute="trailing" constant="17" id="trc-RM-8DS" userLabel="trailing = Check Btn Image View.trailing + 15"/>
+                    <constraint firstItem="wmY-7C-29c" firstAttribute="centerY" secondItem="H2p-sc-9uM" secondAttribute="centerY" id="uVL-NO-Zew"/>
+                </constraints>
+            </tableViewCellContentView>
+            <viewLayoutGuide key="safeArea" id="njF-e1-oar"/>
+            <connections>
+                <outlet property="checkBtnImageView" destination="A3f-XN-XZ0" id="5Uw-8z-uPx"/>
+                <outlet property="titleLabel" destination="wmY-7C-29c" id="EPU-HJ-o4I"/>
+            </connections>
+        </tableViewCell>
+    </objects>
+    <resources>
+        <image name="filterCheckmark" width="29" height="29"/>
+    </resources>
+</document>
