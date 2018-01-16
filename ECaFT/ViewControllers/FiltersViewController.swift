@@ -12,11 +12,20 @@ protocol FilterSelectionProtocol {
 }
 
 class FiltersViewController: UIViewController, UITableViewDelegate {
-    let filterViewModel = FilterViewModel()
+    var filterViewModel: FilterViewModel
     var filtersTableView = UITableView()
     let screenSize : CGRect = UIScreen.main.bounds
     
     var filterSelectionDelegate: FilterSelectionProtocol?
+    
+    init(filterViewModel: FilterViewModel) {
+        self.filterViewModel = filterViewModel
+        super.init(nibName: nil, bundle: nil)
+    }
+    
+    required init?(coder aDecoder: NSCoder) {
+        fatalError("FiltersViewController.swift - init(coder:) has not been implemented")
+    }
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -25,10 +34,28 @@ class FiltersViewController: UIViewController, UITableViewDelegate {
         makeTableView()
     }
     
+    // Shows what user selected
+    override func viewWillAppear(_ animated: Bool) {
+       if let filterSections = NSKeyedUnarchiver.unarchiveObject(withFile: filterViewModel.filtersFilePath) as? [FilterSection] {
+            filterViewModel.filterSections = filterSections
+            filtersTableView.reloadData()
+        }
+    }
+    
     override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)
         let selectedFilterSects = filterViewModel.getSelectedFilterSections()
         filterSelectionDelegate?.setSelectedFiltersTo(filtersSent: selectedFilterSects)
+        let isSuccessful = NSKeyedArchiver.archiveRootObject(self.filterViewModel.filterSections, toFile: self.filterViewModel.filtersFilePath)
+        if (isSuccessful) {
+            print("Saved filters")
+        } else  {
+            print("Didn't Save filters")
+        }
+        if let filterSections = NSKeyedUnarchiver.unarchiveObject(withFile: filterViewModel.filtersFilePath) as? [FilterSection] {
+            filterViewModel.filterSections = filterSections
+            filtersTableView.reloadData()
+        }
     }
     
     // MARK - Table View functions

@@ -37,6 +37,14 @@ class FilterViewModel: NSObject {
     // Contains filter sections w/ only selected filter option items
     private(set) var selectedFilterSections: [FilterSection] = []
     
+    // File Path to saved Filter Sections
+    var filtersFilePath: String {
+        let manager = FileManager.default
+        let url = manager.urls(for: .documentDirectory, in: .userDomainMask).first
+        print("this is the url path in the documentDirectory \(url)")
+        return (url!.appendingPathComponent("FilterSelectionData").path)
+    }
+    
     override init() {
         super.init()
         filterSections = self.getFilterSections()
@@ -61,8 +69,9 @@ class FilterViewModel: NSObject {
         
         return allMajors && allPositions && !(supportsSponsorship)
     }
-    // Returns filter section with containing ONLY selected filter option items
-    // If "All" option selected, append filter sect
+    
+    /* Returns filter section with containing ONLY selected filter option items
+       If "All" option selected, append filter sect */
     func getSelectedFilterSections() -> [FilterSection] {
         var selectedFilterSections: [FilterSection] = []
         for filterSect in filterSections {
@@ -80,7 +89,7 @@ class FilterViewModel: NSObject {
         return selectedFilterSections
     }
     
-    // MARK - PRIVATE FUNCTIONS
+    // MARK: - Private functions
     private func getSelectedFilterOptItems(from filterOptionItems: [FilterOptionItem]) -> [FilterOptionItem] {
         return filterOptionItems.filter({$0.isSelected})
     }

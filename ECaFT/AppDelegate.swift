@@ -18,6 +18,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     
     //Declares instance of information state controller
     var informationSC: informationStateController!
+    var filterViewModel: FilterViewModel!
     
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplicationLaunchOptionsKey: Any]?) -> Bool {
         FIRApp.configure() //Sets up firebase
@@ -38,8 +39,11 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         
         //Pass information state controller to company view controller & favorites view controller
         informationSC = informationStateController()
+        filterViewModel = FilterViewModel()
+        
         let companyVC = (self.tabVC.viewControllers?[2] as! CompanyViewController)
         companyVC.informationStateController = informationSC
+        companyVC.filterViewModel = filterViewModel
         
         let favoritesVC = (self.tabVC.viewControllers?[3] as! FavoritesViewController)
         favoritesVC.infoSC = informationSC

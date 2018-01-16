@@ -21,8 +21,9 @@ class CompanyViewController: UIViewController, UISearchBarDelegate, UIScrollView
     // Company Table View
     var companyTableView = UITableView()
     
-    // Information State Controller
+    // View Models
     var informationStateController: informationStateController?
+    var filterViewModel: FilterViewModel?
     
     // Filtering
     // Value sent from Filters VC. Holds filter section w/ selected filter options
@@ -32,6 +33,14 @@ class CompanyViewController: UIViewController, UISearchBarDelegate, UIScrollView
     var databaseRef: FIRDatabaseReference?
     var storageRef: FIRStorageReference?
     var databaseHandle: FIRDatabaseHandle?
+    
+    init() {
+        super.init(nibName: nil, bundle: nil)
+    }
+    
+    required init?(coder aDecoder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -115,9 +124,18 @@ class CompanyViewController: UIViewController, UISearchBarDelegate, UIScrollView
 
     /*** -------------------- FILTERING -------------------- ***/
     @objc func filterButtonTapped() {
-        let filtersVC = FiltersViewController()
+        var filterViewModel: FilterViewModel
+        if (self.filterViewModel != nil) {
+            filterViewModel = self.filterViewModel!
+        }
+        else {
+            self.filterViewModel = FilterViewModel()
+            filterViewModel = self.filterViewModel!
+        }
+        let filtersVC = FiltersViewController(filterViewModel: filterViewModel)
         filtersVC.filterSelectionDelegate = self
         self.navigationController?.pushViewController(filtersVC, animated: true)
+        
     }
     
     // Set selected filters to filters selected from Filters VC

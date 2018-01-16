@@ -10,9 +10,7 @@ import Foundation
 
 //Put names of properties in enum to avoid typos
 enum Property: String {
-    case filteredCompanies = "filteredCompanies"
     case name = "name"
-    case filtersApplied = "filtersApplied"
     case isChecked = "isChecked"
     case favorites = "favorites"
     case information = "information"
@@ -28,4 +26,21 @@ enum Property: String {
     case id = "id"
     case sponsor = "sponsor"
     case optcpt = "optcpt"
+    
+    // Filter Section
+    case filterName = "filterName"
+    case filterOptionItems = "filterOptionItems"
+    case sectionFilterType = "sectionFilterType"
+    case isAllSelected = "isAllSelected"
+    case isExpanded = "isExpanded"
+    
+    // Filter Option Item
+    case filterOptionItem = "filterOptionItem"
+    case itemFilterType = "itemFilterType"
+    case isSelected = "isSelected"
+    
+    // Filter Data Object
+    case filterTitle = "filterTitle"
+    case filterSearchValue = "filterSearchValue"
+
 }
