@@ -34,6 +34,7 @@ class FilterViewModel: NSObject {
     
     // Contains all filtered sections displayed on table view
     var filterSections: [FilterSection] = []
+    
     // Contains filter sections w/ only selected filter option items
     private(set) var selectedFilterSections: [FilterSection] = []
     
@@ -86,6 +87,7 @@ class FilterViewModel: NSObject {
         return filterOptionItems.filter({$0.isSelected})
     }
     
+    // Default: All Majors, All positons, Sponsorship cell NOT selected
     private func getDefaultFilterSections() -> [FilterSection] {
         // Create array of filterOptionItmes from model filter items
         let majorsItems = majors.map { FilterOptionItem(item: $0, type: FilterType.Majors) }

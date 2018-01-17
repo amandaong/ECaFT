@@ -151,33 +151,45 @@ class CompanyViewController: UIViewController, UISearchBarDelegate, UIScrollView
     /*** -------------------- SEARCH BAR -------------------- ***/
     // Called whenever text is changed.
     func searchBar(_ searchBar: UISearchBar, textDidChange searchText: String) {
-        let text = searchText.lowercased()
-        if let state = informationStateController {
-            state.clearFilter()
-            for company in state.allCompanies {
-                if company.description.lowercased().range(of: text) != nil {
-                    state.addFilteredCompany(company)
-                }
-            }
+        informationStateController?.applySearch(searchText: searchText)
+        companyTableView.reloadData()
+        
+        // If clear button pressed
+        if searchText.characters.count == 0 {
+            searchBar.resignFirstResponder()
+            view.endEditing(true)
+            
+            informationStateController?.clearSearchBarCompanies()
+            informationStateController?.resetDisplayedCompanies()
+            companyTableView.reloadData()
         }
+    }
+    
+    // When cancel button is clicked
+    func searchBarCancelButtonClicked(_ searchBar: UISearchBar) {
+        searchBar.text = ""
+        searchBar.resignFirstResponder()
+        view.endEditing(true)
+        
+        informationStateController?.clearSearchBarCompanies()
+        informationStateController?.resetDisplayedCompanies()
         companyTableView.reloadData()
     }
     
-    // Called when cancel button is clicked
-    func searchBarCancelButtonClicked(_ searchBar: UISearchBar) {
-        searchBar.text = ""
-        if let state = informationStateController {
-            state.clearFilter()
-        }
-    }
-    
-    // Called when search button is clicked
+    // When done button is pressed
     func searchBarSearchButtonClicked(_ searchBar: UISearchBar) {
+        searchBar.resignFirstResponder() // hides the keyboard.
         view.endEditing(true)
     }
     
-    // Called when keyboard return is pressed
+    // When search bar is pressed
+    func searchBarTextDidBeginEditing(_ searchBar: UISearchBar) {
+        searchBar.becomeFirstResponder()
+    }
+    
+    // When keyboard return is pressed
     func searchBarTextDidEndEditing(_ searchBar: UISearchBar) {
+        searchBar.resignFirstResponder()
         view.endEditing(true)
     }
     
@@ -195,9 +207,9 @@ class CompanyViewController: UIViewController, UISearchBarDelegate, UIScrollView
         searchBar.returnKeyType = .done
         searchBar.enablesReturnKeyAutomatically = false
         searchBar.placeholder = "company name"
-        searchBar.showsCancelButton = false
         searchBar.showsBookmarkButton = false
         searchBar.showsSearchResultsButton = false
+        searchBar.showsCancelButton = false
         
         view.addSubview(searchBar)
     }
@@ -241,13 +253,12 @@ class CompanyViewController: UIViewController, UISearchBarDelegate, UIScrollView
         let screenSize : CGRect = UIScreen.main.bounds
         let headerView = UIView(frame: CGRect(x: 0, y: 0, width: 0, height: 0))
         headerView.backgroundColor = UIColor.ecaftLightGray
-        
-        
+
         let label = UILabel(frame: CGRect(x: 0.05*screenSize.width, y: 0, width: screenSize.width, height: 0))
         label.center.y = 0.5*headerView.frame.height
         label.text = informationStateController?.sectionTitles[section]
         label.font = UIFont.boldSystemFont(ofSize: 16.0)
-        label.textColor = .ecaftDarkGray
+        label.textColor = UIColor.ecaftBlack
  
         headerView.addSubview(label)
         

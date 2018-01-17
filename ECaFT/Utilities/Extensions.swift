@@ -16,9 +16,9 @@ extension UIColor {
     public static let ecaftGold = UIColor.colorFromCode(code: 0xF7D62F)
     public static let ecaftGray = UIColor(red: 233/255, green: 233/255, blue: 233/255, alpha: 1)
     public static let ecaftDarkGray = UIColor(red: 100/255, green: 100/255, blue: 100/255, alpha: 1)
-    public static let ecaftLightGray = UIColor(red: 233/255, green: 233/255, blue: 233/255, alpha: 1)
+    public static let ecaftLightGray = UIColor(red: 247/255, green: 247/255, blue: 247/255, alpha: 1)
     public static let ecaftLightGray2 = UIColor(red: 200/255, green: 200/255, blue: 200/255, alpha: 1)
-    public static let ecaftBlack = UIColor(red: 34/255, green: 34/255, blue: 34/255, alpha: 1)
+    public static let ecaftBlack = UIColor(red: 3/255, green: 3/255, blue: 3/255, alpha: 1)
     public static let ecaftBlackFaded = UIColor(red: 34/255, green: 34/255, blue: 34/255, alpha: 0.5)
     
     public static let backgroundGray = UIColor(red:0.97, green:0.97, blue:0.97, alpha:1.0)

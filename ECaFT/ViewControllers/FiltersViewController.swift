@@ -89,6 +89,8 @@ class FiltersViewController: UIViewController, UITableViewDelegate {
     func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
         let filterSection = filterViewModel.filterSections[section]
         let header = tableView.dequeueReusableHeaderFooterView(withIdentifier: "header") as? CollapsibleFilterTableViewHeader ?? CollapsibleFilterTableViewHeader(reuseIdentifier: "header")
+        header.backgroundColor = UIColor.ecaftLightGray
+        header.titleLabel.textColor = UIColor.ecaftBlack
         header.titleLabel.text = filterViewModel.filterSections[section].name
         header.setExpanded(expanded: filterSection.isExpanded)
         header.section = section

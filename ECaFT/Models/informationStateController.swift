@@ -39,7 +39,7 @@ class informationStateController {
         allCompanies = []
     }
   
- 
+    /*** -------------------- FILTERING -------------------- ***/
     // Assumption: Filter Section ONLY contains selected Filter Option Items
     func applyFilters(filterSections: [FilterSection]) {
         var filteredCompaniesSet: Set<Company> = Set(allCompanies)
@@ -114,21 +114,28 @@ class informationStateController {
         return alphabeticalFilteredCompanies
     }
     
+    /*** -------------------- SEARCHING -------------------- ***/
+    // Update search bar companies & displayed companies to show companies matching search
     func applySearch(searchText: String) {
-        //If filtered company is not empty, search on filtered companies
-        //else search on allCompanies
+        clearSearchBarCompanies() // Clear previous search
+        let text = searchText.lowercased()
+        let companiesToSearch = (filteredCompanies.count > 0) ? filteredCompanies : allCompanies
+        for company in companiesToSearch {
+            if company.description.lowercased().range(of: text) != nil {
+                searchBarCompanies.append(company)
+            }
+        }
+        // Update displayed companies to search bar companies
+        displayedCompanies = searchBarCompanies
+        sortDisplayedCompaniesAlphabetically()
     }
     
-    func addFilteredCompany(_ company: Company) {
-        filteredCompanies.append(company)
+    func clearSearchBarCompanies() {
+        searchBarCompanies = []
     }
     
-    func clearFilter() {
-        filteredCompanies = []
-    }
-
-    func setCompanies(companies: [Company]) {
-        self.allCompanies = companies
+    func resetDisplayedCompanies() {
+        displayedCompanies = (filteredCompanies.count > 0) ? filteredCompanies : allCompanies
     }
     
     func sortFavStrings() {
@@ -145,12 +152,6 @@ class informationStateController {
     
     func sortAllCompaniesAlphabetically() {
         allCompanies.sort {
-            return $0.name.lowercased() < $1.name.lowercased()
-        }
-    }
-    
-    func sortFavoritesAlphabetically() {
-        favoriteCompanies.sort {
             return $0.name.lowercased() < $1.name.lowercased()
         }
     }
