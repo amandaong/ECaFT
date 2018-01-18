@@ -15,6 +15,10 @@ class MapViewController: UIViewController {
 
     override func viewDidLoad() { 
         super.viewDidLoad()
+        hideFilterBtn()
+        
+        // Remove filter btn from nav bar
+        self.navigationController?.navigationBar.topItem?.rightBarButtonItem?.title = ""
         
         let topHeight = UIApplication.shared.statusBarFrame.height + (navigationController?.navigationBar.frame.height)!
         let bottomHeight = tabBarController?.tabBar.frame.height != nil ? tabBarController?.tabBar.frame.height : 0
@@ -27,6 +31,7 @@ class MapViewController: UIViewController {
     }
 
     override func viewWillAppear(_ animated: Bool) {
+        hideFilterBtn()
         navigationController?.navigationBar.topItem?.title = "Map"
     }
     
@@ -35,15 +40,8 @@ class MapViewController: UIViewController {
         // Dispose of any resources that can be recreated.
     }
     
-
-    /*
-    // MARK: - Navigation
-
-    // In a storyboard-based application, you will often want to do a little preparation before navigation
-    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        // Get the new view controller using segue.destinationViewController.
-        // Pass the selected object to the new view controller.
+    // Remove filter btn from nav bar
+    private func hideFilterBtn() {
+        self.navigationController?.navigationBar.topItem?.rightBarButtonItem?.title = ""
     }
-    */
-
 }

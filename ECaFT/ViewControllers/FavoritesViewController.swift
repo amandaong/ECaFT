@@ -19,6 +19,7 @@ class FavoritesViewController: UITableViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
+        hideFilterBtn()
         
         tableView.dataSource = self
         tableView.register(UINib(nibName: "FavoritesTableViewCell", bundle: nil), forCellReuseIdentifier: "FavoritesCell")
@@ -40,6 +41,7 @@ class FavoritesViewController: UITableViewController {
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
+        hideFilterBtn()
         
         navigationController?.navigationBar.topItem?.title = "Favorites"
         
@@ -242,5 +244,11 @@ class FavoritesViewController: UITableViewController {
         detailVC.company = infoSC.allCompanies[indexPath.row]
         detailVC.isFavorite = true
         show(detailVC, sender: nil)
+    }
+    
+    /*** -------------------- PRIVATE FUNCTIONS -------------------- ***/
+    // Remove filter btn from nav bar
+    private func hideFilterBtn() {
+        self.navigationController?.navigationBar.topItem?.rightBarButtonItem?.title = ""
     }
 }

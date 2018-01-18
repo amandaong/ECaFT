@@ -36,12 +36,8 @@ class CompanyDetailsViewController: UIViewController, UITableViewDelegate, UITab
     let notesSectionTitles : [String] = ["Notes", "Photos"]
     var notesNumOfSections = 2 //number of sections in "Notes"
     
-    
-    
-    
     override func viewDidLoad() {
         super.viewDidLoad()
-        
         
         let navBarAndStatusBarHeight = (self.navigationController?.navigationBar.frame.size.height)!+UIApplication.shared.statusBarFrame.height
         tableView = UITableView(frame: CGRect(x: 0, y: 0, width: screenSize.width, height: screenSize.height - navBarAndStatusBarHeight), style: UITableViewStyle.plain) //sets tableview to size of view below status bar and nav bar

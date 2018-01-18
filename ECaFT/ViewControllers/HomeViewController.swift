@@ -15,14 +15,14 @@ class HomeViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-
+        hideFilterBtn()
+        
         view.backgroundColor = UIColor.black
         
         let navBarHeight = tabBarItem.accessibilityFrame.height
         let backgroundHeight = view.frame.height - navBarHeight
         let backgroundImageView = UIImageView(frame: CGRect(origin: CGPoint(x: 0, y: navBarHeight), size: CGSize(width: view.frame.width, height: backgroundHeight)))
 
-        print("homeviewController")
         backgroundImageView.image = #imageLiteral(resourceName: "ecaftBackground")
         makeTitle()
         makeBodyParagraph()
@@ -34,11 +34,16 @@ class HomeViewController: UIViewController {
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        
+        hideFilterBtn()
         navigationController?.navigationBar.topItem?.title = "Home"
     }
     
-    func makeTitle() {
+    // Remove filter btn from nav bar
+    private func hideFilterBtn() {
+        self.navigationController?.navigationBar.topItem?.rightBarButtonItem?.title = ""
+    }
+    
+    private func makeTitle() {
         careerFairTitle = UILabel(frame: CGRect(x: 0, y: 0, width: screenSize.width*0.8, height: 30))
         careerFairTitle.center.x = 0.5*screenSize.width
         if(screenSize.height < 667.0) { //For iPhone 5s & below
@@ -58,7 +63,7 @@ class HomeViewController: UIViewController {
         view.addSubview(careerFairTitle)
     }
     
-    func makeBodyParagraph() {
+    private func makeBodyParagraph() {
         bodyParagraph = UITextView(frame: CGRect(x: 0, y: 0, width: screenSize.width*0.8, height: 400))
         bodyParagraph.center.x = 0.5*screenSize.width
         if(screenSize.height < 667.0) { //For iPhone 5s & below
