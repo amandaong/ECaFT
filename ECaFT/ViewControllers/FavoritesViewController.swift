@@ -14,7 +14,7 @@ class FavoritesViewController: UITableViewController {
     var storageRef: FIRStorageReference?
     var databaseHandle: FIRDatabaseHandle?
     
-    var infoSC: informationStateController!
+    var infoSC: CompanyViewModel!
     var checks: [Bool]!
 
     override func viewDidLoad() {

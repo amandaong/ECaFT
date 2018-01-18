@@ -14,6 +14,7 @@ protocol FilterSelectionProtocol {
 class FiltersViewController: UIViewController, UITableViewDelegate {
     var filterViewModel: FilterViewModel
     var filtersTableView = UITableView()
+    var resetBtn = UIButton()
     let screenSize : CGRect = UIScreen.main.bounds
     
     var filterSelectionDelegate: FilterSelectionProtocol?
@@ -32,20 +33,20 @@ class FiltersViewController: UIViewController, UITableViewDelegate {
         // Set navigation bar title
         self.title = "Filters"
         makeTableView()
-    }
-    
-    // Shows what user selected
-    override func viewWillAppear(_ animated: Bool) {
-       
+        makeResetButton()
     }
     
     override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)
         let selectedFilterSects = filterViewModel.getSelectedFilterSections()
         filterSelectionDelegate?.setSelectedFiltersTo(filtersSent: selectedFilterSects)
+        
+        // Updated filter bar button text
+        let btnText = (filterViewModel.isFiltersOn()) ? "Filters On" : "Filters Off"
+        self.navigationController?.navigationBar.topItem?.rightBarButtonItem?.title = btnText
     }
     
-    // MARK - Table View functions
+    /*** -------------------- TABLE VIEW -------------------- ***/
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         // Get filtering options for specific section (e.g. All Majors, CS, etc)
         let filterSect = filterViewModel.filterSections[indexPath.section]
@@ -85,7 +86,7 @@ class FiltersViewController: UIViewController, UITableViewDelegate {
         return filterViewModel.filterSections[indexPath.section].isExpanded ? UITableViewAutomaticDimension : 0
     }
     
-    // MARK - Header functions
+    /*** -------------------- HEADER -------------------- ***/
     func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
         let filterSection = filterViewModel.filterSections[section]
         let header = tableView.dequeueReusableHeaderFooterView(withIdentifier: "header") as? CollapsibleFilterTableViewHeader ?? CollapsibleFilterTableViewHeader(reuseIdentifier: "header")
@@ -102,10 +103,16 @@ class FiltersViewController: UIViewController, UITableViewDelegate {
         return 40
     }
     
-    // MARK - Private functions
+    /*** -------------------- RESET -------------------- ***/
+    @objc func resetButtonTapped() {
+        filterViewModel.resetFiltersToDefault()
+        filtersTableView.reloadData()
+    }
+    
+    /*** -------------------- PRIVATE FUNCTIONS -------------------- ***/
     private func makeTableView() {
         // Total height of nav bar, status bar, tab bar
-        let barHeights = (self.navigationController?.navigationBar.frame.size.height)!+UIApplication.shared.statusBarFrame.height + 100
+        let barHeights = (self.navigationController?.navigationBar.frame.size.height)! + UIApplication.shared.statusBarFrame.height + 50
         let frame = CGRect(x: 0, y: 0, width: screenSize.width, height: screenSize.height - barHeights)
         
         // Sets tableview to size of view below status bar and nav bar
@@ -122,6 +129,16 @@ class FiltersViewController: UIViewController, UITableViewDelegate {
         self.view.addSubview(self.filtersTableView)
     }
     
+    private func makeResetButton() {
+        resetBtn = UIButton(frame: CGRect(x: 0, y: filtersTableView.frame.maxY, width: screenSize.width, height: 50))
+        resetBtn.setBackgroundImage(UIImage.imageWithColor(color: UIColor.ecaftRed), for: .normal)
+        resetBtn.setBackgroundImage(UIImage.imageWithColor(color: UIColor.ecaftRedLight), for: UIControlState.highlighted)
+        resetBtn.tintColor = UIColor.white
+        resetBtn.setTitle("Reset", for: .normal)
+        resetBtn.addTarget(self, action: #selector(resetButtonTapped), for: .touchUpInside)
+        self.view.addSubview(resetBtn)
+    }
+
 }
 
 extension FiltersViewController: CollapsibleFilterTableViewHeaderDelegate {

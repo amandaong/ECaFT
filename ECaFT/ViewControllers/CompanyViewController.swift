@@ -22,7 +22,7 @@ class CompanyViewController: UIViewController, UISearchBarDelegate, UIScrollView
     var companyTableView = UITableView()
     
     // View Models
-    var informationStateController: informationStateController?
+    var companyViewModel: CompanyViewModel?
     var filterViewModel: FilterViewModel?
     
     // Filtering
@@ -45,7 +45,6 @@ class CompanyViewController: UIViewController, UISearchBarDelegate, UIScrollView
     override func viewDidLoad() {
         super.viewDidLoad()
         view.backgroundColor = UIColor.backgroundGray
-        
         makeSearchBar()
         makeFilterButton()
         makeTableView()
@@ -62,19 +61,23 @@ class CompanyViewController: UIViewController, UISearchBarDelegate, UIScrollView
         super.viewWillAppear(animated)
         navigationController?.navigationBar.topItem?.title = "Companies"
         
+        // Show favorites on table view
         if let favs = UserDefaults.standard.object(forKey: Property.favorites.rawValue) as? Data {
             let temp = NSKeyedUnarchiver.unarchiveObject(with: favs) as! [String]
             if (isViewLoaded) {
-                if (temp.count != informationStateController?.favoritesString.count) {
-                    informationStateController?.favoritesString = temp
+                if (temp.count != companyViewModel?.favoritesString.count) {
+                    companyViewModel?.favoritesString = temp
                     companyTableView.reloadData()
                 }
             }
         }
+        
+        // Apply selected filters
         if let selectedFilterSects = selectedFilterSects {
-            informationStateController?.applyFilters(filterSections: selectedFilterSects)
+            companyViewModel?.applyFilters(filterSections: selectedFilterSects)
             companyTableView.reloadData()
         }
+    
     }
     
     override func viewWillDisappear(_ animated: Bool) {
@@ -116,8 +119,8 @@ class CompanyViewController: UIViewController, UISearchBarDelegate, UIScrollView
                         }
                     }
                 }
-                self.informationStateController?.addCompanyToAllCompanies(company)
-                self.informationStateController?.addCompanyToDisplayedCompanies(company)
+                self.companyViewModel?.addCompanyToAllCompanies(company)
+                self.companyViewModel?.addCompanyToDisplayedCompanies(company)
             }
         })
     }
@@ -135,7 +138,6 @@ class CompanyViewController: UIViewController, UISearchBarDelegate, UIScrollView
         let filtersVC = FiltersViewController(filterViewModel: filterViewModel)
         filtersVC.filterSelectionDelegate = self
         self.navigationController?.pushViewController(filtersVC, animated: true)
-        
     }
     
     // Set selected filters to filters selected from Filters VC
@@ -144,14 +146,15 @@ class CompanyViewController: UIViewController, UISearchBarDelegate, UIScrollView
     }
     
     private func makeFilterButton() {
-        let filterButton = UIBarButtonItem(title: "Filter", style: .plain, target: self, action: #selector(filterButtonTapped))
-        navigationController?.navigationBar.topItem?.rightBarButtonItem = filterButton
+        let filterButton = UIBarButtonItem(title: "Filters Off", style: .plain, target: self, action: #selector(filterButtonTapped))
+        self.navigationController?.navigationBar.topItem?.rightBarButtonItem = filterButton
+        self.navigationItem.rightBarButtonItem = filterButton
     }
     
     /*** -------------------- SEARCH BAR -------------------- ***/
     // Called whenever text is changed.
     func searchBar(_ searchBar: UISearchBar, textDidChange searchText: String) {
-        informationStateController?.applySearch(searchText: searchText)
+        companyViewModel?.applySearch(searchText: searchText)
         companyTableView.reloadData()
         
         // If clear button pressed
@@ -159,8 +162,8 @@ class CompanyViewController: UIViewController, UISearchBarDelegate, UIScrollView
             searchBar.resignFirstResponder()
             view.endEditing(true)
             
-            informationStateController?.clearSearchBarCompanies()
-            informationStateController?.resetDisplayedCompanies()
+            companyViewModel?.clearSearchBarCompanies()
+            companyViewModel?.resetDisplayedCompanies()
             companyTableView.reloadData()
         }
     }
@@ -171,8 +174,8 @@ class CompanyViewController: UIViewController, UISearchBarDelegate, UIScrollView
         searchBar.resignFirstResponder()
         view.endEditing(true)
         
-        informationStateController?.clearSearchBarCompanies()
-        informationStateController?.resetDisplayedCompanies()
+        companyViewModel?.clearSearchBarCompanies()
+        companyViewModel?.resetDisplayedCompanies()
         companyTableView.reloadData()
     }
     
@@ -256,7 +259,7 @@ class CompanyViewController: UIViewController, UISearchBarDelegate, UIScrollView
 
         let label = UILabel(frame: CGRect(x: 0.05*screenSize.width, y: 0, width: screenSize.width, height: 0))
         label.center.y = 0.5*headerView.frame.height
-        label.text = informationStateController?.sectionTitles[section]
+        label.text = companyViewModel?.sectionTitles[section]
         label.font = UIFont.boldSystemFont(ofSize: 16.0)
         label.textColor = UIColor.ecaftBlack
  
@@ -272,7 +275,7 @@ class CompanyViewController: UIViewController, UISearchBarDelegate, UIScrollView
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection
         section: Int) -> Int {
-        guard let companyViewModel = informationStateController else {
+        guard let companyViewModel = companyViewModel else {
             return 0
         }
         return companyViewModel.displayedCompanies.count
@@ -280,7 +283,7 @@ class CompanyViewController: UIViewController, UISearchBarDelegate, UIScrollView
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell
     {
-        guard let company = informationStateController?.displayedCompanies[indexPath.row],
+        guard let company = companyViewModel?.displayedCompanies[indexPath.row],
             let customCell: CompanyTableViewCell = tableView.dequeueReusableCell(withIdentifier: CompanyTableViewCell.identifier) as? CompanyTableViewCell else {
                 print("CompanyViewController.swift - cellForRowAt method:  Company Table View dequeuing cell error")
                 return UITableViewCell()
@@ -310,7 +313,7 @@ class CompanyViewController: UIViewController, UISearchBarDelegate, UIScrollView
             customCell.companyBack.image = #imageLiteral(resourceName: "sample")
         }
 
-        if (informationStateController?.favoritesString.contains(company.name))! {
+        if (companyViewModel?.favoritesString.contains(company.name))! {
             company.isFavorite = true
             customCell.favoritesButton.setImage(#imageLiteral(resourceName: "favoritesFilled"), for: .normal)
         } else {
@@ -327,24 +330,24 @@ class CompanyViewController: UIViewController, UISearchBarDelegate, UIScrollView
         let touchPoint = sender.convert(CGPoint(x: 0, y: 0), to: companyTableView)
         let indexPath = companyTableView.indexPathForRow(at: touchPoint)
         var company: Company!
-        company = informationStateController?.allCompanies[(indexPath?.row)!]
+        company = companyViewModel?.allCompanies[(indexPath?.row)!]
         
-        if (!((informationStateController?.favoritesString.contains((company?.name)!))!)) { //not in favorites
+        if (!((companyViewModel?.favoritesString.contains((company?.name)!))!)) { //not in favorites
             company.isFavorite = true
-            informationStateController?.favoritesString.append((company?.name)!)
+            companyViewModel?.favoritesString.append((company?.name)!)
             sender.setImage(#imageLiteral(resourceName: "favoritesFilled"), for: .normal)
-            informationStateController?.sortFavStrings()
+            companyViewModel?.sortFavStrings()
         } else {
-            if let index = informationStateController?.favoritesString.index(of: (company?.name)!) { //get index of the company in favorites
+            if let index = companyViewModel?.favoritesString.index(of: (company?.name)!) { //get index of the company in favorites
                 company.isFavorite = false
-                informationStateController?.favoritesString.remove(at: index) //remove it
+                companyViewModel?.favoritesString.remove(at: index) //remove it
                 sender.setImage(#imageLiteral(resourceName: "favorites"), for: .normal)
             }
         }
         
         DispatchQueue.main.async {
             UserDefaults.standard.removeObject(forKey: Property.favorites.rawValue)
-            let savedData = NSKeyedArchiver.archivedData(withRootObject: self.informationStateController?.favoritesString)
+            let savedData = NSKeyedArchiver.archivedData(withRootObject: self.companyViewModel?.favoritesString)
             UserDefaults.standard.set(savedData, forKey: Property.favorites.rawValue)
         }
     }
@@ -352,8 +355,8 @@ class CompanyViewController: UIViewController, UISearchBarDelegate, UIScrollView
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         tableView.deselectRow(at: indexPath as IndexPath, animated: false)
         let companyDetailsVC = CompanyDetailsViewController()
-        companyDetailsVC.company = informationStateController?.displayedCompanies[indexPath.row]
-        companyDetailsVC.isFavorite = (informationStateController?.displayedCompanies[indexPath.row].isFavorite)!
+        companyDetailsVC.company = companyViewModel?.displayedCompanies[indexPath.row]
+        companyDetailsVC.isFavorite = (companyViewModel?.displayedCompanies[indexPath.row].isFavorite)!
         self.show(companyDetailsVC, sender: nil)
     }
 

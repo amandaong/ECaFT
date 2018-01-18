@@ -16,7 +16,7 @@ class CompanyDetailsViewController: UIViewController, UITableViewDelegate, UITab
     var headerView = UIView()
     var company: Company!
     
-    var infoSC = informationStateController()
+    var infoSC = CompanyViewModel()
     
     //Table view properties
     var name = UILabel() //company name

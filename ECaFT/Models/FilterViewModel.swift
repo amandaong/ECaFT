@@ -43,7 +43,12 @@ class FilterViewModel: NSObject {
         self.filterSections = getDefaultFilterSections()
     }
     
-    // Checks if default filter options selected (all Majors, all Positions, may or may not support sponsorship selected)
+    // Set filters to default filters (all majors, all positions, sponsorship not selected)
+    func resetFiltersToDefault() {
+        self.filterSections = getDefaultFilterSections()
+    }
+    
+    // Filters is off if default filters are selected (all majors, all positions, sponsorship not selected)
     func isFiltersOn() -> Bool {
         var allMajors: Bool = false
         var allPositions: Bool = false
@@ -60,7 +65,8 @@ class FilterViewModel: NSObject {
             }
         }
         
-        return allMajors && allPositions && !(supportsSponsorship)
+        let isDefault = allMajors && allPositions && !(supportsSponsorship)
+        return !(isDefault)
     }
     
     /* Returns filter section with containing ONLY selected filter option items

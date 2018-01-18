@@ -17,7 +17,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     var tabVC: TabViewController!
     
     //Declares instance of information state controller
-    var informationSC: informationStateController!
+    var informationSC: CompanyViewModel!
     var filterViewModel: FilterViewModel!
     
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplicationLaunchOptionsKey: Any]?) -> Bool {
@@ -38,11 +38,11 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         window?.makeKeyAndVisible()
         
         //Pass information state controller to company view controller & favorites view controller
-        informationSC = informationStateController()
+        informationSC = CompanyViewModel()
         filterViewModel = FilterViewModel()
         
         let companyVC = (self.tabVC.viewControllers?[2] as! CompanyViewController)
-        companyVC.informationStateController = informationSC
+        companyVC.companyViewModel = informationSC
         companyVC.filterViewModel = filterViewModel
         
         let favoritesVC = (self.tabVC.viewControllers?[3] as! FavoritesViewController)

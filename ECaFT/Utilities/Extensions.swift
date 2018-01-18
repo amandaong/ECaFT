@@ -12,6 +12,7 @@ import UIKit
 extension UIColor {
     
     public static let ecaftRed = UIColor.colorFromCode(code: 0xA81414)
+    public static let ecaftRedLight = UIColor(red: 179/255, green: 27/255, blue: 27/255, alpha: 1)
     public static let ecaftDarkRed = UIColor.colorFromCode(code: 0x891010)
     public static let ecaftGold = UIColor.colorFromCode(code: 0xF7D62F)
     public static let ecaftGray = UIColor(red: 233/255, green: 233/255, blue: 233/255, alpha: 1)
@@ -46,6 +47,19 @@ extension UIView {
         self.layer.add(animation, forKey: nil)
     }
     
+}
+
+extension UIImage {
+    // For background color of Reset button
+    class func imageWithColor(color: UIColor) -> UIImage {
+        let rect: CGRect = CGRect(x: 0, y: 0, width: 1, height: 1)
+        UIGraphicsBeginImageContextWithOptions(CGSize(width: 1, height: 1), false, 0)
+        color.setFill()
+        UIRectFill(rect)
+        let image: UIImage = UIGraphicsGetImageFromCurrentImageContext()!
+        UIGraphicsEndImageContext()
+        return image
+    }
 }
 
 

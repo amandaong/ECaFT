@@ -1,5 +1,5 @@
 //
-//  informationStateController.swift
+//  CompanyViewModel.swift
 //  ECaFT
 //
 //  Created by Amanda Ong on 1/11/17.
@@ -9,7 +9,7 @@
 import Foundation
 
 // Company View Model - keep track of company data
-class informationStateController {
+class CompanyViewModel {
     
     private(set) var filteredCompanies = [Company]() //for filters
     private(set) var searchBarCompanies = [Company]() //for search bar
