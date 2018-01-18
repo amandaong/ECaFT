@@ -23,26 +23,26 @@ class TabViewController: UITabBarController, SlidingTabBarDataSource, SlidingTab
         delegate = self
         
         let homeVC = HomeViewController()
-        let homeBarItem = UITabBarItem(title: "Home", image: #imageLiteral(resourceName: "home"), selectedImage: #imageLiteral(resourceName: "home"))
+        let homeBarItem = UITabBarItem(title: "Home", image: #imageLiteral(resourceName: "tabHome"), selectedImage: #imageLiteral(resourceName: "tabHome"))
         homeVC.tabBarItem = homeBarItem
         
         let mapVC = MapViewController()
-        let mapBarItem = UITabBarItem(title: "Map", image: #imageLiteral(resourceName: "map"), selectedImage: #imageLiteral(resourceName: "map"))
+        let mapBarItem = UITabBarItem(title: "Map", image: #imageLiteral(resourceName: "tabMap"), selectedImage: #imageLiteral(resourceName: "tabMap"))
         mapVC.tabBarItem = mapBarItem
         
         let companyVC = CompanyViewController()
-        let companyBarItem = UITabBarItem(title: "Companies", image: #imageLiteral(resourceName: "companies"), selectedImage: #imageLiteral(resourceName: "companies"))
+        let companyBarItem = UITabBarItem(title: "Companies", image: #imageLiteral(resourceName: "tabCompanies"), selectedImage: #imageLiteral(resourceName: "tabCompanies"))
         companyVC.tabBarItem = companyBarItem
         
         let favoritesVC = FavoritesViewController()
-        let favoritesBarItem = UITabBarItem(title: "Favorites", image: #imageLiteral(resourceName: "checklist"), selectedImage: #imageLiteral(resourceName: "checklist"))
+        let favoritesBarItem = UITabBarItem(title: "Favorites", image: #imageLiteral(resourceName: "tabFavorites"), selectedImage: #imageLiteral(resourceName: "tabFavorites"))
         favoritesVC.tabBarItem = favoritesBarItem
  
         viewControllers = [homeVC, mapVC, companyVC, favoritesVC]
         
         tabBarView = SlidingTabBar(frame: tabBar.frame, initialTabBarItemIndex: selectedIndex)
         tabBarView.tabBarBackgroundColor = UIColor.ecaftRed
-        tabBarView.tabBarItemTintColor = UIColor.white
+        tabBarView.tabBarItemTintColor = UIColor.whiteFaded
         tabBarView.selectedTabBarItemTintColor = UIColor.white
         tabBarView.selectedTabBarItemColors = [UIColor.ecaftDarkRed, UIColor.ecaftDarkRed, UIColor.ecaftDarkRed, UIColor.ecaftDarkRed]
         tabBarView.slideAnimationDuration = 0.3
