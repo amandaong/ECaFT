@@ -34,14 +34,6 @@
                         <nil key="textColor"/>
                         <nil key="highlightedColor"/>
                     </label>
-                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Jrr-BA-rkz">
-                        <rect key="frame" x="29" y="20" width="20" height="20"/>
-                        <constraints>
-                            <constraint firstAttribute="width" constant="20" id="GDX-vT-g9D"/>
-                            <constraint firstAttribute="height" constant="20" id="QOn-4h-ovP"/>
-                        </constraints>
-                        <state key="normal" title="Button" image="uncheck_favorites"/>
-                    </button>
                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="AAA" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="U5y-aU-mXp">
                         <rect key="frame" x="308" y="17" width="51" height="28"/>
                         <constraints>
@@ -52,16 +44,24 @@
                         <color key="textColor" red="0.43529412150000002" green="0.4431372583" blue="0.47450980539999998" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                         <nil key="highlightedColor"/>
                     </label>
+                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Jrr-BA-rkz">
+                        <rect key="frame" x="30" y="17" width="26" height="26"/>
+                        <constraints>
+                            <constraint firstAttribute="width" constant="26" id="GDX-vT-g9D"/>
+                            <constraint firstAttribute="height" constant="26" id="QOn-4h-ovP"/>
+                        </constraints>
+                        <state key="normal" title="Button" image="checklistUnchecked"/>
+                    </button>
                 </subviews>
                 <constraints>
-                    <constraint firstItem="U5y-aU-mXp" firstAttribute="top" secondItem="Jrr-BA-rkz" secondAttribute="top" constant="-3" id="0h3-WQ-QB7"/>
+                    <constraint firstItem="U5y-aU-mXp" firstAttribute="top" secondItem="Jrr-BA-rkz" secondAttribute="top" id="0h3-WQ-QB7"/>
                     <constraint firstAttribute="trailingMargin" secondItem="U5y-aU-mXp" secondAttribute="trailing" id="8TM-bo-WCO"/>
-                    <constraint firstItem="Jrr-BA-rkz" firstAttribute="leading" secondItem="kFk-ch-Xnx" secondAttribute="leadingMargin" constant="13" id="Fgc-dU-Rsv"/>
+                    <constraint firstItem="Jrr-BA-rkz" firstAttribute="leading" secondItem="kFk-ch-Xnx" secondAttribute="leadingMargin" constant="14" id="Fgc-dU-Rsv"/>
                     <constraint firstAttribute="trailing" secondItem="U5y-aU-mXp" secondAttribute="trailing" constant="16" id="NFh-xu-CEL"/>
                     <constraint firstItem="MLe-NC-mao" firstAttribute="centerY" secondItem="kFk-ch-Xnx" secondAttribute="centerY" id="Oz0-dd-4Ug"/>
                     <constraint firstAttribute="trailing" secondItem="U5y-aU-mXp" secondAttribute="trailing" constant="16" id="ThE-6c-3Gp"/>
                     <constraint firstItem="U5y-aU-mXp" firstAttribute="leading" secondItem="MLe-NC-mao" secondAttribute="trailing" constant="29" id="cYZ-Kz-8Sx"/>
-                    <constraint firstItem="MLe-NC-mao" firstAttribute="leading" secondItem="Jrr-BA-rkz" secondAttribute="trailing" constant="28" id="dGo-hK-U7p"/>
+                    <constraint firstItem="MLe-NC-mao" firstAttribute="leading" secondItem="Jrr-BA-rkz" secondAttribute="trailing" constant="21" id="dGo-hK-U7p"/>
                     <constraint firstItem="Jrr-BA-rkz" firstAttribute="centerY" secondItem="kFk-ch-Xnx" secondAttribute="centerY" id="hV0-fK-I9d"/>
                     <constraint firstAttribute="trailing" secondItem="U5y-aU-mXp" secondAttribute="trailing" constant="16" id="osT-sI-Ybq"/>
                 </constraints>
@@ -75,6 +75,6 @@
         </tableViewCell>
     </objects>
     <resources>
-        <image name="uncheck_favorites" width="85" height="85"/>
+        <image name="checklistUnchecked" width="30" height="30"/>
     </resources>
 </document>

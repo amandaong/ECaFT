@@ -189,9 +189,9 @@ class FavoritesViewController: UITableViewController {
         cell.checkButton.tag = indexPath.row
         cell.checkButton.addTarget(self, action: #selector(toggleCheck(sender:)), for: .touchUpInside)
         if (checks[indexPath.row]) {
-            cell.checkButton.setImage(#imageLiteral(resourceName: "check_favorites"), for: .normal)
+            cell.checkButton.setImage(#imageLiteral(resourceName: "checklistChecked"), for: .normal)
         } else {
-            cell.checkButton.setImage(#imageLiteral(resourceName: "uncheck_favorites"), for: .normal)
+            cell.checkButton.setImage(#imageLiteral(resourceName: "checklistUnchecked"), for: .normal)
         }
         
         print("# fav companies: ")
@@ -211,10 +211,10 @@ class FavoritesViewController: UITableViewController {
 
         if (checks[indexPath.row]) {
             checks[indexPath.row] = false
-            sender.setImage(#imageLiteral(resourceName: "uncheck_favorites"), for: .normal)
+            sender.setImage(#imageLiteral(resourceName: "checklistUnchecked"), for: .normal)
         } else {
             checks[indexPath.row] = true
-            sender.setImage(#imageLiteral(resourceName: "check_favorites"), for: .normal)
+            sender.setImage(#imageLiteral(resourceName: "checklistChecked"), for: .normal)
         }
         
         DispatchQueue.main.async { [weak self] in
