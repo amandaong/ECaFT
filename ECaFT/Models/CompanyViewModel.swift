@@ -38,6 +38,10 @@ class CompanyViewModel {
     func clearCompanies() {
         allCompanies = []
     }
+    
+    func addCompanytoFavoriteCompanies(_ company: Company) {
+        favoriteCompanies.append(company)
+    }
   
     /*** -------------------- FILTERING -------------------- ***/
     // Assumption: Filter Section ONLY contains selected Filter Option Items
