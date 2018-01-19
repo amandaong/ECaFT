@@ -78,7 +78,7 @@ class CompanyViewController: UIViewController, UISearchBarDelegate, UIScrollView
             companyTableView.reloadData()
         }
         
-        displayFilterBtn()
+        makeFilterBtn()
     }
     
     override func viewWillDisappear(_ animated: Bool) {
@@ -147,16 +147,12 @@ class CompanyViewController: UIViewController, UISearchBarDelegate, UIScrollView
     }
     
     private func makeFilterBtn() {
-        let filterButton = UIBarButtonItem(title: "Filters Off", style: .plain, target: self, action: #selector(filterButtonTapped))
+        let btnText = (filterViewModel?.isFiltersOn())! ? "Filters On" : "Filters Off"
+        let filterButton = UIBarButtonItem(title: btnText, style: .plain, target: self, action: #selector(filterButtonTapped))
         self.navigationController?.navigationBar.topItem?.rightBarButtonItem = filterButton
         self.navigationItem.rightBarButtonItem = filterButton
     }
     
-    private func displayFilterBtn() {
-        // Updated filter bar button text
-        let btnText = (filterViewModel?.isFiltersOn())! ? "Filters On" : "Filters Off"
-        self.navigationController?.navigationBar.topItem?.rightBarButtonItem?.title = btnText
-    }
     /*** -------------------- SEARCH BAR -------------------- ***/
     // Called whenever text is changed.
     func searchBar(_ searchBar: UISearchBar, textDidChange searchText: String) {

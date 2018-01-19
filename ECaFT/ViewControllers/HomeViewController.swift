@@ -40,7 +40,7 @@ class HomeViewController: UIViewController {
     
     // Remove filter btn from nav bar
     private func hideFilterBtn() {
-        self.navigationController?.navigationBar.topItem?.rightBarButtonItem?.title = ""
+        self.navigationController?.navigationBar.topItem?.rightBarButtonItem = nil
     }
     
     private func makeTitle() {
