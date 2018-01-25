@@ -44,6 +44,7 @@ class CompanyViewController: UIViewController, UISearchBarDelegate, UIScrollView
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        self.title = "Companies"
         view.backgroundColor = UIColor.backgroundGray
         makeSearchBar()
         makeFilterBtn()
@@ -59,7 +60,7 @@ class CompanyViewController: UIViewController, UISearchBarDelegate, UIScrollView
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        navigationController?.navigationBar.topItem?.title = "Companies"
+        toggleFilterBtnText()
         
         // Show favorites on table view
         if let favs = UserDefaults.standard.object(forKey: Property.favorites.rawValue) as? Data {
@@ -146,10 +147,15 @@ class CompanyViewController: UIViewController, UISearchBarDelegate, UIScrollView
         self.selectedFilterSects = filtersSent
     }
     
+    // Updatedfilter bar button text
+    private func toggleFilterBtnText() {
+        let btnText = (filterViewModel?.isFiltersOn())! ? "Filters On" : "Filters Off"
+        self.navigationItem.rightBarButtonItem?.title = btnText
+    }
+    
     private func makeFilterBtn() {
         let btnText = (filterViewModel?.isFiltersOn())! ? "Filters On" : "Filters Off"
         let filterButton = UIBarButtonItem(title: btnText, style: .plain, target: self, action: #selector(filterButtonTapped))
-        self.navigationController?.navigationBar.topItem?.rightBarButtonItem = filterButton
         self.navigationItem.rightBarButtonItem = filterButton
     }
     

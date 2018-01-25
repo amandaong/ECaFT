@@ -13,8 +13,7 @@ class HomeViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        hideFilterBtn()
-        
+        self.title = "Home"
         view.backgroundColor = UIColor.black
     
         makeFairTitle()
@@ -25,13 +24,6 @@ class HomeViewController: UIViewController {
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        hideFilterBtn()
-        navigationController?.navigationBar.topItem?.title = "Home"
-    }
-    
-    // Remove filter btn from nav bar
-    private func hideFilterBtn() {
-        self.navigationController?.navigationBar.topItem?.rightBarButtonItem = nil
     }
     
     private func makeLocationTitle() {

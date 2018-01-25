@@ -40,10 +40,6 @@ class FiltersViewController: UIViewController, UITableViewDelegate {
         super.viewWillDisappear(animated)
         let selectedFilterSects = filterViewModel.getSelectedFilterSections()
         filterSelectionDelegate?.setSelectedFiltersTo(filtersSent: selectedFilterSects)
-        
-        // Updated filter bar button text
-        let btnText = (filterViewModel.isFiltersOn()) ? "Filters On" : "Filters Off"
-        self.navigationController?.navigationBar.topItem?.rightBarButtonItem?.title = btnText
     }
     
     /*** -------------------- TABLE VIEW -------------------- ***/

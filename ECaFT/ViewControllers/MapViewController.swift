@@ -20,20 +20,17 @@ class MapViewController: UIViewController {
     
     override func viewDidLoad() { 
         super.viewDidLoad()
+        self.title = "Map"
         self.viewHeight = getViewHeight()
         self.height = viewHeight
         self.width = UIScreen.main.bounds.width
         
-        hideFilterBtn()
         makeRotateBtn()
         makeMapScrollView()
         makeScrollViewTapGesRecognizer()
     }
 
     override func viewWillAppear(_ animated: Bool) {
-        hideFilterBtn()
-        showRotateBtn()
-        navigationController?.navigationBar.topItem?.title = "Map"
     }
     
     override func didReceiveMemoryWarning() {
@@ -65,15 +62,6 @@ class MapViewController: UIViewController {
         return (rotation.truncatingRemainder(dividingBy: 180.0) == 0 ) ? true : false
     }
     
-    private func showRotateBtn() {
-        navigationController?.navigationBar.topItem?.setRightBarButtonItems([rotateBtnItem], animated: true)
-    }
-    
-    // Remove filter btn from nav bar
-    private func hideFilterBtn() {
-        self.navigationController?.navigationBar.topItem?.rightBarButtonItem = nil
-    }
-    
     private func makeMapScrollView() {
         mapScrollView.frame = CGRect(x: 0, y: 0, width: width, height: height)
         mapScrollView.center = CGPoint(x: UIScreen.main.bounds.width/2.0, y: viewHeight/2.0)
@@ -93,7 +81,7 @@ class MapViewController: UIViewController {
         rotateBtn.frame = CGRect(x: 0, y: 0, width: 30, height: 30)
         rotateBtn.addTarget(self, action: #selector(rotateScrollView), for: .touchUpInside)
         rotateBtnItem = UIBarButtonItem(customView: rotateBtn)
-        navigationController?.navigationBar.topItem?.setRightBarButtonItems([rotateBtnItem], animated: true)
+        self.navigationItem.rightBarButtonItem = rotateBtnItem
     }
     
     private func makeScrollViewTapGesRecognizer() {

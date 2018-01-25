@@ -17,11 +17,6 @@ class TabViewController: UITabBarController, SlidingTabBarDataSource, SlidingTab
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        
-        tabBar.isHidden = true
-        selectedIndex = 0
-        delegate = self
-        
         let homeVC = HomeViewController()
         let homeBarItem = UITabBarItem(title: "Home", image: #imageLiteral(resourceName: "tabHome"), selectedImage: #imageLiteral(resourceName: "tabHome"))
         homeVC.tabBarItem = homeBarItem
@@ -38,30 +33,19 @@ class TabViewController: UITabBarController, SlidingTabBarDataSource, SlidingTab
         let favoritesBarItem = UITabBarItem(title: "Favorites", image: #imageLiteral(resourceName: "tabFavorites"), selectedImage: #imageLiteral(resourceName: "tabFavorites"))
         favoritesVC.tabBarItem = favoritesBarItem
  
-        viewControllers = [homeVC, mapVC, companyVC, favoritesVC]
+        let controllers = [homeVC, mapVC, companyVC, favoritesVC]
+        self.viewControllers = controllers.map { UINavigationController(rootViewController: $0) }
         
-        tabBarView = SlidingTabBar(frame: tabBar.frame, initialTabBarItemIndex: selectedIndex)
-        tabBarView.tabBarBackgroundColor = UIColor.ecaftRed
-        tabBarView.tabBarItemTintColor = UIColor.whiteFaded
-        tabBarView.selectedTabBarItemTintColor = UIColor.white
-        tabBarView.selectedTabBarItemColors = [UIColor.ecaftDarkRed, UIColor.ecaftDarkRed, UIColor.ecaftDarkRed, UIColor.ecaftDarkRed]
-        tabBarView.slideAnimationDuration = 0.3
-        tabBarView.datasource = self
-        tabBarView.delegate = self
-        tabBarView.setup()
-        tabBarView.frame.origin.y = view.frame.height - 113
-        
-        view.addSubview(tabBarView)
-        view.bringSubview(toFront: tabBarView)
-        
+        self.tabBar.isHidden = true
+        selectedIndex = 0
+        delegate = self
+        makeTabBarView()
     }
 
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        
-        
     }
-
+    
     // MARK: - SlidingTabBarDataSource
     
     func tabBarItemsInSlidingTabBar(tabBarView: SlidingTabBar) -> [UITabBarItem] {
@@ -90,4 +74,20 @@ class TabViewController: UITabBarController, SlidingTabBarDataSource, SlidingTab
                                                fromIndex: self.fromIndex, toIndex: self.toIndex)
     }
 
+    // MARK: - Private functions
+    
+    private func makeTabBarView() {
+        tabBarView = SlidingTabBar(frame: tabBar.frame, initialTabBarItemIndex: selectedIndex)
+        tabBarView.tabBarBackgroundColor = UIColor.ecaftRed
+        tabBarView.tabBarItemTintColor = UIColor.whiteFaded
+        tabBarView.selectedTabBarItemTintColor = UIColor.white
+        tabBarView.selectedTabBarItemColors = [UIColor.ecaftDarkRed, UIColor.ecaftDarkRed, UIColor.ecaftDarkRed, UIColor.ecaftDarkRed]
+        tabBarView.slideAnimationDuration = 0.3
+        tabBarView.datasource = self
+        tabBarView.delegate = self
+        tabBarView.setup()
+    
+        view.addSubview(tabBarView)
+        view.bringSubview(toFront: tabBarView)
+    }
 }

@@ -32,20 +32,22 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         UINavigationBar.appearance().titleTextAttributes = [NSAttributedStringKey.font: UIFont(name: "Avenir-Heavy", size: 18.0)!, NSAttributedStringKey.foregroundColor: UIColor.white]
         
         tabVC = TabViewController()
-        let navVC = UINavigationController(rootViewController: tabVC)
-        
-        window?.rootViewController = navVC
+        window?.rootViewController = tabVC
         window?.makeKeyAndVisible()
         
         //Pass information state controller to company view controller & favorites view controller
         informationSC = CompanyViewModel()
         filterViewModel = FilterViewModel()
         
-        let companyVC = (self.tabVC.viewControllers?[2] as! CompanyViewController)
+        let navControllers = self.tabVC.viewControllers
+        
+        let companyNavVC = navControllers?[2] as! UINavigationController
+        let companyVC = companyNavVC.viewControllers.first as! CompanyViewController
         companyVC.companyViewModel = informationSC
         companyVC.filterViewModel = filterViewModel
         
-        let favoritesVC = (self.tabVC.viewControllers?[3] as! FavoritesViewController)
+        let favoritesNavVC = navControllers?[3] as! UINavigationController
+        let favoritesVC = favoritesNavVC.viewControllers.first as! FavoritesViewController
         favoritesVC.infoSC = informationSC
         
         return true
