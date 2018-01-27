@@ -43,6 +43,7 @@
 		DA43D9891FD1058C00F580B9 /* ListTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = DA43D97D1FD1058B00F580B9 /* ListTableViewCell.swift */; };
 		DA43D98C1FD1059700F580B9 /* Company.swift in Sources */ = {isa = PBXBuildFile; fileRef = DA43D98A1FD1059700F580B9 /* Company.swift */; };
 		DA43D98D1FD1059700F580B9 /* CompanyViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = DA43D98B1FD1059700F580B9 /* CompanyViewModel.swift */; };
+		DAC9C181201CE9DD008EEC1C /* ListViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = DAC9C180201CE9DD008EEC1C /* ListViewModel.swift */; };
 		DAE05BAA201BCF5D004A351D /* ListViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = DAE05BA9201BCF5D004A351D /* ListViewController.swift */; };
 		DAE05BAD201BDC31004A351D /* ListCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = DAE05BAB201BDC31004A351D /* ListCollectionViewCell.swift */; };
 		DAE05BAE201BDC31004A351D /* ListCollectionViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = DAE05BAC201BDC31004A351D /* ListCollectionViewCell.xib */; };
@@ -92,6 +93,7 @@
 		DA43D97D1FD1058B00F580B9 /* ListTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = ListTableViewCell.swift; path = Views/ListTableViewCell.swift; sourceTree = "<group>"; };
 		DA43D98A1FD1059700F580B9 /* Company.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = Company.swift; path = Models/Company.swift; sourceTree = "<group>"; };
 		DA43D98B1FD1059700F580B9 /* CompanyViewModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = CompanyViewModel.swift; path = Models/CompanyViewModel.swift; sourceTree = "<group>"; };
+		DAC9C180201CE9DD008EEC1C /* ListViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = ListViewModel.swift; path = Models/ListViewModel.swift; sourceTree = "<group>"; };
 		DAE05BA9201BCF5D004A351D /* ListViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = ListViewController.swift; path = ViewControllers/ListViewController.swift; sourceTree = "<group>"; };
 		DAE05BAB201BDC31004A351D /* ListCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = ListCollectionViewCell.swift; path = Views/ListCollectionViewCell.swift; sourceTree = "<group>"; };
 		DAE05BAC201BDC31004A351D /* ListCollectionViewCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = ListCollectionViewCell.xib; path = Views/ListCollectionViewCell.xib; sourceTree = "<group>"; };
@@ -196,6 +198,7 @@
 				DA3A49FD20088166004170DF /* FilterViewModel.swift */,
 				DAE05BB3201C2A66004A351D /* List.swift */,
 				DAE05BB5201C2A79004A351D /* ListItem.swift */,
+				DAC9C180201CE9DD008EEC1C /* ListViewModel.swift */,
 			);
 			name = Models;
 			sourceTree = "<group>";
@@ -382,6 +385,7 @@
 				DA43D9861FD1058C00F580B9 /* textViewTableViewCell.swift in Sources */,
 				DA3A49FC20087952004170DF /* FilterOptionItem.swift in Sources */,
 				DA43D98C1FD1059700F580B9 /* Company.swift in Sources */,
+				DAC9C181201CE9DD008EEC1C /* ListViewModel.swift in Sources */,
 				DA43D95F1FD1049800F580B9 /* FiltersViewController.swift in Sources */,
 				DAE05BB0201C0007004A351D /* ListCollectionViewHeader.swift in Sources */,
 				DAE05BAA201BCF5D004A351D /* ListViewController.swift in Sources */,

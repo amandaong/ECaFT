@@ -12,9 +12,15 @@ class ListCollectionViewCell: UICollectionViewCell {
     @IBOutlet weak var titleLabel: UILabel!
     static let identifier = "ListCollectionViewCell"
     
+    var list: List? {
+        didSet {
+            titleLabel?.text = list?.title
+            layer.borderColor = (list?.isSelected)! ? UIColor.turquoise.cgColor : UIColor.ecaftListRed.cgColor
+        }
+    }
+    
     override func awakeFromNib() {
         super.awakeFromNib()
-        self.layer.borderColor = UIColor.ecaftListRed.cgColor
         self.layer.borderWidth = 5
         self.layer.cornerRadius = 10
         self.backgroundColor = UIColor.ecaftLightGray3

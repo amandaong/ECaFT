@@ -8,38 +8,35 @@
 
 import UIKit
 
-class ListViewController: UIViewController, UICollectionViewDataSource, UICollectionViewDelegate, UICollectionViewDelegateFlowLayout {
-    var companyViewModel: CompanyViewModel!
+class ListViewController: UIViewController, UICollectionViewDelegate, UICollectionViewDelegateFlowLayout {
+
     let screenSize: CGRect = UIScreen.main.bounds
     let flowLayout: UICollectionViewFlowLayout = UICollectionViewFlowLayout()
     var listsView: UICollectionView = UICollectionView(frame: CGRect(x: 0, y: 0, width: 0, height: 0), collectionViewLayout: UICollectionViewFlowLayout())
     var header : ListCollectionViewHeader = ListCollectionViewHeader()
     
+    var companyViewModel: CompanyViewModel!
+    var listViewModel: ListViewModel!
+    
     override func viewDidLoad() {
         super.viewDidLoad()
-        self.title = "Favorites"
+        self.title = listViewModel.selectedList.title
         self.view.backgroundColor = UIColor.green
         
         makeListsView()
         makeListHeader()
     }
     
-    func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        return 10
-    }
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        self.title = listViewModel.selectedList.title
     
-    func collectionView(_ collectionView: UICollectionView,
-                        cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-        guard let customCell: ListCollectionViewCell = collectionView.dequeueReusableCell(withReuseIdentifier: ListCollectionViewCell.identifier, for: indexPath) as? ListCollectionViewCell else {
-            print("ListViewController.swift - cellForRowAt method:  Company Table View dequeuing cell error")
-            return UICollectionViewCell()
-        }
-        return customCell
     }
     
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath)
     {
-        print("User tapped on item \(indexPath.row)")
+        listViewModel.selectedList = listViewModel.userLists[indexPath.row]
+        collectionView.reloadData()
     }
     
     // List collectionViewCell's height and width adjust based on size of list view
@@ -71,7 +68,7 @@ class ListViewController: UIViewController, UICollectionViewDataSource, UICollec
         
         listsView.backgroundColor = UIColor.ecaftLightGray3
         
-        listsView.dataSource = self
+        listsView.dataSource = listViewModel
         listsView.delegate = self
         listsView.register(UINib(nibName: "ListCollectionViewCell", bundle: nil), forCellWithReuseIdentifier: ListCollectionViewCell.identifier)
         listsView.register(ListCollectionViewHeader.self, forSupplementaryViewOfKind: UICollectionElementKindSectionHeader, withReuseIdentifier: ListCollectionViewHeader.identifier)

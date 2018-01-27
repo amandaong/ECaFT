@@ -27,20 +27,14 @@ enum Property: String {
     case sponsor = "sponsor"
     case optcpt = "optcpt"
     
-    // Filter Section
-    case filterName = "filterName"
-    case filterOptionItems = "filterOptionItems"
-    case sectionFilterType = "sectionFilterType"
-    case isAllSelected = "isAllSelected"
-    case isExpanded = "isExpanded"
+    // List Item
+    case companyName = "companyName"
+    case booth = "booth"
+    case listItemSelected = "listItemSelected"
     
-    // Filter Option Item
-    case filterOptionItem = "filterOptionItem"
-    case itemFilterType = "itemFilterType"
-    case isSelected = "isSelected"
-    
-    // Filter Data Object
-    case filterTitle = "filterTitle"
-    case filterSearchValue = "filterSearchValue"
+    // List
+    case listTitle = "listTitle"
+    case listItems = "listItems"
+    case listSelected = "listSelected"
 
 }

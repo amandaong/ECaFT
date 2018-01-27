@@ -30,6 +30,7 @@ extension UIColor {
     public static let favoritesBorderGray = UIColor(red:0.83, green:0.83, blue:0.83, alpha:1.0)
     public static let whiteFaded = UIColor(red: 255/255, green: 255/255, blue: 255/255, alpha: 0.7)
     public static let blueDark = UIColor(red: 0/255, green: 55/255, blue: 55/255, alpha: 1.0)
+    public static let turquoise = UIColor(red: 51/255, green: 137/255, blue: 137/255, alpha: 1.0)
     
     public static func colorFromCode(code: Int) -> UIColor {
         let red = CGFloat((code & 0xFF0000) >> 16) / 255

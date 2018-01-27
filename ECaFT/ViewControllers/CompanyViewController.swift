@@ -24,6 +24,7 @@ class CompanyViewController: UIViewController, UISearchBarDelegate, UIScrollView
     // View Models
     var companyViewModel: CompanyViewModel?
     var filterViewModel: FilterViewModel?
+    var listViewModel: ListViewModel?
     
     // Filtering
     // Value sent from Filters VC. Holds filter section w/ selected filter options
