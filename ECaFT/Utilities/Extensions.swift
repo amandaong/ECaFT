@@ -14,12 +14,16 @@ extension UIColor {
     public static let ecaftRed = UIColor.colorFromCode(code: 0xA81414)
     public static let ecaftRedLight = UIColor(red: 179/255, green: 27/255, blue: 27/255, alpha: 1)
     public static let ecaftDarkRed = UIColor.colorFromCode(code: 0x891010)
+    public static let ecaftListRed = UIColor(red: 168/255, green: 20/255, blue: 20/255, alpha: 1)
+    public static let ecaftListBorderGray = UIColor(red: 151/255, green: 151/255, blue: 151/255, alpha: 1)
     public static let ecaftGold = UIColor.colorFromCode(code: 0xF7D62F)
     public static let ecaftGray = UIColor(red: 233/255, green: 233/255, blue: 233/255, alpha: 1)
     public static let ecaftDarkGray = UIColor(red: 100/255, green: 100/255, blue: 100/255, alpha: 1)
     public static let ecaftLightGray = UIColor(red: 247/255, green: 247/255, blue: 247/255, alpha: 1)
     public static let ecaftLightGray2 = UIColor(red: 200/255, green: 200/255, blue: 200/255, alpha: 1)
+    public static let ecaftLightGray3 = UIColor(red: 250/255, green: 250/255, blue: 250/255, alpha: 1)
     public static let ecaftBlack = UIColor(red: 3/255, green: 3/255, blue: 3/255, alpha: 1)
+    public static let ecaftBlack2 = UIColor(red: 34/255, green: 34/255, blue: 34/255, alpha: 1)
     public static let ecaftBlackFaded = UIColor(red: 34/255, green: 34/255, blue: 34/255, alpha: 0.5)
     
     public static let backgroundGray = UIColor(red:0.97, green:0.97, blue:0.97, alpha:1.0)
@@ -49,6 +53,43 @@ extension UIView {
         self.layer.add(animation, forKey: nil)
     }
     
+    // Rounds specificied corners
+    func roundCorners(_ corners:UIRectCorner, radius: CGFloat) {
+        let path = UIBezierPath(roundedRect: self.bounds, byRoundingCorners: corners, cornerRadii: CGSize(width: radius, height: radius))
+        let mask = CAShapeLayer()
+        mask.path = path.cgPath
+        self.layer.mask = mask
+    }
+    
+}
+
+extension CALayer {
+    
+    func addBorder(edge: UIRectEdge, color: UIColor, thickness: CGFloat) {
+        
+        let border = CALayer()
+        
+        switch edge {
+        case UIRectEdge.top:
+            border.frame = CGRect.init(x: 0, y: 0, width: frame.width, height: thickness)
+            break
+        case UIRectEdge.bottom:
+            border.frame = CGRect.init(x: 0, y: frame.height - thickness, width: frame.width, height: thickness)
+            break
+        case UIRectEdge.left:
+            border.frame = CGRect.init(x: 0, y: 0, width: thickness, height: frame.height)
+            break
+        case UIRectEdge.right:
+            border.frame = CGRect.init(x: frame.width - thickness, y: 0, width: thickness, height: frame.height)
+            break
+        default:
+            break
+        }
+        
+        border.backgroundColor = color.cgColor;
+        
+        self.addSublayer(border)
+    }
 }
 
 extension UIImage {

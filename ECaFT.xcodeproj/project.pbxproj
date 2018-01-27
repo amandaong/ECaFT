@@ -43,6 +43,12 @@
 		DA43D9891FD1058C00F580B9 /* ListTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = DA43D97D1FD1058B00F580B9 /* ListTableViewCell.swift */; };
 		DA43D98C1FD1059700F580B9 /* Company.swift in Sources */ = {isa = PBXBuildFile; fileRef = DA43D98A1FD1059700F580B9 /* Company.swift */; };
 		DA43D98D1FD1059700F580B9 /* CompanyViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = DA43D98B1FD1059700F580B9 /* CompanyViewModel.swift */; };
+		DAE05BAA201BCF5D004A351D /* ListViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = DAE05BA9201BCF5D004A351D /* ListViewController.swift */; };
+		DAE05BAD201BDC31004A351D /* ListCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = DAE05BAB201BDC31004A351D /* ListCollectionViewCell.swift */; };
+		DAE05BAE201BDC31004A351D /* ListCollectionViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = DAE05BAC201BDC31004A351D /* ListCollectionViewCell.xib */; };
+		DAE05BB0201C0007004A351D /* ListCollectionViewHeader.swift in Sources */ = {isa = PBXBuildFile; fileRef = DAE05BAF201C0007004A351D /* ListCollectionViewHeader.swift */; };
+		DAE05BB4201C2A66004A351D /* List.swift in Sources */ = {isa = PBXBuildFile; fileRef = DAE05BB3201C2A66004A351D /* List.swift */; };
+		DAE05BB6201C2A79004A351D /* ListItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = DAE05BB5201C2A79004A351D /* ListItem.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -86,6 +92,12 @@
 		DA43D97D1FD1058B00F580B9 /* ListTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = ListTableViewCell.swift; path = Views/ListTableViewCell.swift; sourceTree = "<group>"; };
 		DA43D98A1FD1059700F580B9 /* Company.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = Company.swift; path = Models/Company.swift; sourceTree = "<group>"; };
 		DA43D98B1FD1059700F580B9 /* CompanyViewModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = CompanyViewModel.swift; path = Models/CompanyViewModel.swift; sourceTree = "<group>"; };
+		DAE05BA9201BCF5D004A351D /* ListViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = ListViewController.swift; path = ViewControllers/ListViewController.swift; sourceTree = "<group>"; };
+		DAE05BAB201BDC31004A351D /* ListCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = ListCollectionViewCell.swift; path = Views/ListCollectionViewCell.swift; sourceTree = "<group>"; };
+		DAE05BAC201BDC31004A351D /* ListCollectionViewCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = ListCollectionViewCell.xib; path = Views/ListCollectionViewCell.xib; sourceTree = "<group>"; };
+		DAE05BAF201C0007004A351D /* ListCollectionViewHeader.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = ListCollectionViewHeader.swift; path = Views/ListCollectionViewHeader.swift; sourceTree = "<group>"; };
+		DAE05BB3201C2A66004A351D /* List.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = List.swift; path = Models/List.swift; sourceTree = "<group>"; };
+		DAE05BB5201C2A79004A351D /* ListItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = ListItem.swift; path = Models/ListItem.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -139,6 +151,7 @@
 				DA43D9691FD1057100F580B9 /* CompanyDetailsViewController.swift */,
 				DA43D9651FD1057100F580B9 /* CompanyViewController.swift */,
 				DA43D96A1FD1057100F580B9 /* FavoritesViewController.swift */,
+				DAE05BA9201BCF5D004A351D /* ListViewController.swift */,
 				DA43D9661FD1057100F580B9 /* HomeViewController.swift */,
 				DA43D9641FD1057100F580B9 /* MapViewController.swift */,
 				DA43D9681FD1057100F580B9 /* MapViewController.xib */,
@@ -166,6 +179,9 @@
 				DA3A49FF20088625004170DF /* FilterTableViewCell.swift */,
 				DA3A4A0020088625004170DF /* FilterTableViewCell.xib */,
 				DA3BF0CB2009A8250086C042 /* CollapsibleFilterTableViewHeader.swift */,
+				DAE05BAB201BDC31004A351D /* ListCollectionViewCell.swift */,
+				DAE05BAC201BDC31004A351D /* ListCollectionViewCell.xib */,
+				DAE05BAF201C0007004A351D /* ListCollectionViewHeader.swift */,
 			);
 			name = Views;
 			sourceTree = "<group>";
@@ -178,6 +194,8 @@
 				DA3A49FB20087952004170DF /* FilterOptionItem.swift */,
 				DA3BF0C9200922B60086C042 /* FilterSection.swift */,
 				DA3A49FD20088166004170DF /* FilterViewModel.swift */,
+				DAE05BB3201C2A66004A351D /* List.swift */,
+				DAE05BB5201C2A79004A351D /* ListItem.swift */,
 			);
 			name = Models;
 			sourceTree = "<group>";
@@ -276,6 +294,7 @@
 			files = (
 				02ECF1E01DE518050032EEC2 /* LaunchScreen.storyboard in Resources */,
 				DA43D96F1FD1057100F580B9 /* MapViewController.xib in Resources */,
+				DAE05BAE201BDC31004A351D /* ListCollectionViewCell.xib in Resources */,
 				DA43D97E1FD1058B00F580B9 /* CompanyTableViewCell.xib in Resources */,
 				DA43D9851FD1058C00F580B9 /* FavoritesTableViewCell.xib in Resources */,
 				DA43D9831FD1058C00F580B9 /* CompanyInfoTableViewCell.xib in Resources */,
@@ -352,6 +371,8 @@
 				DA43D9891FD1058C00F580B9 /* ListTableViewCell.swift in Sources */,
 				DA43D9811FD1058B00F580B9 /* NotesTableViewCell.swift in Sources */,
 				DA43D96B1FD1057100F580B9 /* MapViewController.swift in Sources */,
+				DAE05BB4201C2A66004A351D /* List.swift in Sources */,
+				DAE05BB6201C2A79004A351D /* ListItem.swift in Sources */,
 				DA3BF0CA200922B60086C042 /* FilterSection.swift in Sources */,
 				DA43D96E1FD1057100F580B9 /* TabViewController.swift in Sources */,
 				DA43D98D1FD1059700F580B9 /* CompanyViewModel.swift in Sources */,
@@ -362,6 +383,9 @@
 				DA3A49FC20087952004170DF /* FilterOptionItem.swift in Sources */,
 				DA43D98C1FD1059700F580B9 /* Company.swift in Sources */,
 				DA43D95F1FD1049800F580B9 /* FiltersViewController.swift in Sources */,
+				DAE05BB0201C0007004A351D /* ListCollectionViewHeader.swift in Sources */,
+				DAE05BAA201BCF5D004A351D /* ListViewController.swift in Sources */,
+				DAE05BAD201BDC31004A351D /* ListCollectionViewCell.swift in Sources */,
 				DA3BF0CE2009ACEE0086C042 /* Extensions.swift in Sources */,
 				DA43D96C1FD1057100F580B9 /* CompanyViewController.swift in Sources */,
 				DA3BF0CC2009A8250086C042 /* CollapsibleFilterTableViewHeader.swift in Sources */,

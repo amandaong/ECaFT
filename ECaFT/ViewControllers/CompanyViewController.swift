@@ -49,6 +49,7 @@ class CompanyViewController: UIViewController, UISearchBarDelegate, UIScrollView
         makeSearchBar()
         makeFilterBtn()
         makeTableView()
+        makeBackBtn()
         
         // Load data from firebase
         databaseRef = FIRDatabase.database().reference()
@@ -368,6 +369,12 @@ class CompanyViewController: UIViewController, UISearchBarDelegate, UIScrollView
         self.show(companyDetailsVC, sender: nil)
     }
 
+    // MARK: - Private Functions
+    private func makeBackBtn() {
+        let backItem = UIBarButtonItem()
+        backItem.title = ""
+        self.navigationItem.backBarButtonItem = backItem
+    }
 }
 
 //Makes constraint errors more readable

@@ -29,15 +29,15 @@ class TabViewController: UITabBarController, SlidingTabBarDataSource, SlidingTab
         let companyBarItem = UITabBarItem(title: "Companies", image: #imageLiteral(resourceName: "tabCompanies"), selectedImage: #imageLiteral(resourceName: "tabCompanies"))
         companyVC.tabBarItem = companyBarItem
         
-        let favoritesVC = FavoritesViewController()
-        let favoritesBarItem = UITabBarItem(title: "Favorites", image: #imageLiteral(resourceName: "tabFavorites"), selectedImage: #imageLiteral(resourceName: "tabFavorites"))
-        favoritesVC.tabBarItem = favoritesBarItem
+        let listVC = ListViewController()
+        let listBarItem = UITabBarItem(title: "Favorites", image: #imageLiteral(resourceName: "tabFavorites"), selectedImage: #imageLiteral(resourceName: "tabFavorites"))
+        listVC.tabBarItem = listBarItem
  
-        let controllers = [homeVC, mapVC, companyVC, favoritesVC]
+        let controllers = [homeVC, mapVC, companyVC, listVC]
         self.viewControllers = controllers.map { UINavigationController(rootViewController: $0) }
         
         self.tabBar.isHidden = true
-        selectedIndex = 0
+        selectedIndex = 3 // Shows page with this index when app first loads
         delegate = self
         makeTabBarView()
     }
