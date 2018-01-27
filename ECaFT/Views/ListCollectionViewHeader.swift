@@ -8,11 +8,16 @@
 
 import UIKit
 
+protocol ListCollectionViewDelegate {
+    func didPressListAddBtn(button: UIButton)
+}
+
 class ListCollectionViewHeader: UICollectionReusableView {
     let screenSize: CGRect = UIScreen.main.bounds
     static let identifier = "ListCollectionViewHeader"
     var titleLabel = UILabel()
     var plusBtn = UIButton()
+    var delegate: ListCollectionViewDelegate!
     
     override init(frame: CGRect) {
         super.init(frame: frame)
@@ -46,7 +51,7 @@ class ListCollectionViewHeader: UICollectionReusableView {
     private func makePlusBtn() {
         plusBtn.setImage(#imageLiteral(resourceName: "Plus"), for: .normal)
         plusBtn.frame = CGRect(x: titleLabel.frame.width, y: 0, width: 28, height: 28)
-        plusBtn.addTarget(self, action: #selector(plusBtnTapped(_:)), for: .touchUpInside)
+        plusBtn.addTarget(self, action: #selector(listAddBtnPress(_ :)), for: .touchUpInside)
         self.addSubview(plusBtn)
         
         // Constraints
@@ -56,14 +61,10 @@ class ListCollectionViewHeader: UICollectionReusableView {
         plusBtn.topAnchor.constraint(equalTo: marginGuide.topAnchor).isActive = true
         plusBtn.trailingAnchor.constraint(equalTo: marginGuide.trailingAnchor).isActive = true
         plusBtn.bottomAnchor.constraint(equalTo: marginGuide.bottomAnchor).isActive = true
-        
-        
     }
     
-    // Plus Button
-    @objc func plusBtnTapped(_ sender: UIButton) {
-        
+    @objc func listAddBtnPress(_ button: UIButton) {
+        delegate.didPressListAddBtn(button: button)
     }
-    
 }
 

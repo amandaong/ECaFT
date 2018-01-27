@@ -8,8 +8,8 @@
 
 import UIKit
 
-class ListViewController: UIViewController, UICollectionViewDelegate, UICollectionViewDelegateFlowLayout {
-
+class ListViewController: UIViewController, UICollectionViewDelegate, UICollectionViewDelegateFlowLayout, ListCollectionViewDelegate {
+    
     let screenSize: CGRect = UIScreen.main.bounds
     let flowLayout: UICollectionViewFlowLayout = UICollectionViewFlowLayout()
     var listsView: UICollectionView = UICollectionView(frame: CGRect(x: 0, y: 0, width: 0, height: 0), collectionViewLayout: UICollectionViewFlowLayout())
@@ -33,6 +33,12 @@ class ListViewController: UIViewController, UICollectionViewDelegate, UICollecti
     
     }
     
+    // Add List Plus Button
+    func didPressListAddBtn(button: UIButton) {
+        
+    }
+    
+    // Mark: - List Collection View
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath)
     {
         listViewModel.selectedList = listViewModel.userLists[indexPath.row]
@@ -53,6 +59,7 @@ class ListViewController: UIViewController, UICollectionViewDelegate, UICollecti
         // Place header above collection view
         header.center.y = getViewHeight() - listsView.frame.height - header.frame.height/2.0
         header.roundCorners([.topLeft, .topRight], radius: 10)
+        header.delegate = self
         self.view.addSubview(header)
     }
     
