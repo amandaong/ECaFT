@@ -27,6 +27,7 @@ extension UIColor {
     public static let ecaftBlackFaded = UIColor(red: 34/255, green: 34/255, blue: 34/255, alpha: 0.5)
     
     public static let backgroundGray = UIColor(red:0.97, green:0.97, blue:0.97, alpha:1.0)
+    public static let popUpGray = UIColor(red: 151/255, green: 151/255, blue: 151/255, alpha: 1.0)
     public static let favoritesBorderGray = UIColor(red:0.83, green:0.83, blue:0.83, alpha:1.0)
     public static let whiteFaded = UIColor(red: 255/255, green: 255/255, blue: 255/255, alpha: 0.75)
     public static let whiteFadedPlus = UIColor(red: 255/255, green: 255/255, blue: 255/255, alpha: 0.25)
@@ -56,7 +57,7 @@ extension UIView {
         self.layer.add(animation, forKey: nil)
     }
     
-    // Rounds specificied corners
+    // Rounds specificied corners of UIView
     func roundCorners(_ corners:UIRectCorner, radius: CGFloat) {
         let path = UIBezierPath(roundedRect: self.bounds, byRoundingCorners: corners, cornerRadii: CGSize(width: radius, height: radius))
         let mask = CAShapeLayer()
@@ -67,20 +68,26 @@ extension UIView {
 }
 
 extension UIButton{
-    
-    func roundBtnCorners(_ corners:UIRectCorner, radius: CGFloat){
+    // Round specified corners of button
+    func roundBtnCorners(_ corners:UIRectCorner, radius: CGFloat)
+    {
+        let borderLayer = CAShapeLayer()
+        borderLayer.frame = self.layer.bounds
+        borderLayer.strokeColor = UIColor(red: 168/266, green: 20/255, blue: 20/255, alpha: 0.7).cgColor
+//            GenerateShape.UIColorFromHex(0x989898, alpha: (1.0-0.3)).cgColor
+        borderLayer.fillColor = UIColor.clear.cgColor
+        borderLayer.lineWidth = 1.0
         let path = UIBezierPath(roundedRect: self.bounds,
-                                     byRoundingCorners: corners,
-                                     cornerRadii: CGSize(width: radius, height: radius))
-        let maskLayer = CAShapeLayer()
-        maskLayer.frame = self.bounds
-        maskLayer.path = path.cgPath
-        self.layer.mask = maskLayer
+                                byRoundingCorners: corners,
+                                cornerRadii: CGSize(width: radius, height: radius))
+        borderLayer.path = path.cgPath
+        self.layer.addSublayer(borderLayer);
     }
 }
 
 extension CALayer {
     
+    // Add border to specific side of shape (top, bottom, left, right)
     func addBorder(edge: UIRectEdge, color: UIColor, thickness: CGFloat) {
         
         let border = CALayer()
