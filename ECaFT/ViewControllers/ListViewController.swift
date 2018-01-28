@@ -35,7 +35,10 @@ class ListViewController: UIViewController, UICollectionViewDelegate, UICollecti
     
     // Add List Plus Button
     func didPressListAddBtn(button: UIButton) {
-        
+        let addListVC = AddListPopUpViewController()
+        addListVC.modalPresentationStyle = UIModalPresentationStyle.overFullScreen
+        addListVC.modalTransitionStyle = UIModalTransitionStyle.coverVertical
+        self.present(addListVC, animated: true, completion: nil)
     }
     
     // Mark: - List Collection View

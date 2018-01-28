@@ -9,6 +9,7 @@ target 'ECaFT' do
 	pod "Firebase/Database"
 	pod "Firebase/Storage”
 	pod "ImageScrollView"
+	pod 'SnapKit', '~> 3.2.0'
 end
 
 post_install do |installer|

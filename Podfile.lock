@@ -32,6 +32,7 @@ PODS:
   - GTMSessionFetcher/Core (1.1.7)
   - ImageScrollView (1.3)
   - SlidingTabBar (0.2.1)
+  - SnapKit (3.2.0)
   - SwiftyJSON (3.1.1)
 
 DEPENDENCIES:
@@ -40,6 +41,7 @@ DEPENDENCIES:
   - Firebase/Storage
   - ImageScrollView
   - SlidingTabBar
+  - SnapKit (~> 3.2.0)
   - SwiftyJSON
 
 SPEC CHECKSUMS:
@@ -55,8 +57,9 @@ SPEC CHECKSUMS:
   GTMSessionFetcher: a1f8ed39e4fe21c68957daed472c7afbcdf29166
   ImageScrollView: 2f2d7139fb5a7d0c0b021eb8b086d8c3dc54c233
   SlidingTabBar: 027224f312efeb1a76de93e1d9a108b8318d6494
+  SnapKit: 1ca44df72cfa543218d177cb8aab029d10d86ea7
   SwiftyJSON: f0be2e604f83e8405a624e9f891898bf6ed4e019
 
-PODFILE CHECKSUM: 3bb6225486d2f8dca64a51f0ff8d0f77c6d447f9
+PODFILE CHECKSUM: bdb2492485ca47dda703659d40c2f7d5d2476d1b
 
-COCOAPODS: 1.1.1
+COCOAPODS: 1.3.1

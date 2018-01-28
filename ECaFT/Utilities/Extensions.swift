@@ -28,7 +28,9 @@ extension UIColor {
     
     public static let backgroundGray = UIColor(red:0.97, green:0.97, blue:0.97, alpha:1.0)
     public static let favoritesBorderGray = UIColor(red:0.83, green:0.83, blue:0.83, alpha:1.0)
-    public static let whiteFaded = UIColor(red: 255/255, green: 255/255, blue: 255/255, alpha: 0.7)
+    public static let whiteFaded = UIColor(red: 255/255, green: 255/255, blue: 255/255, alpha: 0.75)
+    public static let whiteFadedPlus = UIColor(red: 255/255, green: 255/255, blue: 255/255, alpha: 0.25)
+    public static let grayFaded = UIColor(red: 0/255, green: 0/255, blue: 0/255, alpha: 0.25)
     public static let blueDark = UIColor(red: 0/255, green: 55/255, blue: 55/255, alpha: 1.0)
     public static let turquoise = UIColor(red: 51/255, green: 137/255, blue: 137/255, alpha: 1.0)
     
@@ -62,6 +64,19 @@ extension UIView {
         self.layer.mask = mask
     }
     
+}
+
+extension UIButton{
+    
+    func roundBtnCorners(_ corners:UIRectCorner, radius: CGFloat){
+        let path = UIBezierPath(roundedRect: self.bounds,
+                                     byRoundingCorners: corners,
+                                     cornerRadii: CGSize(width: radius, height: radius))
+        let maskLayer = CAShapeLayer()
+        maskLayer.frame = self.bounds
+        maskLayer.path = path.cgPath
+        self.layer.mask = maskLayer
+    }
 }
 
 extension CALayer {

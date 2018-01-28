@@ -44,6 +44,7 @@
 		DA43D98C1FD1059700F580B9 /* Company.swift in Sources */ = {isa = PBXBuildFile; fileRef = DA43D98A1FD1059700F580B9 /* Company.swift */; };
 		DA43D98D1FD1059700F580B9 /* CompanyViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = DA43D98B1FD1059700F580B9 /* CompanyViewModel.swift */; };
 		DAC9C181201CE9DD008EEC1C /* ListViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = DAC9C180201CE9DD008EEC1C /* ListViewModel.swift */; };
+		DAD9C367201D8EA400130E04 /* AddListPopUpViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = DAD9C366201D8EA400130E04 /* AddListPopUpViewController.swift */; };
 		DAE05BAA201BCF5D004A351D /* ListViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = DAE05BA9201BCF5D004A351D /* ListViewController.swift */; };
 		DAE05BAD201BDC31004A351D /* ListCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = DAE05BAB201BDC31004A351D /* ListCollectionViewCell.swift */; };
 		DAE05BAE201BDC31004A351D /* ListCollectionViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = DAE05BAC201BDC31004A351D /* ListCollectionViewCell.xib */; };
@@ -94,6 +95,7 @@
 		DA43D98A1FD1059700F580B9 /* Company.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = Company.swift; path = Models/Company.swift; sourceTree = "<group>"; };
 		DA43D98B1FD1059700F580B9 /* CompanyViewModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = CompanyViewModel.swift; path = Models/CompanyViewModel.swift; sourceTree = "<group>"; };
 		DAC9C180201CE9DD008EEC1C /* ListViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = ListViewModel.swift; path = Models/ListViewModel.swift; sourceTree = "<group>"; };
+		DAD9C366201D8EA400130E04 /* AddListPopUpViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = AddListPopUpViewController.swift; path = ViewControllers/AddListPopUpViewController.swift; sourceTree = "<group>"; };
 		DAE05BA9201BCF5D004A351D /* ListViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = ListViewController.swift; path = ViewControllers/ListViewController.swift; sourceTree = "<group>"; };
 		DAE05BAB201BDC31004A351D /* ListCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = ListCollectionViewCell.swift; path = Views/ListCollectionViewCell.swift; sourceTree = "<group>"; };
 		DAE05BAC201BDC31004A351D /* ListCollectionViewCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = ListCollectionViewCell.xib; path = Views/ListCollectionViewCell.xib; sourceTree = "<group>"; };
@@ -159,6 +161,7 @@
 				DA43D9681FD1057100F580B9 /* MapViewController.xib */,
 				DA43D9671FD1057100F580B9 /* TabViewController.swift */,
 				DA43D95E1FD1049800F580B9 /* FiltersViewController.swift */,
+				DAD9C366201D8EA400130E04 /* AddListPopUpViewController.swift */,
 			);
 			name = ViewControllers;
 			sourceTree = "<group>";
@@ -319,13 +322,16 @@
 			files = (
 			);
 			inputPaths = (
+				"${PODS_PODFILE_DIR_PATH}/Podfile.lock",
+				"${PODS_ROOT}/Manifest.lock",
 			);
 			name = "[CP] Check Pods Manifest.lock";
 			outputPaths = (
+				"$(DERIVED_FILE_DIR)/Pods-ECaFT-checkManifestLockResult.txt",
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "diff \"${PODS_ROOT}/../Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n";
+			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
 			showEnvVarsInLog = 0;
 		};
 		BB338F437885246CE9724A6E /* [CP] Copy Pods Resources */ = {
@@ -349,9 +355,22 @@
 			files = (
 			);
 			inputPaths = (
+				"${SRCROOT}/Pods/Target Support Files/Pods-ECaFT/Pods-ECaFT-frameworks.sh",
+				"${BUILT_PRODUCTS_DIR}/GTMSessionFetcher/GTMSessionFetcher.framework",
+				"${BUILT_PRODUCTS_DIR}/GoogleToolboxForMac/GoogleToolboxForMac.framework",
+				"${BUILT_PRODUCTS_DIR}/ImageScrollView/ImageScrollView.framework",
+				"${BUILT_PRODUCTS_DIR}/SlidingTabBar/SlidingTabBar.framework",
+				"${BUILT_PRODUCTS_DIR}/SnapKit/SnapKit.framework",
+				"${BUILT_PRODUCTS_DIR}/SwiftyJSON/SwiftyJSON.framework",
 			);
 			name = "[CP] Embed Pods Frameworks";
 			outputPaths = (
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/GTMSessionFetcher.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/GoogleToolboxForMac.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/ImageScrollView.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/SlidingTabBar.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/SnapKit.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/SwiftyJSON.framework",
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
@@ -395,6 +414,7 @@
 				DA3BF0CC2009A8250086C042 /* CollapsibleFilterTableViewHeader.swift in Sources */,
 				DA43D9881FD1058C00F580B9 /* FavoritesTableViewCell.swift in Sources */,
 				DA43D9871FD1058C00F580B9 /* CompanyTableViewCell.swift in Sources */,
+				DAD9C367201D8EA400130E04 /* AddListPopUpViewController.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
