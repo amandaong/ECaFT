@@ -10,7 +10,7 @@ import Foundation
 import UIKit
 
 class ListViewModel: NSObject {
-    var userLists : [List] = [List(title: "Favorites (Unvisited)", items: [], isSelected: true), List(title: "Startups", items: [], isSelected: false)]
+    var userLists : [List] = [List(title: "Favorites (Unvisited)", items: [ ListItem(companyName: "Hi", booth: "B12", isSelected: true)], isSelected: true), List(title: "Startups", items: [], isSelected: false)]
     
     var selectedList: List = List() {
         // When set a new selected list, update user list so only 1 list is selected

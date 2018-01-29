@@ -8,7 +8,8 @@
 
 import UIKit
 
-class ListViewController: UIViewController, UICollectionViewDelegate, UICollectionViewDelegateFlowLayout, ListCollectionViewDelegate {
+class ListViewController: UIViewController, UICollectionViewDelegate, UICollectionViewDelegateFlowLayout, ListCollectionViewDelegate,  UITableViewDelegate, UITableViewDataSource, ListTableViewDelegate {
+    
     
     let screenSize: CGRect = UIScreen.main.bounds
     let flowLayout: UICollectionViewFlowLayout = UICollectionViewFlowLayout()
@@ -18,13 +19,17 @@ class ListViewController: UIViewController, UICollectionViewDelegate, UICollecti
     var companyViewModel: CompanyViewModel!
     var listViewModel: ListViewModel!
     
+    var listTableView: UITableView = UITableView()
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         self.title = listViewModel.selectedList.title
-        self.view.backgroundColor = UIColor.green
+        self.view.backgroundColor = UIColor.listBackground
         
         makeListsView()
         makeListHeader()
+        
+        makeTableView()
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -54,6 +59,39 @@ class ListViewController: UIViewController, UICollectionViewDelegate, UICollecti
         // Set width such that collection view displays 4 cells at a time
         let width = (collectionView.bounds.width - flowLayout.sectionInset.left - flowLayout.sectionInset.right)/4.0
         return CGSize(width: width, height: height)
+    }
+    
+    
+    func didPressCheckButton(button: UIButton!) {
+        let index = button.tag
+        var isSelected = listViewModel.selectedList.items[index].isSelected
+        listViewModel.selectedList.items[index].isSelected = !isSelected
+        listTableView.reloadData()
+    }
+    
+    
+    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        return listViewModel.selectedList.items.count
+    }
+    
+    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        
+        let cell = tableView.dequeueReusableCell(withIdentifier: FavoritesTableViewCell.identifier) as! FavoritesTableViewCell
+        
+        cell.checkButton.tag = indexPath.row
+        cell.listItem = listViewModel.selectedList.items[indexPath.row]
+        
+        cell.delegate = self
+        
+        return cell
+    }
+    
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        tableView.deselectRow(at: indexPath as IndexPath, animated: false)
+        let companyDetailsVC = CompanyDetailsViewController()
+        companyDetailsVC.company = companyViewModel?.displayedCompanies[indexPath.row]
+        companyDetailsVC.isFavorite = (companyViewModel?.displayedCompanies[indexPath.row].isFavorite)!
+        self.show(companyDetailsVC, sender: nil)
     }
     
     /* MARK: - Private functions */
@@ -93,4 +131,28 @@ class ListViewController: UIViewController, UICollectionViewDelegate, UICollecti
         let viewHeight = screenSize.height - statusBarHeight - navBarHeight - tabBarHeight
         return viewHeight
     }
+    
+    // Make table view function
+    private func makeTableView() {
+        //Total height of nav bar, status bar, tab bar
+        let barHeights = (self.navigationController?.navigationBar.frame.size.height)!+UIApplication.shared.statusBarFrame.height + 100
+        
+        listTableView.backgroundColor = UIColor.listBackground
+        
+        //edited CGRect to make margins and center it
+        let listHeight = getViewHeight() - listsView.frame.height - header.frame.height
+        
+        listTableView = UITableView(frame: CGRect(x: 0, y: 0, width: Int(screenSize.width), height: Int(listHeight)), style: UITableViewStyle.plain)
+        
+        // UI
+        listTableView.backgroundColor = UIColor.clear
+        
+        listTableView.dataSource = self
+        listTableView.delegate = self
+        
+        //Regsiter custom cells and xib files
+        listTableView.register(UINib(nibName: FavoritesTableViewCell.identifier, bundle: nil), forCellReuseIdentifier: FavoritesTableViewCell.identifier)
+        self.view.addSubview(self.listTableView)
+    }
+
 }
