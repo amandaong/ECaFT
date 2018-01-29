@@ -9,7 +9,7 @@
 import UIKit
 
 
-class CompanyDetailsViewController: UIViewController, UITableViewDelegate, UITableViewDataSource {
+class CompanyDetailsViewController: UIViewController, UITableViewDelegate, UITableViewDataSource, UICollectionViewDelegate, UICollectionViewDataSource, UIImagePickerControllerDelegate, UINavigationControllerDelegate {
     
     let screenSize : CGRect = UIScreen.main.bounds
     var tableView = UITableView()
@@ -27,6 +27,8 @@ class CompanyDetailsViewController: UIViewController, UITableViewDelegate, UITab
     //segmented control
     let segmentTitles : [String] = ["Company Info", "Notes"]
     var segControl = UISegmentedControl()
+    var cameraButton = UIButton()
+    var numberOfImages = 0  //number of images to display in "Photos" section
     
     //Sections in "Company Info"
     let compInfoSectionTitles : [String] = ["Company Information", "Open Positions", "Majors of Interest", "Sponsorship", "OPT/CPT"]
@@ -55,6 +57,7 @@ class CompanyDetailsViewController: UIViewController, UITableViewDelegate, UITab
         tableView.register(UINib(nibName: "ListTableViewCell", bundle: Bundle.main), forCellReuseIdentifier: "ListTableViewCell")
         tableView.register(textViewTableViewCell.self, forCellReuseIdentifier: "textViewTableViewCell")
         tableView.register(UINib(nibName: "NotesTableViewCell", bundle: Bundle.main), forCellReuseIdentifier: "NotesTableViewCell")
+        tableView.register(UINib(nibName: "PhotosTableViewCell", bundle: Bundle.main), forCellReuseIdentifier: "PhotosTableViewCell")
 
         //Register notification observer for when keyboard shows & hides
         NotificationCenter.default.addObserver(self, selector: #selector(CompanyDetailsViewController.keyboardWillShow(notification:)), name: NSNotification.Name.UIKeyboardDidShow, object: nil)
@@ -71,7 +74,7 @@ class CompanyDetailsViewController: UIViewController, UITableViewDelegate, UITab
     }
   
     func createHeaderView() {
-        headerView = UIView(frame: CGRect(x: 0, y: 0, width: screenSize.width, height: 200))
+        headerView = UIView(frame: CGRect(x: 0, y: 0, width: screenSize.width, height: 230))
         headerView.backgroundColor = UIColor.white
         tableView.tableHeaderView = headerView
         
@@ -84,11 +87,11 @@ class CompanyDetailsViewController: UIViewController, UITableViewDelegate, UITab
         self.tableView.tableHeaderView?.addSubview(imageView)
         
         //Create name label
-        name = UILabel(frame: CGRect(x: 0.43*screenSize.width, y: 0, width: screenSize.width*0.58, height: 21)) //same x value as location so name & location label are aligned
+        name = UILabel(frame: CGRect(x: 0.43*screenSize.width, y: 0, width: screenSize.width*0.58, height: 24)) //same x value as location so name & location label are aligned
         name.center.y = 0.18*(self.tableView.tableHeaderView?.frame.height)!
         name.textAlignment = NSTextAlignment.left
         name.text = company.name
-        name.font = UIFont.boldSystemFont(ofSize: 20)
+        name.font = UIFont.boldSystemFont(ofSize: 25)
         
         //Make name into go into another line if necessary
         name.numberOfLines = 0 //set num of lines to infinity
@@ -129,8 +132,8 @@ class CompanyDetailsViewController: UIViewController, UITableViewDelegate, UITab
         segControl = UISegmentedControl(items: segmentTitles)
         segControl.selectedSegmentIndex = 0
         
-        segControl.frame = CGRect(x: 0.25*screenSize.width, y: (self.tableView.tableHeaderView?.frame.height)! - 38, width: screenSize.width*0.5, height: 26)
-        segControl.center.x = 0.5*self.screenSize.width
+        segControl.frame = CGRect(x: 0.19*screenSize.width, y: (self.tableView.tableHeaderView?.frame.height)! - 45, width: screenSize.width*0.5, height: 28)
+        //segControl.center.x = 0.5*self.screenSize.width
         segControl.layer.cornerRadius = 5.0
         segControl.backgroundColor = UIColor.white
         segControl.tintColor = UIColor.ecaftRed
@@ -139,17 +142,28 @@ class CompanyDetailsViewController: UIViewController, UITableViewDelegate, UITab
         
         self.tableView.tableHeaderView?.addSubview(segControl)
         
+        //Create camera button
+        cameraButton.frame = CGRect(x: 0.72*screenSize.width, y: (self.tableView.tableHeaderView?.frame.height)! - 38, width: screenSize.width*0.07, height: screenSize.width*0.05)
+        cameraButton.center.y = segControl.center.y
+        cameraButton.setImage(#imageLiteral(resourceName: "camera"), for: .normal)
+        //cameraButton.backgroundColor = UIColor.blue
+        
+        cameraButton.addTarget(self, action: #selector(CompanyDetailsViewController.cameraButtonPressed(button:)), for: .touchUpInside)
+        
+        self.tableView.tableHeaderView?.addSubview(cameraButton)
+        
+        
         //Calculate num of lines for company name label & adjust booth location label accordingly
         let numLines = Int(name.frame.size.height/name.font.ascender) //Divide height of multiline label by line height of UILabel's font (from text to top of label's frame)
         if (numLines < 2) {
-            location.center.y = 0.38*(self.tableView.tableHeaderView?.frame.height)!
-            favoritesButton.center.y = 0.57*(self.tableView.tableHeaderView?.frame.height)!
+            location.center.y = 0.3*(self.tableView.tableHeaderView?.frame.height)!
+            favoritesButton.center.y = 0.5*(self.tableView.tableHeaderView?.frame.height)!
         } else if (numLines == 2){
-            location.center.y = 0.53*(self.tableView.tableHeaderView?.frame.height)!
-            favoritesButton.center.y = 0.69*(self.tableView.tableHeaderView?.frame.height)!
+            location.center.y = 0.4*(self.tableView.tableHeaderView?.frame.height)!
+            favoritesButton.center.y = 0.6*(self.tableView.tableHeaderView?.frame.height)!
         } else { //numLines is 3
-            location.center.y = 0.66*(self.tableView.tableHeaderView?.frame.height)!
-            favoritesButton.center.y = 0.83*(self.tableView.tableHeaderView?.frame.height)!
+            location.center.y = 0.5*(self.tableView.tableHeaderView?.frame.height)!
+            favoritesButton.center.y = 0.7*(self.tableView.tableHeaderView?.frame.height)!
         }
     }
     
@@ -173,12 +187,6 @@ class CompanyDetailsViewController: UIViewController, UITableViewDelegate, UITab
         UserDefaults.standard.set(savedData, forKey: Property.favorites.rawValue)
     }
     
-    @IBAction func segmentControlHandler(sender: UISegmentedControl){
-        //Handler for when custom Segmented Control changes and will change the content of the following table depending on the value selected
-        print("Selected segment index is: \(sender.selectedSegmentIndex)")
-        tableView.reloadData()
-    }
-    
     func setUpFavorite() {
         favoritesButton.setImage(#imageLiteral(resourceName: "favoritesFilled"), for: .normal)
         favoritesButton.setTitle("Remove favorites", for: .normal)
@@ -187,6 +195,43 @@ class CompanyDetailsViewController: UIViewController, UITableViewDelegate, UITab
     func setUpNotFavorite() {
         favoritesButton.setImage(#imageLiteral(resourceName: "favorites"), for: .normal)
         favoritesButton.setTitle("Add to favorites", for: .normal)
+    }
+    
+    @IBAction func segmentControlHandler(sender: UISegmentedControl){
+        //Handler for when custom Segmented Control changes and will change the content of the following table depending on the value selected
+        print("Selected segment index is: \(sender.selectedSegmentIndex)")
+        tableView.reloadData()
+    }
+    
+    @IBAction func cameraButtonPressed(button: UIButton!) {
+        print("camera button pressed!")
+        //open camera if available
+        if UIImagePickerController.isSourceTypeAvailable(.camera) {
+            let imagePicker = UIImagePickerController()
+            imagePicker.delegate = self //(self as! UIImagePickerControllerDelegate & UINavigationControllerDelegate)
+            imagePicker.sourceType = .camera;
+            imagePicker.allowsEditing = false
+            imagePicker.cameraCaptureMode = .photo
+            self.present(imagePicker, animated: true, completion: nil)
+        } else {
+            noCamera()
+        }
+    }
+    
+    func noCamera(){
+        let alertVC = UIAlertController(
+            title: "No Camera",
+            message: "Sorry, this device has no camera",
+            preferredStyle: .alert)
+        let okAction = UIAlertAction(
+            title: "OK",
+            style:.default,
+            handler: nil)
+        alertVC.addAction(okAction)
+        present(
+            alertVC,
+            animated: true,
+            completion: nil)
     }
     
     /*****-------KEYBOARD: Prevent keyboard from hiding notes text view-----*****/
@@ -289,7 +334,11 @@ class CompanyDetailsViewController: UIViewController, UITableViewDelegate, UITab
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat{
         var height:CGFloat = 120.0
         if(segControl.selectedSegmentIndex==1) {  //"Notes" page
-            height = 200.0 //for Notes sect and Photos sect
+            if(indexPath.section == 0){ //notes section
+                height = 200.0
+            } else {    //photos section
+            height = 140.0
+            }
         }
         else {  //"Company Info" page
             if(indexPath.section == 0) { //company info section
@@ -320,7 +369,7 @@ class CompanyDetailsViewController: UIViewController, UITableViewDelegate, UITab
     
     //Table: Load in custom cells
     let customCellIdentifier = [0: "CompanyInfoTableViewCell", 1 : "ListTableViewCell", 2 : "ListTableViewCell", 3 : "textViewTableViewCell", 4 : "textViewTableViewCell"]
-    let notesCustomCellIdentifier = [0: "NotesTableViewCell", 1: "NotesTableViewCell"] //NEED TO CREATE NEW TABLEVIEW CELL FOR PHOTOS SECTION
+    let notesCustomCellIdentifier = [0: "NotesTableViewCell", 1: "PhotosTableViewCell"]
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell
     {
@@ -373,7 +422,13 @@ class CompanyDetailsViewController: UIViewController, UITableViewDelegate, UITab
             }
             return customCell
         }
-        else {  //applies to "Notes" page. Change up later to implement photos section
+        //applies to "Notes" page, photos section
+        else if (identifier == notesCustomCellIdentifier[1]){
+            let customCell = cell as! PhotosTableViewCell
+            customCell.setCollectionViewDataSourceDelegate(dataSourceDelegate: self)
+            
+            return customCell
+        } else { //for notes section
             let customCell = cell as! NotesTableViewCell
             customCell.companyName = company.name
             customCell.notesTextView.tag = indexPath.row
@@ -394,6 +449,21 @@ class CompanyDetailsViewController: UIViewController, UITableViewDelegate, UITab
     //Table: Stop table cell turning grey when click on cell
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         tableView.deselectRow(at: indexPath as IndexPath, animated: true)
+    }
+    
+    
+    /*****------------------------------COLLECTION VIEW METHODS------------------------------*****/
+    //For Photos section in "Notes" page
+    func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
+        return numberOfImages
+    }
+    
+    func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
+        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "PhotosCollectionViewCell",
+                                                      for: indexPath)
+        cell.backgroundColor = UIColor.blue
+        
+        return cell
     }
     
 }

@@ -36,6 +36,10 @@
 		DA43D9891FD1058C00F580B9 /* ListTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = DA43D97D1FD1058B00F580B9 /* ListTableViewCell.swift */; };
 		DA43D98C1FD1059700F580B9 /* Company.swift in Sources */ = {isa = PBXBuildFile; fileRef = DA43D98A1FD1059700F580B9 /* Company.swift */; };
 		DA43D98D1FD1059700F580B9 /* informationStateController.swift in Sources */ = {isa = PBXBuildFile; fileRef = DA43D98B1FD1059700F580B9 /* informationStateController.swift */; };
+		ED4B7FA820192C0700C43B72 /* PhotosCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = ED4B7FA620192C0700C43B72 /* PhotosCollectionViewCell.swift */; };
+		ED4B7FA920192C0700C43B72 /* PhotosCollectionViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = ED4B7FA720192C0700C43B72 /* PhotosCollectionViewCell.xib */; };
+		EDE70A4E2004CBDF0054D34D /* PhotosTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = EDE70A4C2004CBDF0054D34D /* PhotosTableViewCell.swift */; };
+		EDE70A4F2004CBDF0054D34D /* PhotosTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = EDE70A4D2004CBDF0054D34D /* PhotosTableViewCell.xib */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -72,6 +76,10 @@
 		DA43D97D1FD1058B00F580B9 /* ListTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = ListTableViewCell.swift; path = Views/ListTableViewCell.swift; sourceTree = "<group>"; };
 		DA43D98A1FD1059700F580B9 /* Company.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = Company.swift; path = Models/Company.swift; sourceTree = "<group>"; };
 		DA43D98B1FD1059700F580B9 /* informationStateController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = informationStateController.swift; path = Models/informationStateController.swift; sourceTree = "<group>"; };
+		ED4B7FA620192C0700C43B72 /* PhotosCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PhotosCollectionViewCell.swift; sourceTree = "<group>"; };
+		ED4B7FA720192C0700C43B72 /* PhotosCollectionViewCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = PhotosCollectionViewCell.xib; sourceTree = "<group>"; };
+		EDE70A4C2004CBDF0054D34D /* PhotosTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PhotosTableViewCell.swift; sourceTree = "<group>"; };
+		EDE70A4D2004CBDF0054D34D /* PhotosTableViewCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = PhotosTableViewCell.xib; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -149,6 +157,10 @@
 				DA43D9731FD1058B00F580B9 /* NotesTableViewCell.xib */,
 				DA43D97A1FD1058B00F580B9 /* textViewTableViewCell.swift */,
 				DA43D9761FD1058B00F580B9 /* textViewTableViewCell.xib */,
+				EDE70A4C2004CBDF0054D34D /* PhotosTableViewCell.swift */,
+				EDE70A4D2004CBDF0054D34D /* PhotosTableViewCell.xib */,
+				ED4B7FA620192C0700C43B72 /* PhotosCollectionViewCell.swift */,
+				ED4B7FA720192C0700C43B72 /* PhotosCollectionViewCell.xib */,
 			);
 			name = Views;
 			sourceTree = "<group>";
@@ -253,6 +265,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				EDE70A4F2004CBDF0054D34D /* PhotosTableViewCell.xib in Resources */,
 				02ECF1E01DE518050032EEC2 /* LaunchScreen.storyboard in Resources */,
 				DA43D96F1FD1057100F580B9 /* MapViewController.xib in Resources */,
 				DA43D97E1FD1058B00F580B9 /* CompanyTableViewCell.xib in Resources */,
@@ -261,6 +274,7 @@
 				DA43D9841FD1058C00F580B9 /* ListTableViewCell.xib in Resources */,
 				02ECF1DD1DE518050032EEC2 /* Assets.xcassets in Resources */,
 				DA43D9821FD1058B00F580B9 /* textViewTableViewCell.xib in Resources */,
+				ED4B7FA920192C0700C43B72 /* PhotosCollectionViewCell.xib in Resources */,
 				378A44091E2434AA00A1373A /* GoogleService-Info.plist in Resources */,
 				DA43D97F1FD1058B00F580B9 /* NotesTableViewCell.xib in Resources */,
 			);
@@ -328,7 +342,9 @@
 				DA43D9891FD1058C00F580B9 /* ListTableViewCell.swift in Sources */,
 				DA43D9811FD1058B00F580B9 /* NotesTableViewCell.swift in Sources */,
 				DA43D96B1FD1057100F580B9 /* MapViewController.swift in Sources */,
+				ED4B7FA820192C0700C43B72 /* PhotosCollectionViewCell.swift in Sources */,
 				DA43D96E1FD1057100F580B9 /* TabViewController.swift in Sources */,
+				EDE70A4E2004CBDF0054D34D /* PhotosTableViewCell.swift in Sources */,
 				DA43D98D1FD1059700F580B9 /* informationStateController.swift in Sources */,
 				DA43D9701FD1057100F580B9 /* CompanyDetailsViewController.swift in Sources */,
 				DA43D9711FD1057100F580B9 /* FavoritesViewController.swift in Sources */,
