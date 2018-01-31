@@ -27,7 +27,6 @@
 		DA43D96B1FD1057100F580B9 /* MapViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = DA43D9641FD1057100F580B9 /* MapViewController.swift */; };
 		DA43D96C1FD1057100F580B9 /* CompanyViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = DA43D9651FD1057100F580B9 /* CompanyViewController.swift */; };
 		DA43D96D1FD1057100F580B9 /* HomeViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = DA43D9661FD1057100F580B9 /* HomeViewController.swift */; };
-		DA43D96E1FD1057100F580B9 /* TabViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = DA43D9671FD1057100F580B9 /* TabViewController.swift */; };
 		DA43D96F1FD1057100F580B9 /* MapViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = DA43D9681FD1057100F580B9 /* MapViewController.xib */; };
 		DA43D9701FD1057100F580B9 /* CompanyDetailsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = DA43D9691FD1057100F580B9 /* CompanyDetailsViewController.swift */; };
 		DA43D9711FD1057100F580B9 /* FavoritesViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = DA43D96A1FD1057100F580B9 /* FavoritesViewController.swift */; };
@@ -43,6 +42,7 @@
 		DA43D9881FD1058C00F580B9 /* FavoritesTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = DA43D97C1FD1058B00F580B9 /* FavoritesTableViewCell.swift */; };
 		DA43D98C1FD1059700F580B9 /* Company.swift in Sources */ = {isa = PBXBuildFile; fileRef = DA43D98A1FD1059700F580B9 /* Company.swift */; };
 		DA43D98D1FD1059700F580B9 /* CompanyViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = DA43D98B1FD1059700F580B9 /* CompanyViewModel.swift */; };
+		DA70CBF020228AA000C01817 /* TabViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = DA70CBEF20228AA000C01817 /* TabViewController.swift */; };
 		DAC9C181201CE9DD008EEC1C /* ListViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = DAC9C180201CE9DD008EEC1C /* ListViewModel.swift */; };
 		DAD9C367201D8EA400130E04 /* AddListPopUpViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = DAD9C366201D8EA400130E04 /* AddListPopUpViewController.swift */; };
 		DAE05BAA201BCF5D004A351D /* ListViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = DAE05BA9201BCF5D004A351D /* ListViewController.swift */; };
@@ -82,7 +82,6 @@
 		DA43D9641FD1057100F580B9 /* MapViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = MapViewController.swift; path = ViewControllers/MapViewController.swift; sourceTree = "<group>"; };
 		DA43D9651FD1057100F580B9 /* CompanyViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = CompanyViewController.swift; path = ViewControllers/CompanyViewController.swift; sourceTree = "<group>"; };
 		DA43D9661FD1057100F580B9 /* HomeViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = HomeViewController.swift; path = ViewControllers/HomeViewController.swift; sourceTree = "<group>"; };
-		DA43D9671FD1057100F580B9 /* TabViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = TabViewController.swift; path = ViewControllers/TabViewController.swift; sourceTree = "<group>"; };
 		DA43D9681FD1057100F580B9 /* MapViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; name = MapViewController.xib; path = ViewControllers/MapViewController.xib; sourceTree = "<group>"; };
 		DA43D9691FD1057100F580B9 /* CompanyDetailsViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = CompanyDetailsViewController.swift; path = ViewControllers/CompanyDetailsViewController.swift; sourceTree = "<group>"; };
 		DA43D96A1FD1057100F580B9 /* FavoritesViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = FavoritesViewController.swift; path = ViewControllers/FavoritesViewController.swift; sourceTree = "<group>"; };
@@ -98,6 +97,7 @@
 		DA43D97C1FD1058B00F580B9 /* FavoritesTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = FavoritesTableViewCell.swift; path = Views/FavoritesTableViewCell.swift; sourceTree = "<group>"; };
 		DA43D98A1FD1059700F580B9 /* Company.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = Company.swift; path = Models/Company.swift; sourceTree = "<group>"; };
 		DA43D98B1FD1059700F580B9 /* CompanyViewModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = CompanyViewModel.swift; path = Models/CompanyViewModel.swift; sourceTree = "<group>"; };
+		DA70CBEF20228AA000C01817 /* TabViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = TabViewController.swift; path = ViewControllers/TabViewController.swift; sourceTree = "<group>"; };
 		DAC9C180201CE9DD008EEC1C /* ListViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = ListViewModel.swift; path = Models/ListViewModel.swift; sourceTree = "<group>"; };
 		DAD9C366201D8EA400130E04 /* AddListPopUpViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = AddListPopUpViewController.swift; path = ViewControllers/AddListPopUpViewController.swift; sourceTree = "<group>"; };
 		DAE05BA9201BCF5D004A351D /* ListViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = ListViewController.swift; path = ViewControllers/ListViewController.swift; sourceTree = "<group>"; };
@@ -160,6 +160,7 @@
 		02ECF1E91DE518820032EEC2 /* ViewControllers */ = {
 			isa = PBXGroup;
 			children = (
+				DA70CBEF20228AA000C01817 /* TabViewController.swift */,
 				DA43D9691FD1057100F580B9 /* CompanyDetailsViewController.swift */,
 				DA43D9651FD1057100F580B9 /* CompanyViewController.swift */,
 				DA43D96A1FD1057100F580B9 /* FavoritesViewController.swift */,
@@ -167,7 +168,6 @@
 				DA43D9661FD1057100F580B9 /* HomeViewController.swift */,
 				DA43D9641FD1057100F580B9 /* MapViewController.swift */,
 				DA43D9681FD1057100F580B9 /* MapViewController.xib */,
-				DA43D9671FD1057100F580B9 /* TabViewController.swift */,
 				DA43D95E1FD1049800F580B9 /* FiltersViewController.swift */,
 				DAD9C366201D8EA400130E04 /* AddListPopUpViewController.swift */,
 			);
@@ -404,15 +404,14 @@
 				DA3A49FE20088166004170DF /* FilterViewModel.swift in Sources */,
 				DA43D9801FD1058B00F580B9 /* CompanyInfoTableViewCell.swift in Sources */,
 				DA43D96D1FD1057100F580B9 /* HomeViewController.swift in Sources */,
+				DA70CBF020228AA000C01817 /* TabViewController.swift in Sources */,
 				DA43D9811FD1058B00F580B9 /* NotesTableViewCell.swift in Sources */,
 				DA43D96B1FD1057100F580B9 /* MapViewController.swift in Sources */,
 				DAE05BB4201C2A66004A351D /* List.swift in Sources */,
 				DAE05BB6201C2A79004A351D /* ListItem.swift in Sources */,
 				DA3BF0CA200922B60086C042 /* FilterSection.swift in Sources */,
-				DA43D96E1FD1057100F580B9 /* TabViewController.swift in Sources */,
 				DA43D98D1FD1059700F580B9 /* CompanyViewModel.swift in Sources */,
 				ED4B7FA820192C0700C43B72 /* PhotosCollectionViewCell.swift in Sources */,
-				DA43D96E1FD1057100F580B9 /* TabViewController.swift in Sources */,
 				EDE70A4E2004CBDF0054D34D /* PhotosTableViewCell.swift in Sources */,
 				DA43D9701FD1057100F580B9 /* CompanyDetailsViewController.swift in Sources */,
 				DA43D9711FD1057100F580B9 /* FavoritesViewController.swift in Sources */,

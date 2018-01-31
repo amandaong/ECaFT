@@ -238,7 +238,7 @@ class CompanyViewController: UIViewController, UISearchBarDelegate, UIScrollView
         let barHeights = (self.navigationController?.navigationBar.frame.size.height)!+UIApplication.shared.statusBarFrame.height + 100
         
         //edited CGRect to make margins and center it
-        companyTableView = UITableView(frame: CGRect(x: 25, y: searchBar.frame.maxY, width: screenSize.width-50, height: screenSize.height - barHeights), style: UITableViewStyle.plain) //sets tableview to size of view below status bar and nav bar
+        companyTableView = UITableView(frame: CGRect(x: 0, y: searchBar.frame.maxY, width: screenSize.width, height: screenSize.height - barHeights), style: UITableViewStyle.plain) //sets tableview to size of view below status bar and nav bar
         
         // UI
         companyTableView.backgroundColor = UIColor.backgroundGray
