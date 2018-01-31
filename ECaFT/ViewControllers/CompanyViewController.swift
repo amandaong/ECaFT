@@ -11,7 +11,9 @@ import Firebase
 import FirebaseStorage
 import FirebaseDatabase
 
-class CompanyViewController: UIViewController, UISearchBarDelegate, UIScrollViewDelegate, UITableViewDelegate, UITableViewDataSource, FilterSelectionProtocol {
+class CompanyViewController: UIViewController, UISearchBarDelegate, UIScrollViewDelegate, UITableViewDelegate, UITableViewDataSource, FilterSelectionProtocol, favoritesButtonDelegate {
+
+    
     let screenSize : CGRect = UIScreen.main.bounds
     var searchBar : UISearchBar!
     
@@ -232,6 +234,18 @@ class CompanyViewController: UIViewController, UISearchBarDelegate, UIScrollView
         scrollView.bounces = scrollView.contentOffset.y > 0
     }
     
+    
+    /*** -------------------- FAV BUTTON -------------------- ***/
+    func didPressFavoritesBtn(button: UIButton, companyName: String) {
+        let companyListVC = AddCompanyPopUpViewController()
+        companyListVC.companyName = companyName
+        companyListVC.companyViewModel = companyViewModel
+        companyListVC.listViewModel = listViewModel
+        companyListVC.modalPresentationStyle = UIModalPresentationStyle.overFullScreen
+        companyListVC.modalTransitionStyle = UIModalTransitionStyle.coverVertical
+        self.present(companyListVC, animated: true, completion: nil)
+    }
+    
     /*** -------------------- TABLE VIEW -------------------- ***/
     private func makeTableView() {
         //Total height of nav bar, status bar, tab bar
@@ -298,6 +312,8 @@ class CompanyViewController: UIViewController, UISearchBarDelegate, UIScrollView
                 print("CompanyViewController.swift - cellForRowAt method:  Company Table View dequeuing cell error")
                 return UITableViewCell()
         }
+        customCell.delegate = self
+        
         
         //Stops cell turning grey when click on it
         customCell.selectionStyle = .none
@@ -331,7 +347,6 @@ class CompanyViewController: UIViewController, UISearchBarDelegate, UIScrollView
             customCell.favoritesButton.setImage(#imageLiteral(resourceName: "favorites"), for: .normal)
         }
         customCell.favoritesButton.tag = indexPath.row
-        customCell.favoritesButton.addTarget(self, action: #selector(toggleFavorite(sender:)), for: .touchUpInside)
         
         return customCell
     }
@@ -365,6 +380,8 @@ class CompanyViewController: UIViewController, UISearchBarDelegate, UIScrollView
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         tableView.deselectRow(at: indexPath as IndexPath, animated: false)
         let companyDetailsVC = CompanyDetailsViewController()
+        companyDetailsVC.companyViewModel = companyViewModel
+        companyDetailsVC.listViewModel = listViewModel
         companyDetailsVC.company = companyViewModel?.displayedCompanies[indexPath.row]
         companyDetailsVC.isFavorite = (companyViewModel?.displayedCompanies[indexPath.row].isFavorite)!
         self.show(companyDetailsVC, sender: nil)
