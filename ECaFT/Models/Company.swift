@@ -40,7 +40,7 @@ enum Position: String {
 }
 
 //Represent the data
-class Company: NSObject {
+class Company: NSObject, NSCoding {
     var name: String = ""
     var information: String = ""
     var location: String = ""

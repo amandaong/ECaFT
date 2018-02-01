@@ -11,14 +11,12 @@ import UIKit
 class CompanyInfoTableViewCell: UITableViewCell {
     let screenSize : CGRect = UIScreen.main.bounds
     var informationTextView: UITextView!
-    var websiteButton = UIButton()
     
     var information: String? {
         didSet {
             informationTextView.text = information //Sets text of name label to cell's name property
         }
     }
-    var websiteLink: String?
     
     override init(style: UITableViewCellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
@@ -42,33 +40,9 @@ class CompanyInfoTableViewCell: UITableViewCell {
         informationTextView.textContainerInset = UIEdgeInsetsMake(0, -padding, 0, -padding)
         contentView.addSubview(informationTextView)
 
-        //Create website button
-        websiteButton.setTitle("Go to website", for: .normal)
-        websiteButton.titleLabel?.textAlignment = .left
-        websiteButton.titleLabel?.font = .systemFont(ofSize: 15)
-        websiteButton.setTitleColor(UIColor.ecaftRed, for: .normal)
-        websiteButton.frame = CGRect(x: horOffSet, y: 0, width: 0.34*screenSize.width, height: 30)
-        if(screenSize.height < 667.0) { //iPhone 5s & below
-            websiteButton.frame = CGRect(x: horOffSet, y: 0, width: 0.4*screenSize.width, height: 30)
-            print("ipohne 5s")
-        }
-        websiteButton.center.y = 175
-        websiteButton.addTarget(self, action: #selector(CompanyInfoTableViewCell.websiteButtonPressed(button:)), for: .touchUpInside)
-        
-        //Tint image red
-        websiteButton.tintColor = UIColor.ecaftRed
-        websiteButton.setImage(#imageLiteral(resourceName: "website").withRenderingMode(UIImageRenderingMode.alwaysTemplate), for: .normal)
-        websiteButton.centerTextAndImage(spacing: 10)
-        contentView.addSubview(websiteButton)
-        
         
     }
     
-    @objc func websiteButtonPressed(button: UIButton!) {
-        if let url = NSURL(string: websiteLink!){
-            UIApplication.shared.open(url as URL, options: [:], completionHandler: nil)
-        }
-    }
     
     required init(coder aDecoder: NSCoder) {
         fatalError("init(coder:) has not been implemented")

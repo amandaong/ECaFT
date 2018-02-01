@@ -23,12 +23,12 @@ class CompanyDetailsViewController: UIViewController, UITableViewDelegate, UITab
     var isFavorite : Bool = false
     var location = UILabel() //company booth location
     var favoritesButton = UIButton()
+    var websiteButton = UIButton()
     
     //segmented control
     let segmentTitles : [String] = ["Company Info", "Notes"]
     var segControl = UISegmentedControl()
     var cameraButton = UIButton()
-    var numberOfImages = 0  //number of images to display in "Photos" section
     
     //Sections in "Company Info"
     let compInfoSectionTitles : [String] = ["Company Information", "Open Positions", "Majors of Interest", "Sponsorship", "OPT/CPT"]
@@ -124,6 +124,26 @@ class CompanyDetailsViewController: UIViewController, UITableViewDelegate, UITab
         
         self.tableView.tableHeaderView?.addSubview(favoritesButton)
         
+        //Create website button
+        websiteButton.setTitle("Go to website", for: .normal)
+        websiteButton.titleLabel?.textAlignment = .left
+        websiteButton.titleLabel?.font = .systemFont(ofSize: 16)
+        websiteButton.setTitleColor(UIColor.ecaftRed, for: .normal)
+        websiteButton.frame = CGRect(x: 0.41*screenSize.width, y: 0, width: 0.34*screenSize.width, height: 30)
+        if(screenSize.height < 667.0) { //iPhone 5s & below
+            websiteButton.frame = CGRect(x: 0.41*screenSize.width, y: 0, width: 0.4*screenSize.width, height: 30)
+            print("ipohne 5s")
+        }
+        
+        websiteButton.addTarget(self, action: #selector(CompanyDetailsViewController.websiteButtonPressed(button:)), for: .touchUpInside)
+        
+        //Tint image red
+        websiteButton.tintColor = UIColor.ecaftRed
+        websiteButton.setImage(#imageLiteral(resourceName: "website").withRenderingMode(UIImageRenderingMode.alwaysTemplate), for: .normal)
+        websiteButton.centerTextAndImage(spacing: 10)
+        self.tableView.tableHeaderView?.addSubview(websiteButton)
+        
+        
         //Create segmented control
         segControl = UISegmentedControl(items: segmentTitles)
         segControl.selectedSegmentIndex = 0
@@ -154,12 +174,15 @@ class CompanyDetailsViewController: UIViewController, UITableViewDelegate, UITab
         if (numLines < 2) {
             location.center.y = 0.3*(self.tableView.tableHeaderView?.frame.height)!
             favoritesButton.center.y = 0.5*(self.tableView.tableHeaderView?.frame.height)!
+            websiteButton.center.y = 0.6*(self.tableView.tableHeaderView?.frame.height)!
         } else if (numLines == 2){
             location.center.y = 0.4*(self.tableView.tableHeaderView?.frame.height)!
             favoritesButton.center.y = 0.6*(self.tableView.tableHeaderView?.frame.height)!
+            websiteButton.center.y = 0.7*(self.tableView.tableHeaderView?.frame.height)!
         } else { //numLines is 3
             location.center.y = 0.5*(self.tableView.tableHeaderView?.frame.height)!
             favoritesButton.center.y = 0.7*(self.tableView.tableHeaderView?.frame.height)!
+            websiteButton.center.y = 0.8*(self.tableView.tableHeaderView?.frame.height)!
         }
     }
     
@@ -193,12 +216,19 @@ class CompanyDetailsViewController: UIViewController, UITableViewDelegate, UITab
         favoritesButton.setTitle("Add to favorites", for: .normal)
     }
     
+    @objc func websiteButtonPressed(button: UIButton!) {
+        if let url = NSURL(string: company.website){
+            UIApplication.shared.open(url as URL, options: [:], completionHandler: nil)
+        }
+    }
+    
     @IBAction func segmentControlHandler(sender: UISegmentedControl){
         //Handler for when custom Segmented Control changes and will change the content of the following table depending on the value selected
         print("Selected segment index is: \(sender.selectedSegmentIndex)")
         tableView.reloadData()
     }
     
+    /*****----------------Taking Pictures & Making them fullscreen----------------*****/
     @IBAction func cameraButtonPressed(button: UIButton!) {
         print("camera button pressed!")
         //open camera if available
@@ -212,6 +242,20 @@ class CompanyDetailsViewController: UIViewController, UITableViewDelegate, UITab
         } else {
             noCamera()
         }
+    }
+    
+    func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [String : Any]) {
+        
+        if let imageTaken = info[UIImagePickerControllerOriginalImage] as? UIImage {
+            infoSC.saveImage(image: imageTaken, company: company)
+            print("image saved")
+        }
+        dismiss(animated: true, completion: nil)
+        
+    }
+    
+    func imagePickerControllerDidCancel(_ picker: UIImagePickerController) {
+        dismiss(animated: true, completion: nil)
     }
     
     func noCamera(){
@@ -228,6 +272,36 @@ class CompanyDetailsViewController: UIViewController, UITableViewDelegate, UITab
             alertVC,
             animated: true,
             completion: nil)
+    }
+    
+    @IBAction func imageTapped(_ sender: UITapGestureRecognizer) {
+        let imageView = sender.view as! UIImageView
+        let newImageView = UIImageView(image: imageView.image)
+        //let viewHeight = getViewHeight()
+        newImageView.frame = CGRect(x: 0, y: 0, width: screenSize.width, height: screenSize.height)
+        //newImageView.center.x = 0.5*screenSize.width
+        //newImageView.center.y = 0.5*screenSize.height
+        newImageView.backgroundColor = .black
+        newImageView.contentMode = .scaleToFill
+        newImageView.isUserInteractionEnabled = true
+        let tap = UITapGestureRecognizer(target: self, action: #selector(CompanyDetailsViewController.dismissFullscreenImage(_:)))
+        newImageView.addGestureRecognizer(tap)
+        self.tableView.addSubview(newImageView)
+        self.navigationController?.isNavigationBarHidden = true
+        self.tabBarController?.tabBar.isHidden = true
+    }
+    
+    @IBAction func dismissFullscreenImage(_ sender: UITapGestureRecognizer) {
+        self.navigationController?.isNavigationBarHidden = false
+        self.tabBarController?.tabBar.isHidden = false
+        sender.view?.removeFromSuperview()
+    }
+    
+    private func getViewHeight() -> CGFloat {
+        let topHeight = UIApplication.shared.statusBarFrame.height + (navigationController?.navigationBar.frame.height)!
+        let bottomHeight = (tabBarController?.tabBar.frame.height != nil) ? tabBarController?.tabBar.frame.height : 0
+        let viewHeight = UIScreen.main.bounds.height - topHeight - bottomHeight!
+        return viewHeight
     }
     
     /*****-------KEYBOARD: Prevent keyboard from hiding notes text view-----*****/
@@ -333,12 +407,12 @@ class CompanyDetailsViewController: UIViewController, UITableViewDelegate, UITab
             if(indexPath.section == 0){ //notes section
                 height = 200.0
             } else {    //photos section
-            height = 140.0
+            height = 200.0
             }
         }
         else {  //"Company Info" page
             if(indexPath.section == 0) { //company info section
-                height = 200.0
+                height = 160.0
             } else if(indexPath.section == 1) { //open positions section
                 if(indexPath.row==0 || indexPath.row==company.positions.count+1) {
                     height = 5.0
@@ -353,11 +427,8 @@ class CompanyDetailsViewController: UIViewController, UITableViewDelegate, UITab
                 }
             } else if (indexPath.section == 3) { //sponsorship section (3)
                 height = 60.0
-            } else if (indexPath.section == 4) { //OPT/CPT section (4)
-                height = 60.0
-            }
-            else { //default (Can delete or make OPT/CPT section height into 310)
-                height = 310.0
+            }else { ////OPT/CPT section (4)
+                height = 100.0
             }
         }
         return height
@@ -385,7 +456,6 @@ class CompanyDetailsViewController: UIViewController, UITableViewDelegate, UITab
         if identifier == customCellIdentifier[0] {
             let customCell = cell as! CompanyInfoTableViewCell
             customCell.information = company.information
-            customCell.websiteLink = company.website
             return customCell
         } else if identifier == customCellIdentifier[1] {
             let customCell = cell as! ListTableViewCell
@@ -451,13 +521,20 @@ class CompanyDetailsViewController: UIViewController, UITableViewDelegate, UITab
     /*****------------------------------COLLECTION VIEW METHODS------------------------------*****/
     //For Photos section in "Notes" page
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        return numberOfImages
+        //print("number of photos for this company: \(numPics)")
+        return infoSC.numSavedImages(company: company) //numberOfImages
     }
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "PhotosCollectionViewCell",
-                                                      for: indexPath)
-        cell.backgroundColor = UIColor.blue
+        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "PhotosCollectionViewCell", for: indexPath) as! PhotosCollectionViewCell
+        
+        let path: String = infoSC.getDocumentsDirectory(imageName: "\(company.name)_\(indexPath.row)").path
+        let image = infoSC.loadImageFromPath(path: path)
+        cell.imageView.image = image
+        
+        let pictureTap = UITapGestureRecognizer(target: self, action: #selector(CompanyDetailsViewController.imageTapped(_:)))
+        cell.imageView.addGestureRecognizer(pictureTap)
+        cell.imageView.isUserInteractionEnabled = true
         
         return cell
     }

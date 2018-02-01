@@ -7,6 +7,7 @@
 //
 
 import Foundation
+import UIKit
 
 // Company View Model - keep track of company data
 class CompanyViewModel {
@@ -160,5 +161,40 @@ class CompanyViewModel {
         }
     }
 
+    /*** -------------------- SAVING IMAGES -------------------- ***/
+    //Save your image to document folder & load image from it
+    
+    func numSavedImages(company: Company) -> Int {
+        let key = "\(company.name)_images"
+        let numPics = UserDefaults.standard.integer(forKey: key)
+        return numPics
+    }
+    
+    func saveImage (image: UIImage, company: Company) {
+        print("saveImage called")
+        let pictureNumber = numSavedImages(company: company)
+        let imageName = "\(company.name)_\(pictureNumber)"
+        if let jpgImageData = UIImageJPEGRepresentation(image, 1.0) {
+            let imagePath = getDocumentsDirectory(imageName: imageName)
+            try? jpgImageData.write(to: imagePath)
+        }
+        let key = "\(company.name)_images"
+        UserDefaults.standard.set(pictureNumber+1, forKey: key)
+        
+        print("saveImage completed")
+    }
+    
+    func getDocumentsDirectory(imageName: String) -> URL {
+        let paths = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask)
+        return paths[0].appendingPathComponent(imageName)
+    }
+    
+    func loadImageFromPath(path: String) -> UIImage? {
+        let image = UIImage(contentsOfFile: path)
+        if image == nil {
+            print("Image not available at: (path)")
+        }
+        return image
+    }
 }
 
