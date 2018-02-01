@@ -8,6 +8,10 @@
 
 import UIKit
 
+protocol favoritesButtonDelegate {
+    func didPressFavoritesBtn(button: UIButton, companyName: String)
+}
+
 class CompanyTableViewCell: UITableViewCell {
     
     @IBOutlet weak var companyBack: UIImageView!
@@ -16,6 +20,7 @@ class CompanyTableViewCell: UITableViewCell {
     @IBOutlet weak var locationLabel: UILabel!
     @IBOutlet weak var favoritesButton: UIButton!
     static let identifier = "CompanyTableViewCell"
+    var delegate: favoritesButtonDelegate!
 
     var name: String? {
         didSet {
@@ -44,6 +49,11 @@ class CompanyTableViewCell: UITableViewCell {
 
         // Configure the view for the selected state
     }
+    
+    @IBAction func favoritesButtonPressed(_ sender: UIButton) {
+        delegate.didPressFavoritesBtn(button: sender, companyName: name!)
+    }
+
 }
 
 

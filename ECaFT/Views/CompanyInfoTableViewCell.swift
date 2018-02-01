@@ -8,6 +8,8 @@
 
 import UIKit
 
+
+
 class CompanyInfoTableViewCell: UITableViewCell {
     let screenSize : CGRect = UIScreen.main.bounds
     var informationTextView: UITextView!
@@ -88,7 +90,5 @@ class CompanyInfoTableViewCell: UITableViewCell {
         super.setSelected(selected, animated: animated)
         // Configure the view for the selected state
     }
-    
-    
-        
+     
 }

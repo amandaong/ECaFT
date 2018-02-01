@@ -18,6 +18,7 @@ class ListViewController: UIViewController, UICollectionViewDelegate, UICollecti
     
     var companyViewModel: CompanyViewModel!
     var listViewModel: ListViewModel!
+
     
     var listTableView: UITableView = UITableView()
     
