@@ -11,7 +11,9 @@ import Firebase
 import FirebaseStorage
 import FirebaseDatabase
 
-class CompanyViewController: UIViewController, UISearchBarDelegate, UIScrollViewDelegate, UITableViewDelegate, UITableViewDataSource, FilterSelectionProtocol {
+class CompanyViewController: UIViewController, UISearchBarDelegate, UIScrollViewDelegate, UITableViewDelegate, UITableViewDataSource, FilterSelectionProtocol, favoritesButtonDelegate {
+
+    
     let screenSize : CGRect = UIScreen.main.bounds
     var searchBar : UISearchBar!
     
@@ -109,16 +111,29 @@ class CompanyViewController: UIViewController, UISearchBarDelegate, UIScrollView
                 company.optcpt = item.childSnapshot(forPath: Property.optcpt.rawValue).value as! Bool
 
                 //Get image
-                let id = item.childSnapshot(forPath: Property.id.rawValue).value as! String
-                let imageName = id + ".png"
-                let imageRef = self.storageRef?.child(imageName)
-                imageRef?.data(withMaxSize: 1 * 1024 * 1024) { data, error in
+                let name = item.childSnapshot(forPath: Property.name.rawValue).value as! String
+                let companyImageName = name + ".png"
+                let companyImageRef = self.storageRef?.child(companyImageName)
+                companyImageRef?.data(withMaxSize: 1 * 1024 * 1024) { data, error in
                     if let error = error {
                         print((error as Error).localizedDescription)
                     } else if let data = data {
                         // Data for "images/companyid.png" is returned
                         DispatchQueue.main.async { [weak self] in
                             company.image = UIImage(data: data)
+                            self?.companyTableView.reloadData() //reload data here b/c this is when you know table view cell will have an image
+                        }
+                    }
+                }
+                let companyBkdName = name + "Background.png"
+                let companyBkdRef = self.storageRef?.child(companyBkdName)
+                companyBkdRef?.data(withMaxSize: 1 * 1024 * 1024) { data, error in
+                    if let error = error {
+                        print((error as Error).localizedDescription)
+                    } else if let data = data {
+                        // Data for "images/companyid.png" is returned
+                        DispatchQueue.main.async { [weak self] in
+                            company.background = UIImage(data: data)
                             self?.companyTableView.reloadData() //reload data here b/c this is when you know table view cell will have an image
                         }
                     }
@@ -232,13 +247,25 @@ class CompanyViewController: UIViewController, UISearchBarDelegate, UIScrollView
         scrollView.bounces = scrollView.contentOffset.y > 0
     }
     
+    
+    /*** -------------------- FAV BUTTON -------------------- ***/
+    func didPressFavoritesBtn(button: UIButton, companyName: String) {
+        let companyListVC = AddCompanyPopUpViewController()
+        companyListVC.companyName = companyName
+        companyListVC.companyViewModel = companyViewModel
+        companyListVC.listViewModel = listViewModel
+        companyListVC.modalPresentationStyle = UIModalPresentationStyle.overFullScreen
+        companyListVC.modalTransitionStyle = UIModalTransitionStyle.coverVertical
+        self.present(companyListVC, animated: true, completion: nil)
+    }
+    
     /*** -------------------- TABLE VIEW -------------------- ***/
     private func makeTableView() {
         //Total height of nav bar, status bar, tab bar
         let barHeights = (self.navigationController?.navigationBar.frame.size.height)!+UIApplication.shared.statusBarFrame.height + 100
         
         //edited CGRect to make margins and center it
-        companyTableView = UITableView(frame: CGRect(x: 25, y: searchBar.frame.maxY, width: screenSize.width-50, height: screenSize.height - barHeights), style: UITableViewStyle.plain) //sets tableview to size of view below status bar and nav bar
+        companyTableView = UITableView(frame: CGRect(x: 0, y: searchBar.frame.maxY, width: screenSize.width, height: screenSize.height - barHeights), style: UITableViewStyle.plain) //sets tableview to size of view below status bar and nav bar
         
         // UI
         companyTableView.backgroundColor = UIColor.backgroundGray
@@ -298,6 +325,8 @@ class CompanyViewController: UIViewController, UISearchBarDelegate, UIScrollView
                 print("CompanyViewController.swift - cellForRowAt method:  Company Table View dequeuing cell error")
                 return UITableViewCell()
         }
+        customCell.delegate = self
+        
         
         //Stops cell turning grey when click on it
         customCell.selectionStyle = .none
@@ -320,7 +349,7 @@ class CompanyViewController: UIViewController, UISearchBarDelegate, UIScrollView
         if(company.background != nil) {
             customCell.companyBack.image = company.background
         } else {
-            customCell.companyBack.image = #imageLiteral(resourceName: "sample")
+            customCell.companyBack.image = #imageLiteral(resourceName: "placeholder")
         }
 
         if (companyViewModel?.favoritesString.contains(company.name))! {
@@ -331,7 +360,6 @@ class CompanyViewController: UIViewController, UISearchBarDelegate, UIScrollView
             customCell.favoritesButton.setImage(#imageLiteral(resourceName: "favorites"), for: .normal)
         }
         customCell.favoritesButton.tag = indexPath.row
-        customCell.favoritesButton.addTarget(self, action: #selector(toggleFavorite(sender:)), for: .touchUpInside)
         
         return customCell
     }
@@ -365,6 +393,8 @@ class CompanyViewController: UIViewController, UISearchBarDelegate, UIScrollView
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         tableView.deselectRow(at: indexPath as IndexPath, animated: false)
         let companyDetailsVC = CompanyDetailsViewController()
+        companyDetailsVC.companyViewModel = companyViewModel
+        companyDetailsVC.listViewModel = listViewModel
         companyDetailsVC.company = companyViewModel?.displayedCompanies[indexPath.row]
         companyDetailsVC.isFavorite = (companyViewModel?.displayedCompanies[indexPath.row].isFavorite)!
         self.show(companyDetailsVC, sender: nil)

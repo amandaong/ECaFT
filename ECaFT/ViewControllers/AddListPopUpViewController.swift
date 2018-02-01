@@ -9,7 +9,7 @@
 import UIKit
 import SnapKit
 
-class AddListPopUpViewController: UIViewController {
+class AddListPopUpViewController: UIViewController, UITextFieldDelegate{
     let screenSize : CGRect = UIScreen.main.bounds
     var cornerRadius: CGFloat = 25 // corner radius of pop up view & btns
     var popUpView: UIView = UIView()
@@ -118,7 +118,4 @@ class AddListPopUpViewController: UIViewController {
         return button
     }
 }
-
-extension AddListPopUpViewController: UITextFieldDelegate {
-    
-}
+ 

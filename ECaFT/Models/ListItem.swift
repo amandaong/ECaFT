@@ -9,8 +9,8 @@
 import Foundation
 
 class ListItem: NSObject, NSCoding {
-    private var companyName: String = ""
-    private var booth: String = ""
+    var companyName: String = ""
+    var booth: String = ""
     var isSelected: Bool = false
     
     init(companyName: String, booth: String, isSelected: Bool) {
