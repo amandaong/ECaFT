@@ -250,13 +250,7 @@ class CompanyViewController: UIViewController, UISearchBarDelegate, UIScrollView
     
     /*** -------------------- FAV BUTTON -------------------- ***/
     func didPressFavoritesBtn(button: UIButton, companyName: String) {
-        let companyListVC = AddCompanyPopUpViewController()
-        companyListVC.companyName = companyName
-        companyListVC.companyViewModel = companyViewModel
-        companyListVC.listViewModel = listViewModel
-        companyListVC.modalPresentationStyle = UIModalPresentationStyle.overFullScreen
-        companyListVC.modalTransitionStyle = UIModalTransitionStyle.coverVertical
-        self.present(companyListVC, animated: true, completion: nil)
+        
     }
     
     /*** -------------------- TABLE VIEW -------------------- ***/
