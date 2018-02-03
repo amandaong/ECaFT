@@ -65,7 +65,7 @@ class MapViewController: UIViewController {
     private func makeMapScrollView() {
         mapScrollView.frame = CGRect(x: 0, y: 0, width: width, height: height)
         mapScrollView.center = CGPoint(x: UIScreen.main.bounds.width/2.0, y: viewHeight/2.0)
-        mapScrollView.display(image: #imageLiteral(resourceName: "fair_maps"))
+        mapScrollView.display(image: #imageLiteral(resourceName: "ecaftmap"))
     }
     
     private func getViewHeight() -> CGFloat {
