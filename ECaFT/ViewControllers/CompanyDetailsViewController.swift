@@ -240,7 +240,7 @@ class CompanyDetailsViewController: UIViewController, UITableViewDelegate, UITab
     func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [String : Any]) {
         
         if let imageTaken = info[UIImagePickerControllerOriginalImage] as? UIImage {
-            infoSC.saveImage(image: imageTaken, company: company)
+            companyViewModel.saveImage(image: imageTaken, company: company)
             print("image saved")
         }
         dismiss(animated: true, completion: nil)
@@ -515,14 +515,14 @@ class CompanyDetailsViewController: UIViewController, UITableViewDelegate, UITab
     //For Photos section in "Notes" page
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         //print("number of photos for this company: \(numPics)")
-        return infoSC.numSavedImages(company: company) //numberOfImages
+        return companyViewModel.numSavedImages(company: company) //numberOfImages
     }
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "PhotosCollectionViewCell", for: indexPath) as! PhotosCollectionViewCell
         
-        let path: String = infoSC.getDocumentsDirectory(imageName: "\(company.name)_\(indexPath.row)").path
-        let image = infoSC.loadImageFromPath(path: path)
+        let path: String = companyViewModel.getDocumentsDirectory(imageName: "\(company.name)_\(indexPath.row)").path
+        let image = companyViewModel.loadImageFromPath(path: path)
         cell.imageView.image = image
         
         let pictureTap = UITapGestureRecognizer(target: self, action: #selector(CompanyDetailsViewController.imageTapped(_:)))
