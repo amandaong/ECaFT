@@ -29,11 +29,11 @@ class TabViewController: UITabBarController, SlidingTabBarDataSource, SlidingTab
         let companyBarItem = UITabBarItem(title: "Companies", image: #imageLiteral(resourceName: "tabCompanies"), selectedImage: #imageLiteral(resourceName: "tabCompanies"))
         companyVC.tabBarItem = companyBarItem
         
-        let listVC = ListViewController()
+        let favoritesVC = FavoritesViewController()
         let listBarItem = UITabBarItem(title: "Favorites", image: #imageLiteral(resourceName: "tabFavorites"), selectedImage: #imageLiteral(resourceName: "tabFavorites"))
-        listVC.tabBarItem = listBarItem
+        favoritesVC.tabBarItem = listBarItem
  
-        let controllers = [homeVC, mapVC, companyVC, listVC]
+        let controllers = [homeVC, mapVC, companyVC, favoritesVC]
         self.viewControllers = controllers.map { UINavigationController(rootViewController: $0) }
         
         self.tabBar.isHidden = true

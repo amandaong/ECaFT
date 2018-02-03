@@ -47,18 +47,4 @@ class ListViewModel: NSObject {
 
 }
 
-extension ListViewModel: UICollectionViewDataSource {
-    func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        return userLists.count
-    }
-    
-    func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-        guard let customCell: ListCollectionViewCell = collectionView.dequeueReusableCell(withReuseIdentifier: ListCollectionViewCell.identifier, for: indexPath) as? ListCollectionViewCell else {
-            print("ListViewController.swift - cellForRowAt method:  Company Table View dequeuing cell error")
-            return UICollectionViewCell()
-        }
-        customCell.list = userLists[indexPath.row]
-        return customCell
-    }
-    
-}
+

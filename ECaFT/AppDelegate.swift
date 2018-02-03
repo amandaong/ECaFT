@@ -49,10 +49,10 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         companyVC.filterViewModel = filterViewModel
         companyVC.listViewModel = listViewModel
         
-        let listNavVC = navControllers?[3] as! UINavigationController
-        let listVC = listNavVC.viewControllers.first as! ListViewController
-        listVC.companyViewModel = companyViewModel
-        listVC.listViewModel = listViewModel
+        let favNavVC = navControllers?[3] as! UINavigationController
+        let favVC = favNavVC.viewControllers.first as! FavoritesViewController
+        favVC.companyViewModel = companyViewModel
+        favVC.listViewModel = listViewModel
         
         return true
     }

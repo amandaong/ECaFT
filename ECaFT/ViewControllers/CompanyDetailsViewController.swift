@@ -190,13 +190,7 @@ class CompanyDetailsViewController: UIViewController, UITableViewDelegate, UITab
     }
     
     @objc func favoritesButtonPressed(button: UIButton!) {
-        let companyListVC = AddCompanyPopUpViewController()
-        companyListVC.companyViewModel = companyViewModel
-        companyListVC.listViewModel = listViewModel
-        companyListVC.companyName = company.name
-        companyListVC.modalPresentationStyle = UIModalPresentationStyle.overFullScreen
-        companyListVC.modalTransitionStyle = UIModalTransitionStyle.coverVertical
-        self.present(companyListVC, animated: true, completion: nil)
+        
     }
     
     func setUpFavorite() {
