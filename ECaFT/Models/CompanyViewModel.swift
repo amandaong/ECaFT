@@ -18,8 +18,7 @@ class CompanyViewModel {
     var displayedCompanies = [Company]() // Companies to display on company table view
     var allCompanies = [Company]() // Keep track of current info about companies (e.g. isFavorite is changed)
     var favoriteCompanies: [Company] = []
-    var favoritesString: [String] = [] // Names of company that are favoritaed (isFavorite = true)
-
+    
     //For Company Table View
     var numOfSections = 1
     var sectionTitles = ["All Companies", "Favorites", "Other Companies"]
@@ -141,12 +140,6 @@ class CompanyViewModel {
     
     func resetDisplayedCompanies() {
         displayedCompanies = (filteredCompanies.count > 0) ? filteredCompanies : allCompanies
-    }
-    
-    func sortFavStrings() {
-        favoritesString.sort {
-            return $0.lowercased() < $1.lowercased()
-        }
     }
     
     func sortDisplayedCompaniesAlphabetically() {

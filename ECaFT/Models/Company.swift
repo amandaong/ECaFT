@@ -61,7 +61,7 @@ class Company: NSObject, NSCoding {
     init(json: JSON) {
         super.init()
         name = json[Property.name.rawValue].stringValue
-        information = json[Property.information.rawValue].stringValue
+        information = json[Property.description.rawValue].stringValue
         location = json[Property.location.rawValue].stringValue
         positions = json[Property.positions.rawValue].arrayObject as? [String] ?? []
         majors = json[Property.majors.rawValue].arrayObject as? [String] ?? []
@@ -80,7 +80,7 @@ class Company: NSObject, NSCoding {
     // NSCoding
     required init?(coder aDecoder: NSCoder) {
         name = aDecoder.decodeObject(forKey: Property.name.rawValue) as! String
-        information = aDecoder.decodeObject(forKey: Property.information.rawValue) as! String
+        information = aDecoder.decodeObject(forKey: Property.description.rawValue) as! String
         location = aDecoder.decodeObject(forKey: Property.location.rawValue) as! String
         positions = aDecoder.decodeObject(forKey: Property.positions.rawValue) as! [String]
         majors = aDecoder.decodeObject(forKey: Property.majors.rawValue) as! [String]
@@ -94,7 +94,7 @@ class Company: NSObject, NSCoding {
     
     func encode(with aCoder: NSCoder) {
         aCoder.encode(name, forKey: Property.name.rawValue)
-        aCoder.encode(information, forKey: Property.information.rawValue)
+        aCoder.encode(information, forKey: Property.description.rawValue)
         aCoder.encode(location, forKey: Property.location.rawValue)
         aCoder.encode(positions, forKey: Property.positions.rawValue)
         aCoder.encode(majors, forKey: Property.majors.rawValue)

@@ -25,9 +25,11 @@ class FilterViewModel: NSObject {
                   Filter(title: "Science of Earth Systems (SES)", searchValue: "science of earth systems")]
     
     let openPositions = [Filter(title:"All Positions"),
-                         Filter(title: "Co-op", searchValue: "co op"),
-                         Filter(title: "Full Time", searchValue: "full time"),
-                         Filter(title: "Internship", searchValue: "internship")]
+                         Filter(title: "Co-op", searchValue: "co-op"),
+                         Filter(title: "Full Time", searchValue: "full-time"),
+                         Filter(title: "Graduate School", searchValue: "graduate school"),
+                         Filter(title: "Internship", searchValue: "internship"),
+                         Filter(title: "Part Time", searchValue: "part-time")]
     
     // Doesn't need a search value bc is either supported or not supported
     let sponsorship = [Filter(title: "Supports Sponorshop")]

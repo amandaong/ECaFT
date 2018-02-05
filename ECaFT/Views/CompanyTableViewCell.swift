@@ -8,19 +8,13 @@
 
 import UIKit
 
-protocol favoritesButtonDelegate {
-    func didPressFavoritesBtn(button: UIButton, companyName: String)
-}
-
 class CompanyTableViewCell: UITableViewCell {
     
     @IBOutlet weak var companyBack: UIImageView!
     @IBOutlet weak var companyImage: UIImageView!
     @IBOutlet weak var nameLabel: UILabel!
     @IBOutlet weak var locationLabel: UILabel!
-    @IBOutlet weak var favoritesButton: UIButton!
     static let identifier = "CompanyTableViewCell"
-    var delegate: favoritesButtonDelegate!
 
     var name: String? {
         didSet {
@@ -38,20 +32,12 @@ class CompanyTableViewCell: UITableViewCell {
         super.awakeFromNib()
         
         companyImage.contentMode = .scaleAspectFit
-
-        //Set favorites button
-        favoritesButton.setImage(#imageLiteral(resourceName: "favorites"), for: .normal)
-        favoritesButton.setTitle("", for: .normal)
     }
 
     override func setSelected(_ selected: Bool, animated: Bool) {
         super.setSelected(selected, animated: animated)
 
         // Configure the view for the selected state
-    }
-    
-    @IBAction func favoritesButtonPressed(_ sender: UIButton) {
-        delegate.didPressFavoritesBtn(button: sender, companyName: name!)
     }
 
 }

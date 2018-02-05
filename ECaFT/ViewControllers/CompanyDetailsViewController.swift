@@ -25,7 +25,6 @@ class CompanyDetailsViewController: UIViewController, UITableViewDelegate, UITab
     var name = UILabel() //company name
     var isFavorite : Bool = false
     var location = UILabel() //company booth location
-    var favoritesButton = UIButton()
     var websiteButton = UIButton()
     
     //segmented control
@@ -67,9 +66,10 @@ class CompanyDetailsViewController: UIViewController, UITableViewDelegate, UITab
     
     override func viewWillAppear(_ animated: Bool) {
         createHeaderView() //put method in viewWillAppear so information updated depending on what company is tapped
-        if let favs = UserDefaults.standard.object(forKey: Property.favorites.rawValue) as? Data {
-            companyViewModel.favoritesString = NSKeyedUnarchiver.unarchiveObject(with: favs) as! [String]
-        }
+    }
+    
+    override func viewDidAppear(_ animated: Bool) {
+        print("THE WIDTH OF BUTTON IS: \(websiteButton.frame)")
     }
   
     func createHeaderView() {
@@ -105,34 +105,13 @@ class CompanyDetailsViewController: UIViewController, UITableViewDelegate, UITab
         location.textColor = UIColor.ecaftDarkGray
         location.text = "Booth " + company.location
         self.tableView.tableHeaderView?.addSubview(location)
-
-
-        //Create favorites button
-        favoritesButton.setTitleColor(UIColor.ecaftGold, for: .normal)
-        favoritesButton.frame = CGRect(x: 0.38*screenSize.width, y: 0, width: 0.5*screenSize.width, height: 50)
-        if(screenSize.height < 667.0) { //iPhone 5s & below
-            favoritesButton.frame = CGRect(x: 0.41*screenSize.width, y: 0, width: 0.5*screenSize.width, height: 50)
-        }
-        favoritesButton.addTarget(self, action: #selector(CompanyDetailsViewController.favoritesButtonPressed(button:)), for: .touchUpInside)
-        
-        //Move text to left of button image
-        favoritesButton.transform = CGAffineTransform(scaleX: -1.0, y: 1.0)
-        favoritesButton.titleLabel?.font = UIFont.systemFont(ofSize: 16)
-        favoritesButton.titleLabel?.transform = CGAffineTransform(scaleX: -1.0, y: 1.0)
-        favoritesButton.imageView?.transform = CGAffineTransform(scaleX: -1.0, y: 1.0)
-        favoritesButton.centerTextAndImage(spacing: 10)
-        
-        if (isFavorite) { setUpFavorite() }
-        else { setUpNotFavorite() }
-        
-        self.tableView.tableHeaderView?.addSubview(favoritesButton)
         
         //Create website button
         websiteButton.setTitle("Go to website", for: .normal)
         websiteButton.titleLabel?.textAlignment = .left
         websiteButton.titleLabel?.font = .systemFont(ofSize: 16)
         websiteButton.setTitleColor(UIColor.ecaftRed, for: .normal)
-        websiteButton.frame = CGRect(x: 0.41*screenSize.width, y: 0, width: 0.34*screenSize.width, height: 30)
+        websiteButton.frame = CGRect(x: 0.41*screenSize.width, y: 0, width: 150, height: 30)
         if(screenSize.height < 667.0) { //iPhone 5s & below
             websiteButton.frame = CGRect(x: 0.41*screenSize.width, y: 0, width: 0.4*screenSize.width, height: 30)
             print("ipohne 5s")
@@ -176,31 +155,14 @@ class CompanyDetailsViewController: UIViewController, UITableViewDelegate, UITab
         let numLines = Int(name.frame.size.height/name.font.ascender) //Divide height of multiline label by line height of UILabel's font (from text to top of label's frame)
         if (numLines < 2) {
             location.center.y = 0.3*(self.tableView.tableHeaderView?.frame.height)!
-            favoritesButton.center.y = 0.5*(self.tableView.tableHeaderView?.frame.height)!
             websiteButton.center.y = 0.6*(self.tableView.tableHeaderView?.frame.height)!
         } else if (numLines == 2){
             location.center.y = 0.4*(self.tableView.tableHeaderView?.frame.height)!
-            favoritesButton.center.y = 0.6*(self.tableView.tableHeaderView?.frame.height)!
             websiteButton.center.y = 0.7*(self.tableView.tableHeaderView?.frame.height)!
         } else { //numLines is 3
             location.center.y = 0.5*(self.tableView.tableHeaderView?.frame.height)!
-            favoritesButton.center.y = 0.7*(self.tableView.tableHeaderView?.frame.height)!
             websiteButton.center.y = 0.8*(self.tableView.tableHeaderView?.frame.height)!
         }
-    }
-    
-    @objc func favoritesButtonPressed(button: UIButton!) {
-        
-    }
-    
-    func setUpFavorite() {
-        favoritesButton.setImage(#imageLiteral(resourceName: "favoritesFilled"), for: .normal)
-        favoritesButton.setTitle("Remove favorites", for: .normal)
-    }
-    
-    func setUpNotFavorite() {
-        favoritesButton.setImage(#imageLiteral(resourceName: "favorites"), for: .normal)
-        favoritesButton.setTitle("Add to favorites", for: .normal)
     }
     
     @objc func websiteButtonPressed(button: UIButton!) {

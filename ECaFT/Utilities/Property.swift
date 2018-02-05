@@ -13,7 +13,7 @@ enum Property: String {
     case name = "name"
     case isChecked = "isChecked"
     case favorites = "favorites"
-    case information = "information"
+    case description = "description"
     case location = "location"
     case positions = "positions"
     case majors = "majors"

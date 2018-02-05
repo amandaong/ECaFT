@@ -11,7 +11,7 @@ import Firebase
 import FirebaseStorage
 import FirebaseDatabase
 
-class CompanyViewController: UIViewController, UISearchBarDelegate, UIScrollViewDelegate, UITableViewDelegate, UITableViewDataSource, FilterSelectionProtocol, favoritesButtonDelegate {
+class CompanyViewController: UIViewController, UISearchBarDelegate, UIScrollViewDelegate, UITableViewDelegate, UITableViewDataSource, FilterSelectionProtocol {
 
     
     let screenSize : CGRect = UIScreen.main.bounds
@@ -66,17 +66,6 @@ class CompanyViewController: UIViewController, UISearchBarDelegate, UIScrollView
         super.viewWillAppear(animated)
         toggleFilterBtnText()
         
-        // Show favorites on table view
-        if let favs = UserDefaults.standard.object(forKey: Property.favorites.rawValue) as? Data {
-            let temp = NSKeyedUnarchiver.unarchiveObject(with: favs) as! [String]
-            if (isViewLoaded) {
-                if (temp.count != companyViewModel?.favoritesString.count) {
-                    companyViewModel?.favoritesString = temp
-                    companyTableView.reloadData()
-                }
-            }
-        }
-        
         // Apply selected filters
         if let selectedFilterSects = selectedFilterSects {
             companyViewModel?.applyFilters(filterSections: selectedFilterSects)
@@ -96,7 +85,7 @@ class CompanyViewController: UIViewController, UISearchBarDelegate, UIScrollView
             for item in snapshot.children.allObjects as! [FIRDataSnapshot] {
                 let company = Company()
                 company.name = item.childSnapshot(forPath: Property.name.rawValue).value as! String
-                company.information = item.childSnapshot(forPath: Property.information.rawValue).value as! String
+                company.information = item.childSnapshot(forPath: Property.description.rawValue).value as! String
                 company.location = item.childSnapshot(forPath: Property.location.rawValue).value as! String
                 
                 let majors = item.childSnapshot(forPath: Property.majors.rawValue).value as! String
@@ -106,13 +95,14 @@ class CompanyViewController: UIViewController, UISearchBarDelegate, UIScrollView
                 company.positions = positions.components(separatedBy: ", ")
                 
                 company.website = item.childSnapshot(forPath: Property.website.rawValue).value as! String
-
-                company.sponsor = item.childSnapshot(forPath: Property.sponsor.rawValue).value as! Bool
-                company.optcpt = item.childSnapshot(forPath: Property.optcpt.rawValue).value as! Bool
+                let sponsorVal = item.childSnapshot(forPath: Property.sponsor.rawValue).value as! String
+                company.sponsor = (sponsorVal == "1") ? true : false
+                let optcptVal = item.childSnapshot(forPath: Property.optcpt.rawValue).value as! String
+                company.optcpt = (optcptVal == "1") ? true : false
 
                 //Get image
-                let name = item.childSnapshot(forPath: Property.name.rawValue).value as! String
-                let companyImageName = name + ".png"
+                let companyId = item.childSnapshot(forPath: Property.id.rawValue).value as! String
+                let companyImageName = companyId + ".png"
                 let companyImageRef = self.storageRef?.child(companyImageName)
                 companyImageRef?.data(withMaxSize: 1 * 1024 * 1024) { data, error in
                     if let error = error {
@@ -125,7 +115,7 @@ class CompanyViewController: UIViewController, UISearchBarDelegate, UIScrollView
                         }
                     }
                 }
-                let companyBkdName = name + "Background.png"
+                let companyBkdName = companyId + "Background.png"
                 let companyBkdRef = self.storageRef?.child(companyBkdName)
                 companyBkdRef?.data(withMaxSize: 1 * 1024 * 1024) { data, error in
                     if let error = error {
@@ -319,8 +309,6 @@ class CompanyViewController: UIViewController, UISearchBarDelegate, UIScrollView
                 print("CompanyViewController.swift - cellForRowAt method:  Company Table View dequeuing cell error")
                 return UITableViewCell()
         }
-        customCell.delegate = self
-        
         
         //Stops cell turning grey when click on it
         customCell.selectionStyle = .none
@@ -345,43 +333,8 @@ class CompanyViewController: UIViewController, UISearchBarDelegate, UIScrollView
         } else {
             customCell.companyBack.image = #imageLiteral(resourceName: "placeholder")
         }
-
-        if (companyViewModel?.favoritesString.contains(company.name))! {
-            company.isFavorite = true
-            customCell.favoritesButton.setImage(#imageLiteral(resourceName: "favoritesFilled"), for: .normal)
-        } else {
-            company.isFavorite = false
-            customCell.favoritesButton.setImage(#imageLiteral(resourceName: "favorites"), for: .normal)
-        }
-        customCell.favoritesButton.tag = indexPath.row
         
         return customCell
-    }
-    
-    @objc func toggleFavorite(sender: UIButton) {
-        let touchPoint = sender.convert(CGPoint(x: 0, y: 0), to: companyTableView)
-        let indexPath = companyTableView.indexPathForRow(at: touchPoint)
-        var company: Company!
-        company = companyViewModel?.allCompanies[(indexPath?.row)!]
-        
-        if (!((companyViewModel?.favoritesString.contains((company?.name)!))!)) { //not in favorites
-            company.isFavorite = true
-            companyViewModel?.favoritesString.append((company?.name)!)
-            sender.setImage(#imageLiteral(resourceName: "favoritesFilled"), for: .normal)
-            companyViewModel?.sortFavStrings()
-        } else {
-            if let index = companyViewModel?.favoritesString.index(of: (company?.name)!) { //get index of the company in favorites
-                company.isFavorite = false
-                companyViewModel?.favoritesString.remove(at: index) //remove it
-                sender.setImage(#imageLiteral(resourceName: "favorites"), for: .normal)
-            }
-        }
-        
-        DispatchQueue.main.async {
-            UserDefaults.standard.removeObject(forKey: Property.favorites.rawValue)
-            let savedData = NSKeyedArchiver.archivedData(withRootObject: self.companyViewModel?.favoritesString)
-            UserDefaults.standard.set(savedData, forKey: Property.favorites.rawValue)
-        }
     }
 
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {

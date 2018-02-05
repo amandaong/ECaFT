@@ -28,16 +28,12 @@ class TabViewController: UITabBarController, SlidingTabBarDataSource, SlidingTab
         let companyVC = CompanyViewController()
         let companyBarItem = UITabBarItem(title: "Companies", image: #imageLiteral(resourceName: "tabCompanies"), selectedImage: #imageLiteral(resourceName: "tabCompanies"))
         companyVC.tabBarItem = companyBarItem
-        
-        let favoritesVC = FavoritesViewController()
-        let listBarItem = UITabBarItem(title: "Favorites", image: #imageLiteral(resourceName: "tabFavorites"), selectedImage: #imageLiteral(resourceName: "tabFavorites"))
-        favoritesVC.tabBarItem = listBarItem
  
-        let controllers = [homeVC, mapVC, companyVC, favoritesVC]
+        let controllers = [homeVC, mapVC, companyVC]
         self.viewControllers = controllers.map { UINavigationController(rootViewController: $0) }
         
         self.tabBar.isHidden = true
-        selectedIndex = 3 // Shows page with this index when app first loads
+        selectedIndex = 0 // Shows page with this index when app first loads
         delegate = self
         makeTabBarView()
     }
@@ -81,7 +77,7 @@ class TabViewController: UITabBarController, SlidingTabBarDataSource, SlidingTab
         tabBarView.tabBarBackgroundColor = UIColor.ecaftRed
         tabBarView.tabBarItemTintColor = UIColor.whiteFaded
         tabBarView.selectedTabBarItemTintColor = UIColor.white
-        tabBarView.selectedTabBarItemColors = [UIColor.ecaftDarkRed, UIColor.ecaftDarkRed, UIColor.ecaftDarkRed, UIColor.ecaftDarkRed]
+        tabBarView.selectedTabBarItemColors = [UIColor.ecaftDarkRed, UIColor.ecaftDarkRed, UIColor.ecaftDarkRed]
         tabBarView.slideAnimationDuration = 0.3
         tabBarView.datasource = self
         tabBarView.delegate = self
