@@ -33,9 +33,9 @@ class CompanyViewController: UIViewController, UISearchBarDelegate, UIScrollView
     var selectedFilterSects: [FilterSection]?
     
     //Database variables
-    var databaseRef: FIRDatabaseReference?
-    var storageRef: FIRStorageReference?
-    var databaseHandle: FIRDatabaseHandle?
+    var databaseRef: DatabaseReference?
+    var storageRef: StorageReference?
+    var databaseHandle: DatabaseHandle?
     
     init() {
         super.init(nibName: nil, bundle: nil)
@@ -55,9 +55,9 @@ class CompanyViewController: UIViewController, UISearchBarDelegate, UIScrollView
         makeBackBtn()
         
         // Load data from firebase
-        databaseRef = FIRDatabase.database().reference()
+        databaseRef = Database.database().reference()
         // Reference to logos folder in storage
-        storageRef = FIRStorage.storage().reference(forURL: "gs://ecaft-4a6e7.appspot.com/logos")
+        storageRef = Storage.storage().reference(forURL: "gs://ecaft-4a6e7.appspot.com/logos")
         
         loadData()
     }
@@ -82,7 +82,7 @@ class CompanyViewController: UIViewController, UISearchBarDelegate, UIScrollView
     func loadData() {
         //Retrive posts and listen for changes
         databaseHandle = databaseRef?.child("companies").observe(.value, with: { (snapshot) in
-            for item in snapshot.children.allObjects as! [FIRDataSnapshot] {
+            for item in snapshot.children.allObjects as! [DataSnapshot] {
                 let company = Company()
                 company.name = item.childSnapshot(forPath: Property.name.rawValue).value as! String
                 company.information = item.childSnapshot(forPath: Property.description.rawValue).value as! String
@@ -104,7 +104,7 @@ class CompanyViewController: UIViewController, UISearchBarDelegate, UIScrollView
                 let companyId = item.childSnapshot(forPath: Property.id.rawValue).value as! String
                 let companyImageName = companyId + ".png"
                 let companyImageRef = self.storageRef?.child(companyImageName)
-                companyImageRef?.data(withMaxSize: 1 * 1024 * 1024) { data, error in
+                companyImageRef?.getData(maxSize: 1 * 1024 * 1024) { data, error in
                     if let error = error {
                         print((error as Error).localizedDescription)
                     } else if let data = data {
@@ -117,7 +117,7 @@ class CompanyViewController: UIViewController, UISearchBarDelegate, UIScrollView
                 }
                 let companyBkdName = companyId + "Background.png"
                 let companyBkdRef = self.storageRef?.child(companyBkdName)
-                companyBkdRef?.data(withMaxSize: 1 * 1024 * 1024) { data, error in
+                companyBkdRef?.getData(maxSize: 1 * 1024 * 1024) { data, error in
                     if let error = error {
                         print((error as Error).localizedDescription)
                     } else if let data = data {
@@ -173,7 +173,7 @@ class CompanyViewController: UIViewController, UISearchBarDelegate, UIScrollView
         companyTableView.reloadData()
         
         // If clear button pressed
-        if searchText.characters.count == 0 {
+        if searchText.isEmpty {
             searchBar.resignFirstResponder()
             view.endEditing(true)
             

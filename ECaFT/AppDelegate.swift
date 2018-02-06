@@ -22,7 +22,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     var listViewModel: ListViewModel!
     
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplicationLaunchOptionsKey: Any]?) -> Bool {
-        FIRApp.configure() //Sets up firebase
+        FirebaseApp.configure() //Sets up firebase
         
         window = UIWindow(frame: UIScreen.main.bounds)
         

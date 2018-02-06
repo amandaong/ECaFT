@@ -15,7 +15,7 @@ class textViewTableViewCell: UITableViewCell {
     
     override init(style: UITableViewCellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
-        var horOffSet = 0.04*screenSize.width
+        let horOffSet = 0.04*screenSize.width
         bodyTextView = UITextView(frame: CGRect(x: horOffSet, y: 0, width: 0.89*screenSize.width, height: 100))
         bodyTextView.backgroundColor = .blue
         bodyTextView.textAlignment = NSTextAlignment.left

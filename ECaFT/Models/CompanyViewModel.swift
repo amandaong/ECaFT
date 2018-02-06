@@ -50,7 +50,6 @@ class CompanyViewModel {
         
         //Get interesection of filtered companies from 3 sections
         for filterSect in filterSections {
-            let filterItems = filterSect.items
             //If "All" option selected for majors/positions. Sponsorship's isAllSelected = always false.
             if(!filterSect.isAllSelected) {
                 let selectedCompanies = getCompanies(matching: filterSect)

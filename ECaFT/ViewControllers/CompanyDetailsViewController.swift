@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import SnapKit
 
 
 class CompanyDetailsViewController: UIViewController, UITableViewDelegate, UITableViewDataSource, UICollectionViewDelegate, UICollectionViewDataSource, UIImagePickerControllerDelegate, UINavigationControllerDelegate {
@@ -22,6 +23,7 @@ class CompanyDetailsViewController: UIViewController, UITableViewDelegate, UITab
     var listViewModel: ListViewModel!
     
     //Table view properties
+    var companyIcon = UIImageView()
     var name = UILabel() //company name
     var isFavorite : Bool = false
     var location = UILabel() //company booth location
@@ -66,6 +68,7 @@ class CompanyDetailsViewController: UIViewController, UITableViewDelegate, UITab
     
     override func viewWillAppear(_ animated: Bool) {
         createHeaderView() //put method in viewWillAppear so information updated depending on what company is tapped
+        makeConstraints()
     }
     
     override func viewDidAppear(_ animated: Bool) {
@@ -73,24 +76,21 @@ class CompanyDetailsViewController: UIViewController, UITableViewDelegate, UITab
     }
   
     func createHeaderView() {
-        headerView = UIView(frame: CGRect(x: 0, y: 0, width: screenSize.width, height: 230))
+        headerView = UIView(frame: CGRect(x: 0, y: 0, width: screenSize.width, height: 240))
         headerView.backgroundColor = UIColor.white
         tableView.tableHeaderView = headerView
         
         //Add image view
-        let imageView = UIImageView(frame: CGRect(x:0, y:0, width:110, height:110))
-        imageView.center.y = 0.375*(self.tableView.tableHeaderView?.frame.height)!
-        imageView.center.x = 0.2*self.screenSize.width
-        imageView.image = company.image
-        imageView.contentMode = UIViewContentMode.scaleAspectFit
-        self.tableView.tableHeaderView?.addSubview(imageView)
+        companyIcon = UIImageView(frame: CGRect(x:0, y:0, width:110, height:110))
+        companyIcon.image = company.image
+        companyIcon.contentMode = UIViewContentMode.scaleAspectFit
+        self.tableView.tableHeaderView?.addSubview(companyIcon)
         
         //Create name label
-        name = UILabel(frame: CGRect(x: 0.43*screenSize.width, y: 0, width: screenSize.width*0.58, height: 24)) //same x value as location so name & location label are aligned
-        name.center.y = 0.18*(self.tableView.tableHeaderView?.frame.height)!
+        name = UILabel(frame: CGRect(x: 0, y: 0, width: 116, height: 24)) //same x value as location so name & location label are aligned
         name.textAlignment = NSTextAlignment.left
         name.text = company.name
-        name.font = UIFont.boldSystemFont(ofSize: 25)
+        name.font = UIFont(name: "Avenir-Roman", size: 22)
         
         //Make name into go into another line if necessary
         name.numberOfLines = 0 //set num of lines to infinity
@@ -99,9 +99,10 @@ class CompanyDetailsViewController: UIViewController, UITableViewDelegate, UITab
         self.tableView.tableHeaderView?.addSubview(name)
         
         //Create booth location label
-        location = UILabel(frame: CGRect(x: 0.43*screenSize.width, y: 0, width: screenSize.width*0.75, height: 21))
+        location = UILabel(frame: CGRect(x: 0, y: 0, width: 65, height: 21))
+        location.sizeToFit()
         location.textAlignment = NSTextAlignment.left
-        location.font = UIFont.systemFont(ofSize: 18)
+        location.font = UIFont(name: "Avenir-Light", size: 14)
         location.textColor = UIColor.ecaftDarkGray
         location.text = "Booth " + company.location
         self.tableView.tableHeaderView?.addSubview(location)
@@ -109,14 +110,10 @@ class CompanyDetailsViewController: UIViewController, UITableViewDelegate, UITab
         //Create website button
         websiteButton.setTitle("Go to website", for: .normal)
         websiteButton.titleLabel?.textAlignment = .left
-        websiteButton.titleLabel?.font = .systemFont(ofSize: 16)
+        websiteButton.titleLabel?.font = UIFont(name: "Avenir-Light", size: 14)
         websiteButton.setTitleColor(UIColor.ecaftRed, for: .normal)
-        websiteButton.frame = CGRect(x: 0.41*screenSize.width, y: 0, width: 150, height: 30)
-        if(screenSize.height < 667.0) { //iPhone 5s & below
-            websiteButton.frame = CGRect(x: 0.41*screenSize.width, y: 0, width: 0.4*screenSize.width, height: 30)
-            print("ipohne 5s")
-        }
-        
+        websiteButton.frame = CGRect(x: 0, y: 0, width: 150, height: 30)
+    
         websiteButton.addTarget(self, action: #selector(CompanyDetailsViewController.websiteButtonPressed(button:)), for: .touchUpInside)
         
         //Tint image red
@@ -130,12 +127,13 @@ class CompanyDetailsViewController: UIViewController, UITableViewDelegate, UITab
         segControl = UISegmentedControl(items: segmentTitles)
         segControl.selectedSegmentIndex = 0
         
-        segControl.frame = CGRect(x: 0.19*screenSize.width, y: (self.tableView.tableHeaderView?.frame.height)! - 45, width: screenSize.width*0.5, height: 28)
-        //segControl.center.x = 0.5*self.screenSize.width
+        segControl.frame = CGRect(x: 0, y:0 , width: screenSize.width*0.5, height: 29)
         segControl.layer.cornerRadius = 5.0
         segControl.backgroundColor = UIColor.white
         segControl.tintColor = UIColor.ecaftRed
-        
+        let segFont = UIFont(name: "Avenir-Book", size: 13) ?? .systemFont(ofSize: 13)
+        segControl.setTitleTextAttributes([NSAttributedStringKey.font: segFont],
+                                                for: .normal)
         segControl.addTarget(self, action: #selector(CompanyDetailsViewController.segmentControlHandler(sender:)), for: .valueChanged)
         
         self.tableView.tableHeaderView?.addSubview(segControl)
@@ -149,20 +147,43 @@ class CompanyDetailsViewController: UIViewController, UITableViewDelegate, UITab
         cameraButton.addTarget(self, action: #selector(CompanyDetailsViewController.cameraButtonPressed(button:)), for: .touchUpInside)
         
         self.tableView.tableHeaderView?.addSubview(cameraButton)
-        
-        
-        //Calculate num of lines for company name label & adjust booth location label accordingly
-        let numLines = Int(name.frame.size.height/name.font.ascender) //Divide height of multiline label by line height of UILabel's font (from text to top of label's frame)
-        if (numLines < 2) {
-            location.center.y = 0.3*(self.tableView.tableHeaderView?.frame.height)!
-            websiteButton.center.y = 0.6*(self.tableView.tableHeaderView?.frame.height)!
-        } else if (numLines == 2){
-            location.center.y = 0.4*(self.tableView.tableHeaderView?.frame.height)!
-            websiteButton.center.y = 0.7*(self.tableView.tableHeaderView?.frame.height)!
-        } else { //numLines is 3
-            location.center.y = 0.5*(self.tableView.tableHeaderView?.frame.height)!
-            websiteButton.center.y = 0.8*(self.tableView.tableHeaderView?.frame.height)!
+    }
+    private func makeConstraints() {
+        companyIcon.snp.makeConstraints { (make) -> Void in
+            make.top.equalTo(headerView).offset(47)
+            make.left.equalTo(headerView).offset(20)
+            make.right.lessThanOrEqualTo(location.snp.left).offset(-20)
+            make.right.greaterThanOrEqualTo(location.snp.left).offset(-15).priority(.high)
+            make.width.equalTo(90).priority(.medium)
+            make.height.equalTo(90).priority(.medium)
         }
+        name.snp.makeConstraints { (make) -> Void in
+            make.top.equalTo(headerView).offset(20)
+            make.right.equalTo(headerView).offset(-10).priority(.required)
+            make.left.equalTo(headerView).offset(0.5*headerView.frame.width)
+            make.width.lessThanOrEqualTo(headerView.frame.width)
+        }
+        location.snp.makeConstraints { (make) -> Void in
+            make.top.equalTo(name.snp.bottom).offset(1)
+            make.left.equalTo(headerView).offset(0.5*headerView.frame.width)
+        }
+        websiteButton.snp.makeConstraints { (make) -> Void in
+            make.top.equalTo(location.snp.bottom).offset(5)
+            make.left.equalTo(headerView).offset(0.5*headerView.frame.width)
+        }
+        
+        segControl.snp.makeConstraints { (make) -> Void in
+            make.top.greaterThanOrEqualTo(websiteButton.snp.bottom).offset(20).priority(.required)
+            make.bottom.greaterThanOrEqualTo(headerView.snp.bottom).offset(-20).priority(.required)
+            make.centerX.equalTo(headerView.snp.centerX)
+        }
+        cameraButton.snp.makeConstraints { (make) -> Void in
+            make.left.equalTo(segControl.snp.right).offset(15)
+            make.centerY.equalTo(segControl.snp.centerY)
+            make.width.equalTo(23)
+            make.height.equalTo(18)
+        }
+        
     }
     
     @objc func websiteButtonPressed(button: UIButton!) {
