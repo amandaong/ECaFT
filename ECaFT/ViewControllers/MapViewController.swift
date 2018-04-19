@@ -21,6 +21,7 @@ class MapViewController: UIViewController {
     override func viewDidLoad() { 
         super.viewDidLoad()
         self.title = "Map"
+        self.edgesForExtendedLayout = [] // View controller fits btwn top nav bar & bottom tab bar
         self.viewHeight = getViewHeight()
         self.height = viewHeight
         self.width = UIScreen.main.bounds.width

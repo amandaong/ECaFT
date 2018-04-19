@@ -8,7 +8,6 @@
 
 import UIKit
 import Firebase
-import CoreData
 
 @UIApplicationMain
 class AppDelegate: UIResponder, UIApplicationDelegate {
@@ -16,42 +15,31 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     var window: UIWindow?
     var tabVC: TabViewController!
     
-    //Declares instance of information state controller
-    var companyViewModel: CompanyViewModel!
-    var filterViewModel: FilterViewModel!
-    var listViewModel: ListViewModel!
-    
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplicationLaunchOptionsKey: Any]?) -> Bool {
         FirebaseApp.configure() //Sets up firebase
         
         window = UIWindow(frame: UIScreen.main.bounds)
         
-        UINavigationBar.appearance().barTintColor = UIColor.ecaftRed
-        UINavigationBar.appearance().tintColor = UIColor.white
-        UINavigationBar.appearance().barStyle = .black
-        UINavigationBar.appearance().isTranslucent = false
-        UINavigationBar.appearance().titleTextAttributes = [NSAttributedStringKey.font: UIFont(name: "Avenir-Heavy", size: 18.0)!, NSAttributedStringKey.foregroundColor: UIColor.white]
+        let tabBarVC = TabViewController()
+        tabBarVC.tabBar.barTintColor = UIColor.ecaftGray
         
-        tabVC = TabViewController()
-        window?.rootViewController = tabVC
+        window?.rootViewController = tabBarVC
         window?.makeKeyAndVisible()
         
-        //Pass information state controller to company view controller & favorites view controller
-        companyViewModel = CompanyViewModel()
-        filterViewModel = FilterViewModel()
-        listViewModel = ListViewModel()
-        
-        let navControllers = self.tabVC.viewControllers
-        
-        let companyNavVC = navControllers?[2] as! UINavigationController
-        let companyVC = companyNavVC.viewControllers.first as! CompanyViewController
-        companyVC.companyViewModel = companyViewModel
-        companyVC.filterViewModel = filterViewModel
-        companyVC.listViewModel = listViewModel
+        setNavAndStatusBarAppearance()
         
         return true
     }
-
+    
+    private func setNavAndStatusBarAppearance() {
+        UINavigationBar.appearance().barTintColor = UIColor.ecaftRed
+        UINavigationBar.appearance().titleTextAttributes = [NSAttributedStringKey.foregroundColor : UIColor.white]
+        UINavigationBar.appearance().tintColor = UIColor.white
+        
+        // Set status bar to white
+        UIApplication.shared.statusBarStyle = .lightContent
+    }
+    
     func applicationWillResignActive(_ application: UIApplication) {
         // Sent when the application is about to move from active to inactive state. This can occur for certain types of temporary interruptions (such as an incoming phone call or SMS message) or when the user quits the application and it begins the transition to the background state.
         // Use this method to pause ongoing tasks, disable timers, and invalidate graphics rendering callbacks. Games should use this method to pause the game.

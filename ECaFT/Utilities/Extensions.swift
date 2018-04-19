@@ -12,6 +12,7 @@ import UIKit
 extension UIColor {
     
     public static let ecaftRed = UIColor.colorFromCode(code: 0xA81414)
+    public static let ecaftRedBright = UIColor(red: 200/255, green: 30/255, blue: 22/255, alpha: 1)
     public static let ecaftRedLight = UIColor(red: 179/255, green: 27/255, blue: 27/255, alpha: 1)
     public static let ecaftDarkRed = UIColor.colorFromCode(code: 0x891010)
     public static let ecaftListRed = UIColor(red: 168/255, green: 20/255, blue: 20/255, alpha: 1)

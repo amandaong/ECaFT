@@ -9,6 +9,7 @@
 import UIKit
 
 class ListTableViewCell: UITableViewCell {
+    static let identifier = "ListTableViewCell"
     @IBOutlet weak var itemLabel: UILabel!
     
     override func awakeFromNib() {

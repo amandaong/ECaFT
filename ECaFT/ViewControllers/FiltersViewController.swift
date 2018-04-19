@@ -32,6 +32,7 @@ class FiltersViewController: UIViewController, UITableViewDelegate {
         super.viewDidLoad()
         // Set navigation bar title
         self.title = "Filters"
+        self.edgesForExtendedLayout = [] // View controller fits btwn top nav bar & bottom tab bar
         makeTableView()
         makeResetButton()
     }

@@ -12,8 +12,6 @@ import SnapKit
 
 class CompanyDetailsViewController: UIViewController, UITableViewDelegate, UITableViewDataSource, UICollectionViewDelegate, UICollectionViewDataSource, UIImagePickerControllerDelegate, UINavigationControllerDelegate {
 
-    
-    
     let screenSize : CGRect = UIScreen.main.bounds
     var tableView = UITableView()
     var headerView = UIView()
@@ -44,7 +42,7 @@ class CompanyDetailsViewController: UIViewController, UITableViewDelegate, UITab
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        
+        self.edgesForExtendedLayout = [] // View controller fits btwn top nav bar & bottom tab bar
         let navBarAndStatusBarHeight = (self.navigationController?.navigationBar.frame.size.height)!+UIApplication.shared.statusBarFrame.height
         tableView = UITableView(frame: CGRect(x: 0, y: 0, width: screenSize.width, height: screenSize.height - navBarAndStatusBarHeight), style: UITableViewStyle.plain) //sets tableview to size of view below status bar and nav bar
         tableView.delegate      =   self
@@ -54,8 +52,7 @@ class CompanyDetailsViewController: UIViewController, UITableViewDelegate, UITab
         //Regsiter custom cells and xib files
         tableView.register(CompanyInfoTableViewCell.self, forCellReuseIdentifier: "CompanyInfoTableViewCell")
         //tableView.register(ListTableViewCell.self, forCellReuseIdentifier: "ListTableViewCell")
-        tableView.register(UINib(nibName: "ListTableViewCell", bundle: Bundle.main), forCellReuseIdentifier: "ListTableViewCell")
-        tableView.register(textViewTableViewCell.self, forCellReuseIdentifier: "textViewTableViewCell")
+        tableView.register(UINib(nibName: "ListTableViewCell", bundle: Bundle.main), forCellReuseIdentifier: ListTableViewCell.identifier)
         tableView.register(UINib(nibName: "NotesTableViewCell", bundle: Bundle.main), forCellReuseIdentifier: "NotesTableViewCell")
         tableView.register(UINib(nibName: "PhotosTableViewCell", bundle: Bundle.main), forCellReuseIdentifier: "PhotosTableViewCell")
 
@@ -71,10 +68,6 @@ class CompanyDetailsViewController: UIViewController, UITableViewDelegate, UITab
         makeConstraints()
     }
     
-    override func viewDidAppear(_ animated: Bool) {
-        print("THE WIDTH OF BUTTON IS: \(websiteButton.frame)")
-    }
-  
     func createHeaderView() {
         headerView = UIView(frame: CGRect(x: 0, y: 0, width: screenSize.width, height: 240))
         headerView.backgroundColor = UIColor.white
@@ -332,8 +325,8 @@ class CompanyDetailsViewController: UIViewController, UITableViewDelegate, UITab
         let label = UILabel(frame: CGRect(x: 0.05*screenSize.width, y: 0, width: screenSize.width, height: 25))
         label.center.y = 0.5*label.frame.height
         //label.text = sectionTitles[section]
-        label.font = UIFont.boldSystemFont(ofSize: 16.0)
-        label.textColor = .ecaftDarkGray
+        label.font = UIFont(name: "Avenir-Medium", size: 15)
+        label.textColor = .ecaftBlack
         
         switch(segControl.selectedSegmentIndex){
             
@@ -405,7 +398,7 @@ class CompanyDetailsViewController: UIViewController, UITableViewDelegate, UITab
     }
     
     //Table: Load in custom cells
-    let customCellIdentifier = [0: "CompanyInfoTableViewCell", 1 : "ListTableViewCell", 2 : "ListTableViewCell", 3 : "textViewTableViewCell", 4 : "textViewTableViewCell"]
+    let customCellIdentifier = [0: "CompanyInfoTableViewCell", 1 : "ListTableViewCell", 2 : "ListTableViewCell", 3 : "ListTableViewCell", 4 : "ListTableViewCell"]
     let notesCustomCellIdentifier = [0: "NotesTableViewCell", 1: "PhotosTableViewCell"]
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell
@@ -441,20 +434,12 @@ class CompanyDetailsViewController: UIViewController, UITableViewDelegate, UITab
             }
             return customCell
         } else if (identifier == customCellIdentifier[3] || identifier == customCellIdentifier[4]) {
-            let customCell = cell as! textViewTableViewCell
+            let customCell = cell as! ListTableViewCell
             if(indexPath.section == 3) {
-                print("does sponsor: \(company.sponsor)")
-                if(company.sponsor) {
-                    customCell.bodyTextView.text = "The company can sponsor the candidate"
-                } else {
-                    customCell.bodyTextView.text = "The company cannot sponsor the candidate"
-                }
+                print(company.sponsor)
+                customCell.itemLabel.text = company.sponsor ? "The company can sponsor the candidate" : "The company cannot sponsor the candidate"
             } else if (indexPath.section == 4) {
-                if(company.optcpt) {
-                    customCell.bodyTextView.text = "The company accepts opt/cpt"
-                } else {
-                    customCell.bodyTextView.text = "The company does not accept opt/cpt"
-                }
+                customCell.itemLabel.text = company.optcpt ? "The company accepts opt/cpt" : "The company does not accept opt/cpt"
             }
             return customCell
         }

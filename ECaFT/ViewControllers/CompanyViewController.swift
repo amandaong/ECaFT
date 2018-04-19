@@ -48,6 +48,7 @@ class CompanyViewController: UIViewController, UISearchBarDelegate, UIScrollView
     override func viewDidLoad() {
         super.viewDidLoad()
         self.title = "Companies"
+        self.edgesForExtendedLayout = [] // View controller fits btwn top nav bar & bottom tab bar
         view.backgroundColor = UIColor.backgroundGray
         makeSearchBar()
         makeFilterBtn()
