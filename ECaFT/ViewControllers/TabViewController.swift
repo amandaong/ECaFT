@@ -28,8 +28,12 @@ class TabViewController: UITabBarController, SlidingTabBarDataSource, SlidingTab
         let companyVC = CompanyViewController()
         let companyBarItem = UITabBarItem(title: "Companies", image: #imageLiteral(resourceName: "tabCompanies"), selectedImage: #imageLiteral(resourceName: "tabCompanies"))
         companyVC.tabBarItem = companyBarItem
+        
+        let listVC = ListViewController()
+        let listBarItem = UITabBarItem(title: "List", image: #imageLiteral(resourceName: "Plus"), selectedImage: #imageLiteral(resourceName: "Plus"))
+        listVC.tabBarItem = listBarItem
  
-        let controllers = [homeVC, mapVC, companyVC]
+        let controllers = [homeVC, mapVC, companyVC, listVC]
         self.viewControllers = controllers.map { UINavigationController(rootViewController: $0) }
         
         self.tabBar.isHidden = true
@@ -77,7 +81,7 @@ class TabViewController: UITabBarController, SlidingTabBarDataSource, SlidingTab
         tabBarView.tabBarBackgroundColor = UIColor.ecaftRed
         tabBarView.tabBarItemTintColor = UIColor.whiteFaded
         tabBarView.selectedTabBarItemTintColor = UIColor.white
-        tabBarView.selectedTabBarItemColors = [UIColor.ecaftDarkRed, UIColor.ecaftDarkRed, UIColor.ecaftDarkRed]
+        tabBarView.selectedTabBarItemColors = [UIColor.ecaftDarkRed, UIColor.ecaftDarkRed, UIColor.ecaftDarkRed, UIColor.ecaftDarkRed]
         tabBarView.slideAnimationDuration = 0.3
         tabBarView.datasource = self
         tabBarView.delegate = self

@@ -10,6 +10,9 @@
 		02ECF1D61DE518050032EEC2 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02ECF1D51DE518050032EEC2 /* AppDelegate.swift */; };
 		02ECF1DD1DE518050032EEC2 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 02ECF1DC1DE518050032EEC2 /* Assets.xcassets */; };
 		02ECF1E01DE518050032EEC2 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 02ECF1DE1DE518050032EEC2 /* LaunchScreen.storyboard */; };
+		330B1715208838D40077A0F2 /* UserListTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 330B1714208838D40077A0F2 /* UserListTableViewCell.swift */; };
+		330B171720883ADE0077A0F2 /* UserListCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 330B171620883ADE0077A0F2 /* UserListCollectionViewCell.swift */; };
+		333FD334207EC7800071F193 /* ListViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 333FD333207EC7800071F193 /* ListViewController.swift */; };
 		3385398A201EBC24008DDC2B /* ListTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 33853988201EBC23008DDC2B /* ListTableViewCell.xib */; };
 		3385398B201EBC24008DDC2B /* ListTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 33853989201EBC24008DDC2B /* ListTableViewCell.swift */; };
 		378A44091E2434AA00A1373A /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 378A44081E2434AA00A1373A /* GoogleService-Info.plist */; };
@@ -57,6 +60,9 @@
 		02ECF1DC1DE518050032EEC2 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		02ECF1DF1DE518050032EEC2 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		02ECF1E11DE518050032EEC2 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		330B1714208838D40077A0F2 /* UserListTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = UserListTableViewCell.swift; path = Views/UserListTableViewCell.swift; sourceTree = "<group>"; };
+		330B171620883ADE0077A0F2 /* UserListCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = UserListCollectionViewCell.swift; path = Views/UserListCollectionViewCell.swift; sourceTree = "<group>"; };
+		333FD333207EC7800071F193 /* ListViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = ListViewController.swift; path = ViewControllers/ListViewController.swift; sourceTree = "<group>"; };
 		33853988201EBC23008DDC2B /* ListTableViewCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; name = ListTableViewCell.xib; path = Views/ListTableViewCell.xib; sourceTree = "<group>"; };
 		33853989201EBC24008DDC2B /* ListTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = ListTableViewCell.swift; path = Views/ListTableViewCell.swift; sourceTree = "<group>"; };
 		33911413201FE58B004FED51 /* TabViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = TabViewController.swift; path = ViewControllers/TabViewController.swift; sourceTree = "<group>"; };
@@ -149,6 +155,7 @@
 		02ECF1E91DE518820032EEC2 /* ViewControllers */ = {
 			isa = PBXGroup;
 			children = (
+				333FD333207EC7800071F193 /* ListViewController.swift */,
 				33911413201FE58B004FED51 /* TabViewController.swift */,
 				DA43D9691FD1057100F580B9 /* CompanyDetailsViewController.swift */,
 				DA43D9651FD1057100F580B9 /* CompanyViewController.swift */,
@@ -164,8 +171,10 @@
 		02ECF1EA1DE518930032EEC2 /* Views */ = {
 			isa = PBXGroup;
 			children = (
+				330B171620883ADE0077A0F2 /* UserListCollectionViewCell.swift */,
 				33853989201EBC24008DDC2B /* ListTableViewCell.swift */,
 				33853988201EBC23008DDC2B /* ListTableViewCell.xib */,
+				330B1714208838D40077A0F2 /* UserListTableViewCell.swift */,
 				DA43D9741FD1058B00F580B9 /* CompanyInfoTableViewCell.swift */,
 				DA43D9771FD1058B00F580B9 /* CompanyInfoTableViewCell.xib */,
 				DA43D97B1FD1058B00F580B9 /* CompanyTableViewCell.swift */,
@@ -385,6 +394,8 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				330B171720883ADE0077A0F2 /* UserListCollectionViewCell.swift in Sources */,
+				333FD334207EC7800071F193 /* ListViewController.swift in Sources */,
 				02ECF1D61DE518050032EEC2 /* AppDelegate.swift in Sources */,
 				DA43D9621FD1050F00F580B9 /* ButtonSpacing.swift in Sources */,
 				DA3BF0C62008F07C0086C042 /* Property.swift in Sources */,
@@ -394,6 +405,7 @@
 				EDBC83AF201EBF330041DE5E /* TabViewController.swift in Sources */,
 				DA43D9811FD1058B00F580B9 /* NotesTableViewCell.swift in Sources */,
 				DA43D96B1FD1057100F580B9 /* MapViewController.swift in Sources */,
+				330B1715208838D40077A0F2 /* UserListTableViewCell.swift in Sources */,
 				DAE05BB4201C2A66004A351D /* List.swift in Sources */,
 				DAE05BB6201C2A79004A351D /* ListItem.swift in Sources */,
 				DA3BF0CA200922B60086C042 /* FilterSection.swift in Sources */,
