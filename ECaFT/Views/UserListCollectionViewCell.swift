@@ -16,6 +16,9 @@ class UserListCollectionViewCell: UICollectionViewCell {
         super.init(frame: frame)
         
         listName = UILabel()
+        listName.font = UIFont(name: "Avenir-Medium", size: 27)
+        
+        updateConstraints()
         
         contentView.addSubview(listName)
     }
