@@ -98,5 +98,6 @@ class ListViewController: UIViewController, UITableViewDelegate, UITableViewData
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         return UserListCollectionViewCell()
     }
+    
 
 }

@@ -14,6 +14,7 @@ class UserListTableViewCell: UITableViewCell {
     var companyName: UILabel!
     var booth: UILabel!
     var selectButton: UIButton!
+    var selectButtonChecked: Bool!
     
     override init(style: UITableViewCellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
@@ -32,6 +33,8 @@ class UserListTableViewCell: UITableViewCell {
         
         //set it up for changing images when selected vs. not selected
         selectButton.setImage(#imageLiteral(resourceName: "checklistUnchecked"), for: .normal)
+        selectButtonChecked = false;
+        selectButton.addTarget(self, action: #selector(self.selectButtonClicked(sender:)), for: .touchUpInside)
         
         contentView.addSubview(companyName)
         contentView.addSubview(booth)
@@ -56,6 +59,17 @@ class UserListTableViewCell: UITableViewCell {
         }
         
         super.updateConstraints()
+    }
+    
+    //selectButton selected actions
+    func selectButtonClicked(sender: UIButton) {
+        if (selectButtonChecked == false) {
+            selectButton.setImage(UIImage(named:"checklistChecked"), for: .normal)
+            selectButtonChecked = true
+        } else{
+            selectButton.setImage(UIImage(named:"checklistUnchecked"), for: .normal)
+            selectButtonChecked = false
+        }
     }
     
     override func awakeFromNib() {
