@@ -13,7 +13,7 @@ class ListViewController: UIViewController, UITableViewDelegate, UITableViewData
     
     //add some sample data
     let item1 = ListItem(companyName: "Google", booth: "A2", isSelected: false)
-    let item2 = ListItem(companyName: "Twitter", booth: "B8", isSelected: false)
+    let item2 = ListItem(companyName: "Facebook", booth: "B8", isSelected: false)
     
     var tableView: UITableView!
     var collectionView: UICollectionView!
@@ -25,7 +25,7 @@ class ListViewController: UIViewController, UITableViewDelegate, UITableViewData
         super.viewDidLoad()
         
         title = "List Name"
-        view.backgroundColor = .white
+        view.backgroundColor = .black
         
         sampleTableData.append(item1)
         sampleTableData.append(item2)
@@ -37,15 +37,15 @@ class ListViewController: UIViewController, UITableViewDelegate, UITableViewData
         tableView.dataSource = self
         tableView.register(UserListTableViewCell.self, forCellReuseIdentifier: tableReuseIdentifier)
         
-       /* //collectionView
+        //collectionView
         collectionView = UICollectionView()
         collectionView.backgroundColor = .blue
         collectionView.delegate = self
         collectionView.dataSource = self
-        collectionView.register(UserListCollectionViewCell.self, forCellWithReuseIdentifier: collectionReuseIdentifier)*/
+        collectionView.register(UserListCollectionViewCell.self, forCellWithReuseIdentifier: collectionReuseIdentifier)
         
         view.addSubview(tableView)
-        //view.addSubview(collectionView)
+        view.addSubview(collectionView)
         setupConstraints()
     }
     
@@ -53,10 +53,19 @@ class ListViewController: UIViewController, UITableViewDelegate, UITableViewData
     //set up constraints
     func setupConstraints() {
         tableView.snp.makeConstraints { (make) in
-            make.edges.equalToSuperview()
+            make.top.equalTo(view)
+            make.right.equalTo(view)
+            make.left.equalTo(view)
+            make.bottom.equalTo(view).offset(-150)
         }
         
         //collectionView stuff
+        collectionView.snp.makeConstraints { (make) in
+            make.top.equalTo(view).offset(-150)
+            make.right.equalTo(view)
+            make.left.equalTo(view)
+            make.bottom.equalTo(view)
+        }
     }
     
     
