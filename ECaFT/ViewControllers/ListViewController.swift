@@ -37,15 +37,15 @@ class ListViewController: UIViewController, UITableViewDelegate, UITableViewData
         tableView.dataSource = self
         tableView.register(UserListTableViewCell.self, forCellReuseIdentifier: tableReuseIdentifier)
         
-        //collectionView
-        collectionView = UICollectionView()
-        collectionView.backgroundColor = .blue
-        collectionView.delegate = self
-        collectionView.dataSource = self
-        collectionView.register(UserListCollectionViewCell.self, forCellWithReuseIdentifier: collectionReuseIdentifier)
+//        //collectionView
+//        collectionView = UICollectionView()
+//        collectionView.backgroundColor = .blue
+//        collectionView.delegate = self
+//        collectionView.dataSource = self
+//        collectionView.register(UserListCollectionViewCell.self, forCellWithReuseIdentifier: collectionReuseIdentifier)
         
         view.addSubview(tableView)
-        view.addSubview(collectionView)
+        //view.addSubview(collectionView)
         setupConstraints()
     }
     
@@ -56,16 +56,16 @@ class ListViewController: UIViewController, UITableViewDelegate, UITableViewData
             make.top.equalTo(view)
             make.right.equalTo(view)
             make.left.equalTo(view)
-            make.bottom.equalTo(view).offset(-150)
+            make.bottom.equalTo(view)
         }
         
         //collectionView stuff
-        collectionView.snp.makeConstraints { (make) in
-            make.top.equalTo(view).offset(-150)
-            make.right.equalTo(view)
-            make.left.equalTo(view)
-            make.bottom.equalTo(view)
-        }
+//        collectionView.snp.makeConstraints { (make) in
+//            make.top.equalTo(view).offset(-150)
+//            make.right.equalTo(view)
+//            make.left.equalTo(view)
+//            make.bottom.equalTo(view)
+//        }
     }
     
     

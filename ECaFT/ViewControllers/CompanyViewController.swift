@@ -334,6 +334,10 @@ class CompanyViewController: UIViewController, UISearchBarDelegate, UIScrollView
             customCell.companyBack.image = #imageLiteral(resourceName: "placeholder")
         }
         
+        //set up favorites button
+        customCell.favoritesButton.tag = indexPath.row
+        customCell.favoritesButton.addTarget(self, action: #selector(toggleFavorite(sender:)), for: .touchUpInside)
+        
         return customCell
     }
 
@@ -345,6 +349,10 @@ class CompanyViewController: UIViewController, UISearchBarDelegate, UIScrollView
         companyDetailsVC.company = companyViewModel?.displayedCompanies[indexPath.row]
         companyDetailsVC.isFavorite = (companyViewModel?.displayedCompanies[indexPath.row].isFavorite)!
         self.show(companyDetailsVC, sender: nil)
+    }
+    
+    @objc func toggleFavorite(sender: UIButton) {
+        print("yasss")
     }
 
     // MARK: - Private Functions
