@@ -35,7 +35,7 @@ class HomeViewController: UIViewController {
         locationTitle.textAlignment = NSTextAlignment.center
         locationTitle.font = UIFont(name: "Avenir-Medium", size: 28.0)
         locationTitle.textColor = UIColor.white
-        locationTitle.text = "Wednesday, Feb. 8th \n9:00 am - 2:00 pm \nBarton Hall"
+        locationTitle.text = "Wednesday, Feb. 6th \n9:00 am - 2:00 pm \nBarton Hall"
         
         //Make title go onto other lines
         locationTitle.numberOfLines = 0 //set num of lines to infinity
