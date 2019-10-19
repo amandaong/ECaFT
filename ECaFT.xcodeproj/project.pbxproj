@@ -47,6 +47,7 @@
 		DAC9C181201CE9DD008EEC1C /* ListViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = DAC9C180201CE9DD008EEC1C /* ListViewModel.swift */; };
 		DAE05BB4201C2A66004A351D /* List.swift in Sources */ = {isa = PBXBuildFile; fileRef = DAE05BB3201C2A66004A351D /* List.swift */; };
 		DAE05BB6201C2A79004A351D /* ListItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = DAE05BB5201C2A79004A351D /* ListItem.swift */; };
+		ED275F80235A689900F4618A /* FavoritesListViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = ED275F7F235A689900F4618A /* FavoritesListViewController.swift */; };
 		ED4B7FA820192C0700C43B72 /* PhotosCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = ED4B7FA620192C0700C43B72 /* PhotosCollectionViewCell.swift */; };
 		ED4B7FA920192C0700C43B72 /* PhotosCollectionViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = ED4B7FA720192C0700C43B72 /* PhotosCollectionViewCell.xib */; };
 		EDBC83AF201EBF330041DE5E /* TabViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = EDBC83AE201EBF330041DE5E /* TabViewController.swift */; };
@@ -100,6 +101,7 @@
 		DAC9C180201CE9DD008EEC1C /* ListViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = ListViewModel.swift; path = Models/ListViewModel.swift; sourceTree = "<group>"; };
 		DAE05BB3201C2A66004A351D /* List.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = List.swift; path = Models/List.swift; sourceTree = "<group>"; };
 		DAE05BB5201C2A79004A351D /* ListItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = ListItem.swift; path = Models/ListItem.swift; sourceTree = "<group>"; };
+		ED275F7F235A689900F4618A /* FavoritesListViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FavoritesListViewController.swift; sourceTree = "<group>"; };
 		ED4B7FA620192C0700C43B72 /* PhotosCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PhotosCollectionViewCell.swift; sourceTree = "<group>"; };
 		ED4B7FA720192C0700C43B72 /* PhotosCollectionViewCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = PhotosCollectionViewCell.xib; sourceTree = "<group>"; };
 		EDBC83AE201EBF330041DE5E /* TabViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = TabViewController.swift; path = ViewControllers/TabViewController.swift; sourceTree = "<group>"; };
@@ -156,6 +158,7 @@
 			isa = PBXGroup;
 			children = (
 				333FD333207EC7800071F193 /* ListViewController.swift */,
+				ED275F7F235A689900F4618A /* FavoritesListViewController.swift */,
 				33911413201FE58B004FED51 /* TabViewController.swift */,
 				DA43D9691FD1057100F580B9 /* CompanyDetailsViewController.swift */,
 				DA43D9651FD1057100F580B9 /* CompanyViewController.swift */,
@@ -285,6 +288,7 @@
 			developmentRegion = English;
 			hasScannedForEncodings = 0;
 			knownRegions = (
+				English,
 				en,
 				Base,
 			);
@@ -424,6 +428,7 @@
 				DA43D96C1FD1057100F580B9 /* CompanyViewController.swift in Sources */,
 				DA3BF0CC2009A8250086C042 /* CollapsibleFilterTableViewHeader.swift in Sources */,
 				DA43D9881FD1058C00F580B9 /* FavoritesTableViewCell.swift in Sources */,
+				ED275F80235A689900F4618A /* FavoritesListViewController.swift in Sources */,
 				DA43D9871FD1058C00F580B9 /* CompanyTableViewCell.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

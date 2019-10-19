@@ -8,6 +8,11 @@
 
 import UIKit
 
+protocol AddRemoveDelegate {
+    func unstar(company: Company)
+    func star(company: Company)
+}
+
 class CompanyTableViewCell: UITableViewCell {
     
     @IBOutlet weak var favoritesButton: UIButton!
@@ -15,6 +20,9 @@ class CompanyTableViewCell: UITableViewCell {
     @IBOutlet weak var companyImage: UIImageView!
     @IBOutlet weak var nameLabel: UILabel!
     @IBOutlet weak var locationLabel: UILabel!
+    
+    var companyForThisCell: Company!
+    var delegate: AddRemoveDelegate?
     static let identifier = "CompanyTableViewCell"
 
     var name: String? {
@@ -22,12 +30,30 @@ class CompanyTableViewCell: UITableViewCell {
             nameLabel.text = name //Sets text of name label to cell's name property
         }
     }
-    
     var location: String? {
         didSet {
             locationLabel.text = "Booth " + location!
         }
     }
+    var img: UIImage? {
+        didSet {
+            favoritesButton.setImage(img, for: .normal)
+        }
+    }
+    
+    @IBAction func starPressed(_ sender: UIButton) {
+        if companyForThisCell.isFavorite {
+            companyForThisCell.isFavorite = false
+            favoritesButton.setImage(#imageLiteral(resourceName: "starUnfilled"), for: .normal)
+            delegate?.unstar(company: companyForThisCell)
+            
+        } else {
+            companyForThisCell.isFavorite = true
+            favoritesButton.setImage(#imageLiteral(resourceName: "starFilled"), for: .normal)
+            delegate?.star(company: companyForThisCell)
+        }
+    }
+    
     
     override func awakeFromNib() {
         super.awakeFromNib()
