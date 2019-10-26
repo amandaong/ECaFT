@@ -49,6 +49,12 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         companyVC.filterViewModel = filterViewModel
         companyVC.listViewModel = listViewModel
         
+        let listNavVC = navControllers?[3] as! UINavigationController
+        let listVC = listNavVC.viewControllers.first as! FavoritesListViewController
+        listVC.companyViewModel = companyViewModel
+        listVC.filterViewModel = filterViewModel
+        listVC.listViewModel = listViewModel
+        
         return true
     }
 

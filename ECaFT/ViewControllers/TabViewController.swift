@@ -18,8 +18,6 @@ class TabViewController: UITabBarController, SlidingTabBarDataSource, SlidingTab
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        let companyViewModel = CompanyViewModel()
-        
         let homeVC = HomeViewController()
         let homeBarItem = UITabBarItem(title: "Home", image: #imageLiteral(resourceName: "tabHome"), selectedImage: #imageLiteral(resourceName: "tabHome"))
         homeVC.tabBarItem = homeBarItem
@@ -35,7 +33,6 @@ class TabViewController: UITabBarController, SlidingTabBarDataSource, SlidingTab
         let listVC = FavoritesListViewController()
         let listBarItem = UITabBarItem(title: "Lists", image: #imageLiteral(resourceName: "tabFavorites"), selectedImage: #imageLiteral(resourceName: "tabFavorites"))
         listVC.tabBarItem = listBarItem
-        listVC.companyViewModel = companyViewModel
         
        
         let controllers = [homeVC, mapVC, companyVC, listVC]

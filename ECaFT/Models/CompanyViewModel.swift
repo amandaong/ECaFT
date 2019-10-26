@@ -10,15 +10,29 @@ import Foundation
 import UIKit
 
 // Company View Model - keep track of company data
-class CompanyViewModel {
+class CompanyViewModel: NSObject {
     
     private(set) var filteredCompanies = [Company]() //for filters
     private(set) var searchBarCompanies = [Company]() //for search bar
     
     var displayedCompanies = [Company]() // Companies to display on company table view
     var allCompanies = [Company]() // Keep track of current info about companies (e.g. isFavorite is changed)
-    var favoriteCompanies: [Company] = []
+    var favoriteCompanies = [Company]()
     
+    // File Path to saved favorites
+    var favoritesFilePath: String {
+        let manager = FileManager.default
+        let url = manager.urls(for: .documentDirectory, in: .userDomainMask).first
+        print("this is the url path in the documentDirectory \(String(describing: url))")
+        return (url!.appendingPathComponent("favoritesData").path)
+    }
+    
+    override init() {
+        super.init()
+        if let favoriteCompanies = NSKeyedUnarchiver.unarchiveObject(withFile: favoritesFilePath) as? [Company] {
+            self.favoriteCompanies = favoriteCompanies
+        }
+    }
     //For Company Table View
     var numOfSections = 1
     var sectionTitles = ["All Companies", "Favorites", "Other Companies"]

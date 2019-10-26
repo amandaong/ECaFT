@@ -9,7 +9,19 @@
 import UIKit
 import SnapKit
 
-class ListViewController: UIViewController, UITableViewDelegate, UITableViewDataSource, UICollectionViewDataSource, UICollectionViewDelegateFlowLayout {
+class ListViewController: UIViewController, UITableViewDelegate, UITableViewDataSource, UICollectionViewDataSource, UICollectionViewDelegateFlowLayout, AddRemoveDelegate {
+    
+    
+    func unstar(company: Company) {
+        tableView.reloadData()
+        print("unstar!")
+    }
+    
+    func star(company: Company) {
+        tableView.reloadData()
+        print("star!")
+    }
+    
     
     //add some sample data
     let item1 = ListItem(companyName: "Google", booth: "A2", isSelected: false)

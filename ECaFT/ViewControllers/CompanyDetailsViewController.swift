@@ -28,6 +28,7 @@ class CompanyDetailsViewController: UIViewController, UITableViewDelegate, UITab
     var isFavorite : Bool = false
     var location = UILabel() //company booth location
     var websiteButton = UIButton()
+    var addToListButton = UIButton()
     
     //segmented control
     let segmentTitles : [String] = ["Company Info", "Notes"]
@@ -46,6 +47,9 @@ class CompanyDetailsViewController: UIViewController, UITableViewDelegate, UITab
         super.viewDidLoad()
         
         let navBarAndStatusBarHeight = (self.navigationController?.navigationBar.frame.size.height)!+UIApplication.shared.statusBarFrame.height
+        
+        isFavorite = company.isFavorite
+        
         tableView = UITableView(frame: CGRect(x: 0, y: 0, width: screenSize.width, height: screenSize.height - navBarAndStatusBarHeight), style: UITableViewStyle.plain) //sets tableview to size of view below status bar and nav bar
         tableView.delegate      =   self
         tableView.dataSource    =   self
@@ -107,6 +111,22 @@ class CompanyDetailsViewController: UIViewController, UITableViewDelegate, UITab
         location.text = "Booth " + company.location
         self.tableView.tableHeaderView?.addSubview(location)
         
+        //Create add to list button
+        addToListButton.setTitle("Add to List", for: .normal)
+        addToListButton.titleLabel?.textAlignment = .left
+        addToListButton.titleLabel?.font = UIFont(name: "Avenir-Light", size: 14)
+        addToListButton.setTitleColor(UIColor.ecaftRed, for: .normal)
+        addToListButton.frame = CGRect(x: 0, y: 0, width: 150, height: 30)
+    
+        addToListButton.addTarget(self, action: #selector(CompanyDetailsViewController.addToListButtonPressed(button:)), for: .touchUpInside)
+        
+        //add to list button: Tint image red
+        addToListButton.tintColor = UIColor.ecaftRed
+        addToListButton.setImage(#imageLiteral(resourceName: "tabFavorites").withRenderingMode(UIImageRenderingMode.alwaysTemplate), for: .normal)
+        addToListButton.centerTextAndImage(spacing: 5)
+        addToListButton.imageView?.contentMode = .scaleAspectFit
+        self.tableView.tableHeaderView?.addSubview(addToListButton)
+        
         //Create website button
         websiteButton.setTitle("Go to website", for: .normal)
         websiteButton.titleLabel?.textAlignment = .left
@@ -116,10 +136,10 @@ class CompanyDetailsViewController: UIViewController, UITableViewDelegate, UITab
     
         websiteButton.addTarget(self, action: #selector(CompanyDetailsViewController.websiteButtonPressed(button:)), for: .touchUpInside)
         
-        //Tint image red
+        //website button: Tint image red
         websiteButton.tintColor = UIColor.ecaftRed
         websiteButton.setImage(#imageLiteral(resourceName: "website").withRenderingMode(UIImageRenderingMode.alwaysTemplate), for: .normal)
-        websiteButton.centerTextAndImage(spacing: 10)
+        websiteButton.centerTextAndImage(spacing: 5)
         self.tableView.tableHeaderView?.addSubview(websiteButton)
         
         
@@ -167,11 +187,14 @@ class CompanyDetailsViewController: UIViewController, UITableViewDelegate, UITab
             make.top.equalTo(name.snp.bottom).offset(1)
             make.left.equalTo(headerView).offset(0.5*headerView.frame.width)
         }
-        websiteButton.snp.makeConstraints { (make) -> Void in
+        addToListButton.snp.makeConstraints { (make) -> Void in
             make.top.equalTo(location.snp.bottom).offset(5)
             make.left.equalTo(headerView).offset(0.5*headerView.frame.width)
         }
-        
+        websiteButton.snp.makeConstraints { (make) -> Void in
+            make.top.equalTo(addToListButton.snp.bottom).offset(5)
+            make.left.equalTo(headerView).offset(0.5*headerView.frame.width)
+        }
         segControl.snp.makeConstraints { (make) -> Void in
             make.top.greaterThanOrEqualTo(websiteButton.snp.bottom).offset(20).priority(.required)
             make.bottom.greaterThanOrEqualTo(headerView.snp.bottom).offset(-20).priority(.required)
@@ -184,6 +207,16 @@ class CompanyDetailsViewController: UIViewController, UITableViewDelegate, UITab
             make.height.equalTo(18)
         }
         
+    }
+    
+    @objc func addToListButtonPressed(button: UIButton!) {
+        if isFavorite == false{
+            isFavorite = true
+            company.isFavorite = true //save new status
+        } else {
+            isFavorite = false
+            company.isFavorite = false //save new status
+        }
     }
     
     @objc func websiteButtonPressed(button: UIButton!) {

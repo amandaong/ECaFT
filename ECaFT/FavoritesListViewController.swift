@@ -15,11 +15,13 @@ class FavoritesListViewController: UIViewController, UIScrollViewDelegate, UITab
     func unstar(company: Company) {
         makeFavoriteList()
         companyTableView.reloadData()
+        print("unstar")
     }
     
     //never called
     func star(company: Company) {
         companyTableView.reloadData()
+        print("star")
     }
 
     //variables
@@ -28,6 +30,8 @@ class FavoritesListViewController: UIViewController, UIScrollViewDelegate, UITab
     var companyTableView = UITableView()
     var favoriteList: [Company] = []
     var noListLabel: UILabel!
+    var filterViewModel: FilterViewModel?
+    var listViewModel: ListViewModel?
     
     
     override func viewDidLoad() {
@@ -74,9 +78,12 @@ class FavoritesListViewController: UIViewController, UIScrollViewDelegate, UITab
         favoriteList = []
         for company in companyViewModel.allCompanies {
             if company.isFavorite {
+                print(company.name)
+                print(company.isFavorite)
                 favoriteList.append(company)
             }
         }
+//        print(favoriteList.count)
         companyViewModel.favoriteCompanies = favoriteList
     }
     
@@ -165,33 +172,45 @@ class FavoritesListViewController: UIViewController, UIScrollViewDelegate, UITab
          return UITableViewCell()
          }
          */
+        let company = favoriteList[indexPath.row]
         
         guard let customCell: CompanyTableViewCell = tableView.dequeueReusableCell(withIdentifier: CompanyTableViewCell.identifier) as? CompanyTableViewCell else {
-            print("BrowseViewController.swift - cellForRowAt method:  Company Table View dequeuing cell error")
+            print("FavoritesListViewController.swift - cellForRowAt method:  Company Table View dequeuing cell error")
             return UITableViewCell()
         }
         
         //Stops cell turning grey when click on it
-        customCell.delegate = self
         customCell.selectionStyle = .none
-        let company = favoriteList[indexPath.row]
+        
+        customCell.delegate = self
         customCell.companyForThisCell = company
         customCell.name = company.name
 //        customCell.table = company.table
-        customCell.img = #imageLiteral(resourceName: "starFilled")
-        
+        customCell.img = #imageLiteral(resourceName: "favoritesFilled")
+        customCell.location = company.location
         /*
          customCell.name = company.name
          customCell.department = company.department
          */
-        
-        customCell.backgroundColor = UIColor.white
         
         //set cell borders
         customCell.contentView.layer.borderWidth = 2
         
         let myColor : UIColor = UIColor(red:0.61, green:0.15, blue:0.12, alpha:1.0)
         customCell.contentView.layer.borderColor = myColor.cgColor
+
+        if(company.image != nil) {
+            customCell.companyImage.image = company.image
+        } else {
+            customCell.companyImage.image = #imageLiteral(resourceName: "placeholder")
+        }
+        
+        //added section for background image
+        if(company.background != nil) {
+            customCell.companyBack.image = company.background
+        } else {
+            customCell.companyBack.image = #imageLiteral(resourceName: "placeholder")
+        }
         
         return customCell
     }

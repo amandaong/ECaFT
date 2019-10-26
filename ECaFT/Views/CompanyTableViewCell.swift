@@ -44,14 +44,15 @@ class CompanyTableViewCell: UITableViewCell {
     @IBAction func starPressed(_ sender: UIButton) {
         if companyForThisCell.isFavorite {
             companyForThisCell.isFavorite = false
-            favoritesButton.setImage(#imageLiteral(resourceName: "starUnfilled"), for: .normal)
+            favoritesButton.setImage(#imageLiteral(resourceName: "favorites"), for: .normal)
             delegate?.unstar(company: companyForThisCell)
             
         } else {
             companyForThisCell.isFavorite = true
-            favoritesButton.setImage(#imageLiteral(resourceName: "starFilled"), for: .normal)
+            favoritesButton.setImage(#imageLiteral(resourceName: "favoritesFilled"), for: .normal)
             delegate?.star(company: companyForThisCell)
         }
+        print(companyForThisCell.isFavorite)
     }
     
     
@@ -61,8 +62,8 @@ class CompanyTableViewCell: UITableViewCell {
         companyImage.contentMode = .scaleAspectFit
         
         //Set favorites button
-        favoritesButton.setImage(#imageLiteral(resourceName: "favorites"), for: .normal)
-        favoritesButton.setTitle("", for: .normal)
+//        favoritesButton.setImage(#imageLiteral(resourceName: "favorites"), for: .normal)
+//        favoritesButton.setTitle("", for: .normal)
     }
 
     override func setSelected(_ selected: Bool, animated: Bool) {

@@ -1,11 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="14313.18" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES">
-    <device id="retina4_7" orientation="portrait">
-        <adaptation id="fullscreen"/>
-    </device>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="14868" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES">
+    <device id="retina4_7" orientation="portrait" appearance="light"/>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="14283.14"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="14824"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <objects>
@@ -15,17 +13,17 @@
             <rect key="frame" x="0.0" y="0.0" width="347" height="100"/>
             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
             <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="KGk-i7-Jjw" id="H2p-sc-9uM">
-                <rect key="frame" x="0.0" y="0.0" width="347" height="99.5"/>
+                <rect key="frame" x="0.0" y="0.0" width="347" height="100"/>
                 <autoresizingMask key="autoresizingMask"/>
                 <subviews>
                     <view contentMode="scaleAspectFit" translatesAutoresizingMaskIntoConstraints="NO" id="0Yn-Mf-MpT" userLabel="textView">
-                        <rect key="frame" x="56" y="0.0" width="232" height="99.5"/>
+                        <rect key="frame" x="55" y="0.0" width="234" height="100"/>
                         <subviews>
                             <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="67J-xE-8nP">
-                                <rect key="frame" x="-57" y="0.0" width="349" height="99.5"/>
+                                <rect key="frame" x="-57" y="0.0" width="351" height="100"/>
                             </imageView>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" text="Company name" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="GNI-Md-Utp">
-                                <rect key="frame" x="-39" y="26" width="242" height="45.5"/>
+                                <rect key="frame" x="-39" y="26" width="242" height="46"/>
                                 <fontDescription key="fontDescription" name="Avenir-Black" family="Avenir" pointSize="33"/>
                                 <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 <nil key="highlightedColor"/>
@@ -43,13 +41,13 @@
                         </constraints>
                     </view>
                     <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="2Cv-no-jf7">
-                        <rect key="frame" x="260" y="12" width="80" height="29"/>
+                        <rect key="frame" x="261" y="12" width="80" height="29"/>
                         <constraints>
                             <constraint firstAttribute="width" constant="80" id="dte-c2-cjf"/>
                         </constraints>
                     </imageView>
                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Booth location" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="nGT-XZ-0oA">
-                        <rect key="frame" x="16" y="68" width="214" height="31.5"/>
+                        <rect key="frame" x="15" y="68" width="214" height="32"/>
                         <constraints>
                             <constraint firstAttribute="width" constant="214" id="uaV-Uf-9mp"/>
                         </constraints>
@@ -58,13 +56,16 @@
                         <nil key="highlightedColor"/>
                     </label>
                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="top" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="BJF-sj-iEN">
-                        <rect key="frame" x="319" y="62" width="21" height="22"/>
+                        <rect key="frame" x="320" y="62" width="21" height="22"/>
                         <constraints>
                             <constraint firstAttribute="width" constant="21" id="d6c-fi-3Pb"/>
                         </constraints>
                         <state key="normal" image="favorites">
                             <color key="titleColor" red="1" green="0.0" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
                         </state>
+                        <connections>
+                            <action selector="starPressed:" destination="KGk-i7-Jjw" eventType="touchUpInside" id="9UW-Pm-m4s"/>
+                        </connections>
                     </button>
                 </subviews>
                 <constraints>

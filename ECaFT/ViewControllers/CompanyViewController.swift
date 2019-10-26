@@ -11,8 +11,19 @@ import Firebase
 import FirebaseStorage
 import FirebaseDatabase
 
-class CompanyViewController: UIViewController, UISearchBarDelegate, UIScrollViewDelegate, UITableViewDelegate, UITableViewDataSource, FilterSelectionProtocol {
+class CompanyViewController: UIViewController, UISearchBarDelegate, UIScrollViewDelegate, UITableViewDelegate, UITableViewDataSource, FilterSelectionProtocol, AddRemoveDelegate {
 
+    func unstar(company: Company) {
+        print("unstar...")
+        print(company.isFavorite)
+        companyTableView.reloadData()
+    }
+    
+    func star(company: Company) {
+        print("star...")
+        print(company.isFavorite)
+        companyTableView.reloadData()
+    }
     
     let screenSize : CGRect = UIScreen.main.bounds
     var searchBar : UISearchBar!
@@ -73,6 +84,7 @@ class CompanyViewController: UIViewController, UISearchBarDelegate, UIScrollView
         }
         
         makeFilterBtn()
+        companyTableView.reloadData()
     }
     
     override func viewWillDisappear(_ animated: Bool) {
@@ -312,8 +324,11 @@ class CompanyViewController: UIViewController, UISearchBarDelegate, UIScrollView
         
         //Stops cell turning grey when click on it
         customCell.selectionStyle = .none
+        
         customCell.name = company.name
         customCell.location = company.location
+        customCell.delegate = self
+        customCell.companyForThisCell = company
         
         //set cell borders
         customCell.contentView.layer.borderWidth = 2
@@ -334,9 +349,12 @@ class CompanyViewController: UIViewController, UISearchBarDelegate, UIScrollView
             customCell.companyBack.image = #imageLiteral(resourceName: "placeholder")
         }
         
-        //set up favorites button
-        customCell.favoritesButton.tag = indexPath.row
-        customCell.favoritesButton.addTarget(self, action: #selector(toggleFavorite(sender:)), for: .touchUpInside)
+        //make favorites star yellow
+        if (company.isFavorite) {
+            customCell.img = #imageLiteral(resourceName: "favoritesFilled")
+        } else {
+            customCell.img = #imageLiteral(resourceName: "favorites")
+        }
         
         return customCell
     }
@@ -350,10 +368,7 @@ class CompanyViewController: UIViewController, UISearchBarDelegate, UIScrollView
         companyDetailsVC.isFavorite = (companyViewModel?.displayedCompanies[indexPath.row].isFavorite)!
         self.show(companyDetailsVC, sender: nil)
     }
-    
-    @objc func toggleFavorite(sender: UIButton) {
-        print("yasss")
-    }
+
 
     // MARK: - Private Functions
     private func makeBackBtn() {
